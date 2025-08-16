@@ -1,0 +1,64 @@
+# Configuración de Monitoreo - Torre de los Pecados
+# Este archivo contiene las configuraciones para el workflow de monitoreo
+# Actualiza estas URLs cuando despliegues a producción
+
+# Configuración de URLs por ambiente
+urls:
+  production:
+    backend: "https://api.torredelospecados.com"  # Cambiar cuando esté disponible
+    frontend: "https://torredelospecados.com"     # Cambiar cuando esté disponible
+  staging:
+    backend: "https://staging-api.torredelospecados.com"  # Cambiar cuando esté disponible
+    frontend: "https://staging.torredelospecados.com"     # Cambiar cuando esté disponible
+  development:
+    backend: "http://localhost:3001"
+    frontend: "http://localhost:3000"
+
+# Configuración de timeouts (en segundos)
+timeouts:
+  health_check: 10
+  performance_check: 10
+  security_check: 10
+  uptime_check: 10
+
+# Configuración de alertas
+alerts:
+  # Frecuencia de ejecución automática (cron)
+  schedule: "0 * * * *"  # Cada hora
+  
+  # Condiciones para enviar alertas
+  send_alerts_on:
+    - workflow_dispatch  # Solo en ejecución manual
+    # - schedule         # Descomentar para alertas automáticas
+  
+  # Canales de notificación
+  channels:
+    slack: true
+    discord: true
+
+# Configuración de thresholds
+thresholds:
+  backend_response_time: 2.0    # segundos
+  frontend_response_time: 3.0   # segundos
+  api_response_time: 1.0        # segundos
+
+# Configuración de endpoints
+endpoints:
+  health: "/health"
+  database: "/health/db"
+  redis: "/health/redis"
+  api_games: "/api/games"
+
+# Configuración de seguridad
+security:
+  require_https_in_production: true
+  check_ssl_certificates: true
+  required_headers:
+    - "X-Frame-Options"
+    - "Content-Security-Policy"
+
+# Configuración de reportes
+reports:
+  generate_on: "workflow_dispatch"  # Solo en ejecución manual
+  retention_days: 30
+  include_notes: true

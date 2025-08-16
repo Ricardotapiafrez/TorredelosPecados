@@ -25,10 +25,12 @@ Se ha implementado un sistema completo de CI/CD (Continuous Integration/Continuo
 - ✅ **Verificación de headers** de seguridad
 
 ### 4. Monitoreo y Alertas
-- ✅ **Health checks** cada 5 minutos
-- ✅ **Alertas automáticas** a Slack/Discord
+- ✅ **Health checks** cada hora (optimizado para evitar emails excesivos)
+- ✅ **Alertas manuales** a Slack/Discord (solo en ejecución manual)
 - ✅ **Métricas de performance** continuas
 - ✅ **Reportes automáticos** de estado
+- ✅ **Tolerancia a fallos** (no bloquea si servicios no están disponibles)
+- ✅ **Script de gestión** para facilitar administración
 
 ## 🏗️ Arquitectura Implementada
 
@@ -241,14 +243,17 @@ MONITORING_API_KEY            # API key para monitoreo
 - ✅ **Auditoría de Seguridad**: Escaneo continuo
 
 ### Monitoreo
-- ✅ **Health Checks**: Verificación de servicios
+- ✅ **Health Checks**: Verificación de servicios (tolerante a fallos)
 - ✅ **Performance Monitoring**: Métricas de rendimiento
-- ✅ **Alertas Automáticas**: Slack/Discord
+- ✅ **Alertas Manuales**: Slack/Discord (solo en ejecución manual)
 - ✅ **Reportes Continuos**: Estado del sistema
+- ✅ **Gestión Inteligente**: Script para administración fácil
 
 ## 📈 Próximos Pasos
 
 ### Mejoras Inmediatas
+- [x] **Corregir emails excesivos**: Optimizado workflow de monitoreo
+- [x] **Script de gestión**: Creado para facilitar administración
 - [ ] **Configurar secrets**: Agregar tokens y webhooks
 - [ ] **Configurar environments**: Configurar staging y production
 - [ ] **Configurar notificaciones**: Slack/Discord webhooks

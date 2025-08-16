@@ -243,7 +243,9 @@ class Player {
       isReady: this.isReady,
       isAlive: this.isAlive,
       score: this.score,
-      isSinner: this.isSinner
+      isSinner: this.isSinner,
+      handSize: this.hand.length,
+      soulWellSize: this.soulWell.length
     };
   }
 
