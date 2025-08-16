@@ -773,6 +773,85 @@ export default function GameBoard({
           </div>
         </div>
 
+        {/* Resumen del estado del juego */}
+        {currentPlayer && (
+          <motion.div
+            className="bg-gray-800/30 rounded-lg p-4 border border-gray-600 mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+          >
+            <h3 className="text-lg font-semibold text-white mb-3 flex items-center space-x-2">
+              <span>📊</span>
+              <span>Estado del Juego</span>
+            </h3>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {/* Información del jugador actual */}
+              <div className="bg-gray-700/50 rounded p-3">
+                <div className="text-sm text-gray-400 mb-1">Tu Estado</div>
+                <div className="text-white font-semibold">{currentPlayer.name}</div>
+                <div className="text-xs text-gray-300">
+                  Fase: {getPhaseName(currentPlayer.currentPhase)}
+                </div>
+                <div className="text-xs text-gray-300">
+                  Mano: {currentPlayer.handSize} • Pozo: {currentPlayer.soulWellSize}
+                </div>
+              </div>
+              
+              {/* Información del turno */}
+              <div className="bg-gray-700/50 rounded p-3">
+                <div className="text-sm text-gray-400 mb-1">Turno Actual</div>
+                <div className="text-white font-semibold">
+                  {gameState.currentPlayerId === currentPlayerId ? 'Tu turno' : 'Turno de otro'}
+                </div>
+                <div className="text-xs text-gray-300">
+                  Jugador: {gameState.players.find(p => p.id === gameState.currentPlayerId)?.name || 'Desconocido'}
+                </div>
+                <div className="text-xs text-gray-300">
+                  Tiempo: {gameState.turnTime}s
+                </div>
+              </div>
+              
+              {/* Información de la torre */}
+              <div className="bg-gray-700/50 rounded p-3">
+                <div className="text-sm text-gray-400 mb-1">Torre de los Pecados</div>
+                <div className="text-white font-semibold">{gameState.discardPile.length} cartas</div>
+                <div className="text-xs text-gray-300">
+                  {gameState.lastPlayedCard ? (
+                    <>
+                      Última: {gameState.lastPlayedCard.name} (valor: {gameState.lastPlayedCard.value})
+                    </>
+                  ) : (
+                    'Sin cartas jugadas'
+                  )}
+                </div>
+                {gameState.nextPlayerCanPlayAnything && (
+                  <div className="text-xs text-yellow-400 font-semibold">
+                    ✨ Cualquier carta válida
+                  </div>
+                )}
+              </div>
+              
+              {/* Información de cartas jugables */}
+              <div className="bg-gray-700/50 rounded p-3">
+                <div className="text-sm text-gray-400 mb-1">Tus Opciones</div>
+                <div className="text-white font-semibold">
+                  {isMyTurn ? `${playableCards.length} jugables` : 'No es tu turno'}
+                </div>
+                <div className="text-xs text-gray-300">
+                  {isMyTurn && playableCards.length === 0 && (
+                    <span className="text-red-400">Debes tomar la torre</span>
+                  )}
+                  {isMyTurn && playableCards.length > 0 && (
+                    <span className="text-green-400">Puedes jugar cartas</span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
         {/* Torre de los Pecados */}
         <motion.div 
           className="mb-8"
@@ -799,19 +878,31 @@ export default function GameBoard({
             className="mb-4"
           >
             <div className="flex flex-wrap gap-2">
-              {gameState.discardPile.slice(-5).map((card, index) => (
-                <motion.div
-                  key={`${card.id}-${index}`}
-                  initial={{ scale: 0, rotate: -180 }}
-                  animate={{ scale: 1, rotate: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <GameCard
-                    card={card}
-                    className="w-20 h-28"
-                  />
-                </motion.div>
-              ))}
+              {gameState.discardPile.slice(-5).map((card, index) => {
+                const isLastCard = index === gameState.discardPile.slice(-5).length - 1;
+                const isFirstCard = gameState.discardPile.length === 1;
+                
+                return (
+                  <motion.div
+                    key={`${card.id}-${index}`}
+                    initial={{ scale: 0, rotate: -180 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className={`relative ${isLastCard ? 'ring-2 ring-yellow-400 ring-opacity-75' : ''}`}
+                  >
+                    <GameCard
+                      card={card}
+                      className="w-20 h-28"
+                    />
+                    {/* Indicador de carta activa */}
+                    {isLastCard && (
+                      <div className="absolute -top-2 -right-2 bg-yellow-400 text-black text-xs px-1 py-0.5 rounded-full font-bold">
+                        {isFirstCard ? 'INICIAL' : 'ACTIVA'}
+                      </div>
+                    )}
+                  </motion.div>
+                );
+              })}
               {gameState.discardPile.length === 0 && (
                 <div className="w-20 h-28 border-2 border-dashed border-gray-600 rounded flex items-center justify-center text-gray-500">
                   Vacía
@@ -819,13 +910,39 @@ export default function GameBoard({
               )}
             </div>
             
+            {/* Información de la carta activa */}
             {gameState.lastPlayedCard && (
-              <div className="mt-3 text-sm text-gray-300">
-                Última carta: <span className="font-semibold">{gameState.lastPlayedCard.name}</span> 
-                (Valor: {gameState.lastPlayedCard.value})
-                {gameState.nextPlayerCanPlayAnything && (
-                  <span className="ml-2 text-yellow-400">✨ Puedes jugar cualquier carta</span>
-                )}
+              <div className="mt-3 p-3 bg-gray-800/50 rounded-lg border border-gray-600">
+                <div className="text-sm text-gray-300 mb-2">
+                  <span className="font-semibold text-yellow-400">🎯 Carta Activa:</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="flex-shrink-0">
+                    <GameCard
+                      card={gameState.lastPlayedCard}
+                      className="w-16 h-22"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-white font-semibold">{gameState.lastPlayedCard.name}</div>
+                    <div className="text-gray-400 text-sm">Valor: {gameState.lastPlayedCard.value}</div>
+                    <div className="text-gray-400 text-sm">Tipo: {gameState.lastPlayedCard.type}</div>
+                    {gameState.nextPlayerCanPlayAnything && (
+                      <div className="text-yellow-400 text-sm font-semibold mt-1">
+                        ✨ Puedes jugar cualquier carta
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {/* Instrucciones cuando no hay carta activa */}
+            {!gameState.lastPlayedCard && gameState.discardPile.length === 0 && (
+              <div className="mt-3 p-3 bg-blue-900/20 rounded-lg border border-blue-600">
+                <div className="text-sm text-blue-300">
+                  <span className="font-semibold">🚀 Inicio del Juego:</span> Puedes jugar cualquier carta para comenzar la Torre de los Pecados.
+                </div>
               </div>
             )}
           </DropZone>
@@ -897,14 +1014,118 @@ export default function GameBoard({
                   <div className="mt-2">
                     <p className="text-sm font-semibold mb-1">Cartas jugables:</p>
                     <div className="flex flex-wrap gap-1 justify-center">
-                      {playableInfo.cards.map((cardName, index) => (
-                        <span key={index} className="px-2 py-1 bg-secondary-700 rounded text-xs">
-                          {cardName}
+                      {playableInfo.cards.map((card, index) => (
+                        <span key={index} className="text-xs bg-white/10 px-2 py-1 rounded">
+                          {card.name}
                         </span>
                       ))}
                     </div>
                   </div>
                 )}
+              </motion.div>
+            )}
+
+            {/* Sección de cartas jugables con botones */}
+            {playableCards.length > 0 && (
+              <motion.div
+                className="bg-gray-800/50 rounded-lg p-4 border border-gray-600"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+              >
+                <h3 className="text-lg font-semibold text-white mb-4 flex items-center justify-center space-x-2">
+                  <span>🎯</span>
+                  <span>Selecciona una carta para jugar</span>
+                  <span className="text-sm text-gray-400">({playableCards.length} disponibles)</span>
+                </h3>
+                
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                  {playableCards.map((cardIndex) => {
+                    const card = currentPlayer.hand[cardIndex];
+                    if (!card) return null;
+                    
+                    const isSpecial = card.value === 2 || card.value === 8 || card.value === 10;
+                    
+                    return (
+                      <motion.div
+                        key={`playable-${cardIndex}`}
+                        className="relative"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: cardIndex * 0.1 }}
+                      >
+                        <GameCard
+                          card={card}
+                          className="w-full h-auto"
+                        />
+                        
+                        {/* Botón de jugar */}
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() => handleCardClick(cardIndex)}
+                          className={`absolute -bottom-2 left-1/2 transform -translate-x-1/2 px-3 py-1 rounded-full font-bold text-sm shadow-lg ${
+                            isSpecial 
+                              ? 'bg-purple-600 hover:bg-purple-500 text-white' 
+                              : 'bg-green-600 hover:bg-green-500 text-white'
+                          }`}
+                        >
+                          {isSpecial ? 'ESPECIAL' : 'JUGAR'}
+                        </motion.button>
+                        
+                        {/* Indicador de carta especial */}
+                        {isSpecial && (
+                          <div className="absolute -top-2 -right-2 w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center">
+                            <span className="text-white text-xs font-bold">{card.value}</span>
+                          </div>
+                        )}
+                        
+                        {/* Información de la carta */}
+                        <div className="mt-2 text-center">
+                          <div className="text-xs text-gray-300 font-semibold">{card.name}</div>
+                          <div className="text-xs text-gray-400">Valor: {card.value}</div>
+                          {isSpecial && (
+                            <div className="text-xs text-purple-300 mt-1">
+                              {card.value === 2 && 'Puedes jugar otra carta'}
+                              {card.value === 8 && 'El siguiente jugador pierde su turno'}
+                              {card.value === 10 && 'Purifica la Torre de los Pecados'}
+                            </div>
+                          )}
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+                
+                {/* Instrucciones adicionales */}
+                <div className="mt-4 text-sm text-gray-400">
+                  <p>💡 También puedes arrastrar las cartas hacia la Torre de los Pecados</p>
+                </div>
+              </motion.div>
+            )}
+
+            {/* Botón para tomar la torre cuando no hay cartas jugables */}
+            {playableCards.length === 0 && (
+              <motion.div
+                className="bg-red-900/20 rounded-lg p-4 border border-red-600"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                <h3 className="text-lg font-semibold text-red-300 mb-2">
+                  ⚠️ No puedes jugar ninguna carta
+                </h3>
+                <p className="text-sm text-red-200 mb-4">
+                  Debes tomar toda la Torre de los Pecados
+                </p>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleTakeDiscardPile}
+                  className="bg-red-600 hover:bg-red-500 text-white px-6 py-3 rounded-lg font-semibold"
+                >
+                  🏰 Tomar Torre de los Pecados
+                </motion.button>
               </motion.div>
             )}
 
@@ -960,13 +1181,6 @@ export default function GameBoard({
                 </motion.button>
               )}
             </div>
-
-            {/* Información de cartas jugables */}
-            {playableCards.length > 0 && (
-              <p className="text-gray-300 text-sm">
-                Cartas jugables: {playableCards.length} • Arrastra una carta a la zona de juego
-              </p>
-            )}
           </motion.div>
         )}
 

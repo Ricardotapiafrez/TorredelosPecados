@@ -161,6 +161,26 @@ setupSocketListeners() // Configurar listeners de socket
    - Estrategia: Adapta tu juego según la situación
    - Personalidad IA: Estratégica y versátil
 
+5. **⚒️ Mazo de Enanos**
+   - Tema: Construcción y sinergia
+   - Estrategia: Construye desde la base y potencia con máquinas de guerra
+   - Personalidad IA: Metódica y constructiva
+
+6. **🌿 Mazo de Elfos del Bosque**
+   - Tema: Crecimiento y armonía
+   - Estrategia: Desarrolla gradualmente y equilibra el ciclo natural
+   - Personalidad IA: Pacífica y equilibrada
+
+7. **🖤 Mazo de Elfos Oscuros**
+   - Tema: Sacrificio y corrupción
+   - Estrategia: Sacrifica a los débiles para invocar la oscuridad absoluta
+   - Personalidad IA: Corrupta y sacrificial
+
+8. **🪖 Mazo de Orcos**
+   - Tema: Horda y fuerza bruta
+   - Estrategia: Construye hordas masivas y usa tambores para potenciar ataques
+   - Personalidad IA: Agresiva y masiva
+
 ## 🚀 Eventos de Socket
 
 ### Emitidos por el Cliente

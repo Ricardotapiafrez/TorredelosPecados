@@ -1,4 +1,4 @@
-const { THEMATIC_DECKS, ANGELS_DECK, DEMONS_DECK, DRAGONS_DECK, MAGES_DECK } = require('../models/Card');
+const { THEMATIC_DECKS, ANGELS_DECK, DEMONS_DECK, DRAGONS_DECK, MAGES_DECK, DWARVES_DECK, ELVES_DECK, DARK_ELVES_DECK, ORCS_DECK } = require('../models/Card');
 
 class DeckConfigurationService {
   constructor() {
@@ -99,6 +99,108 @@ class DeckConfigurationService {
           allowCardAddition: true,
           allowPowerModification: true,
           allowEffectModification: true
+        }
+      },
+      [THEMATIC_DECKS.DWARVES]: {
+        id: THEMATIC_DECKS.DWARVES,
+        name: 'Mazo de Enanos',
+        description: 'Un mazo de forjadores y guerreros que combinan la artesanía con la magia rúnica ancestral.',
+        icon: '⚒️',
+        color: '#8B4513',
+        theme: 'forge',
+        cards: DWARVES_DECK,
+        specialRules: [
+          'Los enanos tienen poder de forja y construcción',
+          'Las cartas bajas (1-5) refuerzan a las medias (6-10)',
+          'El 6 potencia las máquinas de guerra',
+          'El 13 activa el poder de todas las runas'
+        ],
+        difficulty: 'medium',
+        recommendedPlayers: [2, 3, 4, 5, 6],
+        isEnabled: true,
+        customizations: {
+          allowCardRemoval: false,
+          allowCardAddition: false,
+          allowPowerModification: true,
+          allowEffectModification: false
+        }
+      },
+      [THEMATIC_DECKS.ELVES]: {
+        id: THEMATIC_DECKS.ELVES,
+        name: 'Mazo de Elfos del Bosque',
+        description: 'Un mazo de criaturas naturales que representan el ciclo de vida y la armonía del bosque.',
+        icon: '🌿',
+        color: '#228B22',
+        theme: 'nature',
+        cards: ELVES_DECK,
+        specialRules: [
+          'Los elfos tienen poder de crecimiento y armonía natural',
+          'Las cartas bajas (1-4) representan el inicio del ciclo de vida',
+          'Las cartas medias (5-9) son la fuerza del bosque en movimiento',
+          'Las cartas altas (10-13) representan la sabiduría y poder ancestral',
+          'El 10 controla el ciclo de vida y muerte'
+        ],
+        difficulty: 'medium',
+        recommendedPlayers: [2, 3, 4, 5, 6],
+        isEnabled: true,
+        customizations: {
+          allowCardRemoval: false,
+          allowCardAddition: false,
+          allowPowerModification: true,
+          allowEffectModification: false
+        }
+      },
+      [THEMATIC_DECKS.DARK_ELVES]: {
+        id: THEMATIC_DECKS.DARK_ELVES,
+        name: 'Mazo de Elfos Oscuros',
+        description: 'Un mazo de criaturas corruptas que representan el poder de las sombras y el sacrificio.',
+        icon: '🖤',
+        color: '#2C1810',
+        theme: 'shadow',
+        cards: DARK_ELVES_DECK,
+        specialRules: [
+          'Los elfos oscuros tienen poder de sacrificio y corrupción',
+          'Las cartas bajas (1-3) son sacrificables para fortalecer a las altas',
+          'Las cartas medias (4-6) convierten el dolor en poder',
+          'Las cartas altas (7-9) expanden el terror y el veneno',
+          'El 10 y 11 representan el poder militar y la magia sacrificial',
+          'El 12 y 13 encarnan la corrupción absoluta'
+        ],
+        difficulty: 'hard',
+        recommendedPlayers: [2, 3, 4, 5],
+        isEnabled: true,
+        customizations: {
+          allowCardRemoval: true,
+          allowCardAddition: false,
+          allowPowerModification: true,
+          allowEffectModification: true
+        }
+      },
+      [THEMATIC_DECKS.ORCS]: {
+        id: THEMATIC_DECKS.ORCS,
+        name: 'Mazo de Orcos',
+        description: 'Un mazo de guerreros brutales que representan el poder de las hordas y la fuerza colectiva.',
+        icon: '🪖',
+        color: '#8B4513',
+        theme: 'horde',
+        cards: ORCS_DECK,
+        specialRules: [
+          'Los orcos tienen poder de horda y fuerza bruta',
+          'Las cartas bajas (1-4) son la base del ejército',
+          'Los tambores (2 y 8) potencian a las hordas',
+          'Los chamanes (9) sacrifican reclutas (1) para fortalecer berserkers (5)',
+          'El portaestandarte (6) mantiene la moral de la horda',
+          'Los jinetes (4 y 11) permiten movilidad y rompen líneas',
+          'El Señor de la Guerra (12) organiza toda la horda'
+        ],
+        difficulty: 'medium',
+        recommendedPlayers: [2, 3, 4, 5, 6],
+        isEnabled: true,
+        customizations: {
+          allowCardRemoval: false,
+          allowCardAddition: false,
+          allowPowerModification: true,
+          allowEffectModification: false
         }
       }
     };

@@ -256,7 +256,22 @@ export default function PlayerArea({
           <h4 className="text-sm font-semibold text-secondary-300 mb-3 flex items-center space-x-2">
             <span>✋</span>
             <span>Mano ({player.handSize || 0})</span>
+            {isCurrentPlayer && isMyTurn && (
+              <span className="text-xs bg-green-600 text-white px-2 py-1 rounded-full">
+                Tu turno
+              </span>
+            )}
           </h4>
+          
+          {/* Instrucciones para el jugador */}
+          {isCurrentPlayer && isMyTurn && (
+            <div className="mb-3 p-2 bg-blue-900/20 rounded border border-blue-600">
+              <div className="text-xs text-blue-300">
+                <span className="font-semibold">💡 Instrucciones:</span> Haz clic en una carta para jugarla o arrastra hacia la Torre de los Pecados.
+              </div>
+            </div>
+          )}
+          
           <div className="flex space-x-2 overflow-x-auto pb-2">
             {player.hand?.map((card, index) => {
               // Determinar si la carta es jugable según las reglas del juego
@@ -280,6 +295,7 @@ export default function PlayerArea({
                   initial={{ scale: 0, y: 50 }}
                   animate={{ scale: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.05 }}
+                  className="relative"
                 >
                   <GameCard
                     card={card}
@@ -298,6 +314,43 @@ export default function PlayerArea({
                     }}
                     className="w-20 h-28"
                   />
+                  
+                  {/* Botón de acción para cartas jugables */}
+                  {isPlayable && (
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      onClick={() => onCardClick?.(index)}
+                      className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-green-600 hover:bg-green-500 text-white text-xs px-2 py-1 rounded-full font-bold shadow-lg"
+                    >
+                      JUGAR
+                    </motion.button>
+                  )}
+                  
+                  {/* Indicador de carta especial */}
+                  {validation.isSpecial && (
+                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center">
+                      <span className="text-white text-xs font-bold">
+                        {card.value === 2 ? '2' : card.value === 8 ? '8' : '10'}
+                      </span>
+                    </div>
+                  )}
+                  
+                  {/* Tooltip con información de la carta */}
+                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 hover:opacity-100 transition-opacity pointer-events-none">
+                    <div className="bg-gray-800 text-white p-2 rounded text-xs whitespace-nowrap border border-gray-600 shadow-lg">
+                      <div className="font-semibold">{card.name}</div>
+                      <div>Valor: {card.value}</div>
+                      <div>Tipo: {card.type}</div>
+                      {validation.isSpecial && (
+                        <div className="text-purple-300 mt-1">
+                          {card.value === 2 && 'Puedes jugar otra carta'}
+                          {card.value === 8 && 'El siguiente jugador pierde su turno'}
+                          {card.value === 10 && 'Purifica la Torre de los Pecados'}
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </motion.div>
               )
             })}
@@ -307,6 +360,21 @@ export default function PlayerArea({
               </div>
             )}
           </div>
+          
+          {/* Información adicional para el jugador actual */}
+          {isCurrentPlayer && isMyTurn && player.hand && player.hand.length > 0 && (
+            <div className="mt-2 text-xs text-gray-400">
+              <div className="flex items-center space-x-4">
+                <span>📊 Cartas jugables: {player.hand.filter((_, index) => {
+                  // Lógica simplificada para determinar cartas jugables
+                  return true; // Por ahora todas son jugables
+                }).length}</span>
+                <span>🎯 Cartas especiales: {player.hand.filter(card => 
+                  card.value === 2 || card.value === 8 || card.value === 10
+                ).length}</span>
+              </div>
+            </div>
+          )}
         </div>
       )}
 

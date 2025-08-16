@@ -124,7 +124,11 @@ const THEMATIC_DECKS = {
   ANGELS: 'angels',
   DEMONS: 'demons',
   DRAGONS: 'dragons',
-  MAGES: 'mages'
+  MAGES: 'mages',
+  DWARVES: 'dwarves',
+  ELVES: 'elves',
+  DARK_ELVES: 'dark_elves',
+  ORCS: 'orcs'
 };
 
 // Mazo base de cartas
@@ -236,6 +240,74 @@ const MAGES_DECK = [
   new Card(13, 'El Mago Supremo', CARD_TYPES.CRIATURA, 13, null, 'El origen y cúspide de la magia. Sus conjuros no conocen límites, y su palabra es ley en el mundo arcano.', '/images/cards/mages/mage_13.png', THEMATIC_DECKS.MAGES, 13)
 ];
 
+// Mazo de Enanos
+const DWARVES_DECK = [
+  new Card(1, 'Aprendiz Minero', CARD_TYPES.CRIATURA, 1, null, 'Joven enano que extrae los primeros metales. Representa la base de recursos y el inicio del camino de la forja.', '/images/cards/dwarves/dwarf_1.png', THEMATIC_DECKS.DWARVES, 1),
+  new Card(2, 'Herrero Raso', CARD_TYPES.CRIATURA, 2, null, 'Forjador de armas simples. Apoya a las cartas 1 y 3 creando equipamiento esencial para la defensa.', '/images/cards/dwarves/dwarf_2.png', THEMATIC_DECKS.DWARVES, 2),
+  new Card(3, 'Guerrero del Yunque', CARD_TYPES.CRIATURA, 3, null, 'Soldado entrenado, armado con hacha y escudo. Defiende a los números bajos con su experiencia en batalla.', '/images/cards/dwarves/dwarf_3.png', THEMATIC_DECKS.DWARVES, 3),
+  new Card(4, 'Arquero de las Cavernas', CARD_TYPES.CRIATURA, 4, null, 'Enano que dispara flechas reforzadas con runas. Combina con el 5 para ataques a distancia devastadores.', '/images/cards/dwarves/dwarf_4.png', THEMATIC_DECKS.DWARVES, 4),
+  new Card(5, 'Centinela de la Muralla', CARD_TYPES.CRIATURA, 5, null, 'Guardián de las puertas de la fortaleza. Fortifica a las cartas 3 y 4, creando una defensa impenetrable.', '/images/cards/dwarves/dwarf_5.png', THEMATIC_DECKS.DWARVES, 5),
+  new Card(6, 'Ingeniero Runario', CARD_TYPES.CRIATURA, 6, null, 'Diseñador de mecanismos rúnicos. Potencia las máquinas de guerra y activa el poder de las runas ancestrales.', '/images/cards/dwarves/dwarf_6.png', THEMATIC_DECKS.DWARVES, 6),
+  new Card(7, 'Cañón de Pólvora Negra', CARD_TYPES.CRIATURA, 7, null, 'Máquina de asedio creada por los ingenieros. Ataque devastador que requiere el apoyo del Ingeniero Runario.', '/images/cards/dwarves/dwarf_7.png', THEMATIC_DECKS.DWARVES, 7),
+  new Card(8, 'Capataz de la Forja', CARD_TYPES.CRIATURA, 8, null, 'Enano líder de herreros, organiza la producción. Refuerza a las cartas 2 y 3, coordinando el esfuerzo bélico.', '/images/cards/dwarves/dwarf_8.png', THEMATIC_DECKS.DWARVES, 8),
+  new Card(9, 'Sacerdote de las Runas', CARD_TYPES.CRIATURA, 9, null, 'Portador de la magia ancestral de Moradin. Potencia conjuros y protege aliados con bendiciones rúnicas.', '/images/cards/dwarves/dwarf_9.png', THEMATIC_DECKS.DWARVES, 9),
+  new Card(10, 'Campeón del Yunque', CARD_TYPES.CRIATURA, 10, null, 'Guerrero legendario que inspira a las tropas. Sinergia con las cartas 3, 5 y 8, liderando el ejército enano.', '/images/cards/dwarves/dwarf_10.png', THEMATIC_DECKS.DWARVES, 10),
+  new Card(11, 'Máquina de Guerra Colosal', CARD_TYPES.CRIATURA, 11, null, 'Una forja viviente, mitad máquina mitad golem. Ataca junto al Cañón de Pólvora Negra, amplificado por el Ingeniero Runario.', '/images/cards/dwarves/dwarf_11.png', THEMATIC_DECKS.DWARVES, 11),
+  new Card(12, 'Señor de la Fortaleza', CARD_TYPES.CRIATURA, 12, null, 'Líder militar que coordina todas las defensas. Ordena del 3 al 10 como un ejército unificado y disciplinado.', '/images/cards/dwarves/dwarf_12.png', THEMATIC_DECKS.DWARVES, 12),
+  new Card(13, 'Rey Rúnico Eterno', CARD_TYPES.CRIATURA, 13, null, 'Figura mítica que despierta en tiempos de guerra. Su sola presencia refuerza a todo el mazo y activa el poder de las runas.', '/images/cards/dwarves/dwarf_13.png', THEMATIC_DECKS.DWARVES, 13)
+];
+
+// Mazo de Elfos del Bosque
+const ELVES_DECK = [
+  new Card(1, 'Semilla Viva', CARD_TYPES.CRIATURA, 1, null, 'Un brote mágico que late con energía natural, usado para invocar otras criaturas. Representa el inicio del ciclo de vida.', '/images/cards/elves/elf_1.png', THEMATIC_DECKS.ELVES, 1),
+  new Card(2, 'Guardián del Claro', CARD_TYPES.CRIATURA, 2, null, 'Elfo con armadura ligera de hojas, protege los límites del bosque. Defiende el territorio sagrado con vigilancia constante.', '/images/cards/elves/elf_2.png', THEMATIC_DECKS.ELVES, 2),
+  new Card(3, 'Arquero Silvano', CARD_TYPES.CRIATURA, 3, null, 'Experto en emboscadas, dispara flechas imbuidas con savia venenosa. Maestro del sigilo y la precisión natural.', '/images/cards/elves/elf_3.png', THEMATIC_DECKS.ELVES, 3),
+  new Card(4, 'Druida del Roble', CARD_TYPES.CRIATURA, 4, null, 'Conecta con la naturaleza, puede curar aliados o invocar raíces para frenar enemigos. Canaliza el poder curativo del bosque.', '/images/cards/elves/elf_4.png', THEMATIC_DECKS.ELVES, 4),
+  new Card(5, 'Jinete de Ciervo Blanco', CARD_TYPES.CRIATURA, 5, null, 'Elfos que montan ciervos sagrados, rápidos como el viento, ideales para ataques relámpago. Velocidad y gracia en movimiento.', '/images/cards/elves/elf_5.png', THEMATIC_DECKS.ELVES, 5),
+  new Card(6, 'Bestia del Bosque Sombrío', CARD_TYPES.CRIATURA, 6, null, 'Criatura salvaje y territorial, obediente solo ante los druidas. Fuerza bruta de la naturaleza indómita.', '/images/cards/elves/elf_6.png', THEMATIC_DECKS.ELVES, 6),
+  new Card(7, 'Invocadora de Espíritus del Bosque', CARD_TYPES.CRIATURA, 7, null, 'Llama a espíritus menores que fortalecen aliados y confunden enemigos. Tejedora de ilusiones naturales.', '/images/cards/elves/elf_7.png', THEMATIC_DECKS.ELVES, 7),
+  new Card(8, 'Hombre-Árbol Errante', CARD_TYPES.CRIATURA, 8, null, 'Un árbol consciente que se mueve lentamente pero ofrece una gran defensa. Ent joven con raíces profundas.', '/images/cards/elves/elf_8.png', THEMATIC_DECKS.ELVES, 8),
+  new Card(9, 'Águila Real del Alba', CARD_TYPES.CRIATURA, 9, null, 'Ave majestuosa que domina los cielos, usada para exploración y ataque aéreo. Ojos que ven desde las alturas.', '/images/cards/elves/elf_9.png', THEMATIC_DECKS.ELVES, 9),
+  new Card(10, 'Druida Mayor del Bosque Eterno', CARD_TYPES.CRIATURA, 10, null, 'Sabio venerable que controla el ciclo de vida y muerte en la foresta. Maestro del equilibrio natural.', '/images/cards/elves/elf_10.png', THEMATIC_DECKS.ELVES, 10),
+  new Card(11, 'Guardián de las Raíces', CARD_TYPES.CRIATURA, 11, null, 'Un coloso vegetal con raíces que se expanden bajo la tierra, atrapando ejércitos enteros. Defensor ancestral del bosque.', '/images/cards/elves/elf_11.png', THEMATIC_DECKS.ELVES, 11),
+  new Card(12, 'Espíritu Ancestral del Roble', CARD_TYPES.CRIATURA, 12, null, 'Manifestación espiritual de los bosques primigenios, fuente de poder para todos los elfos. Sabiduría de eras pasadas.', '/images/cards/elves/elf_12.png', THEMATIC_DECKS.ELVES, 12),
+  new Card(13, 'Reina de los Elfos del Bosque', CARD_TYPES.CRIATURA, 13, null, 'Soberana inmortal, protectora de la naturaleza y guía absoluta del mazo. Equilibra el ciclo entre vida y muerte.', '/images/cards/elves/elf_13.png', THEMATIC_DECKS.ELVES, 13)
+];
+
+// Mazo de Elfos Oscuros
+const DARK_ELVES_DECK = [
+  new Card(1, 'Esclavo Sombrío', CARD_TYPES.CRIATURA, 1, null, 'Un elfo débil, marcado con runas de dolor, usado como carne de cañón. Representa el sacrificio más básico.', '/images/cards/dark_elves/dark_elf_1.png', THEMATIC_DECKS.DARK_ELVES, 1),
+  new Card(2, 'Murciélagos de Sangre', CARD_TYPES.CRIATURA, 2, null, 'Criaturas menores que drenan vitalidad al enemigo. Se alimentan de la debilidad ajena.', '/images/cards/dark_elves/dark_elf_2.png', THEMATIC_DECKS.DARK_ELVES, 2),
+  new Card(3, 'Asesina de Medianoche', CARD_TYPES.CRIATURA, 3, null, 'Elfa entrenada en venenos, capaz de eliminar a objetivos solitarios. Maestra del sigilo mortal.', '/images/cards/dark_elves/dark_elf_3.png', THEMATIC_DECKS.DARK_ELVES, 3),
+  new Card(4, 'Tejedora de Sombras', CARD_TYPES.CRIATURA, 4, null, 'Maga que invoca ilusiones oscuras y crea dobles etéreos. Manipula la realidad con magia prohibida.', '/images/cards/dark_elves/dark_elf_4.png', THEMATIC_DECKS.DARK_ELVES, 4),
+  new Card(5, 'Guardia de la Penumbra', CARD_TYPES.CRIATURA, 5, null, 'Soldado endurecido, protegido por armaduras imbuidas en veneno. Defensor de las sombras.', '/images/cards/dark_elves/dark_elf_5.png', THEMATIC_DECKS.DARK_ELVES, 5),
+  new Card(6, 'Sacerdotisa del Dolor', CARD_TYPES.CRIATURA, 6, null, 'Se fortalece al sacrificar aliados menores (cartas 1-3). Convierte el sufrimiento en poder.', '/images/cards/dark_elves/dark_elf_6.png', THEMATIC_DECKS.DARK_ELVES, 6),
+  new Card(7, 'Araña Venenosa Colosal', CARD_TYPES.CRIATURA, 7, null, 'Bestia criada en cavernas sombrías, su mordida paraliza ejércitos. Terror de las profundidades.', '/images/cards/dark_elves/dark_elf_7.png', THEMATIC_DECKS.DARK_ELVES, 7),
+  new Card(8, 'Hechicero Maldito', CARD_TYPES.CRIATURA, 8, null, 'Practicante de magia prohibida, puede drenar la energía de cartas enemigas. Corruptor de esencias.', '/images/cards/dark_elves/dark_elf_8.png', THEMATIC_DECKS.DARK_ELVES, 8),
+  new Card(9, 'Jinete de Pesadilla', CARD_TYPES.CRIATURA, 9, null, 'Guerrero montado en bestias espectrales, infunde terror al atacar. Señor de las pesadillas.', '/images/cards/dark_elves/dark_elf_9.png', THEMATIC_DECKS.DARK_ELVES, 9),
+  new Card(10, 'General de las Sombras', CARD_TYPES.CRIATURA, 10, null, 'Líder militar, potencia a todas las tropas numeradas 2-6. Coordinador de la oscuridad.', '/images/cards/dark_elves/dark_elf_10.png', THEMATIC_DECKS.DARK_ELVES, 10),
+  new Card(11, 'Demonio Vinculado', CARD_TYPES.CRIATURA, 11, null, 'Invocado mediante sacrificios, requiere eliminar al menos una carta aliada (1-5) para entrar en juego.', '/images/cards/dark_elves/dark_elf_11.png', THEMATIC_DECKS.DARK_ELVES, 11),
+  new Card(12, 'Reina Oscura', CARD_TYPES.CRIATURA, 12, null, 'Encarnación de la belleza letal y el poder mágico, controla venenos y sacrificios. Soberana de la corrupción.', '/images/cards/dark_elves/dark_elf_12.png', THEMATIC_DECKS.DARK_ELVES, 12),
+  new Card(13, 'Deidad Prohibida: Nyth\'ra la Devoradora', CARD_TYPES.CRIATURA, 13, null, 'Una fuerza ancestral de corrupción que consume todo, incluso a sus propios seguidores. El fin inevitable.', '/images/cards/dark_elves/dark_elf_13.png', THEMATIC_DECKS.DARK_ELVES, 13)
+];
+
+// Mazo de Orcos
+const ORCS_DECK = [
+  new Card(1, 'Orco Recluta', CARD_TYPES.CRIATURA, 1, null, 'El más débil, carne de cañón. Solo en número es útil. Representa la base del ejército orco.', '/images/cards/orcs/orc_1.png', THEMATIC_DECKS.ORCS, 1),
+  new Card(2, 'Tambores Tribales', CARD_TYPES.CRIATURA, 2, null, 'No atacan, pero su estruendo convoca y potencia a los reclutas. El corazón de la horda.', '/images/cards/orcs/orc_2.png', THEMATIC_DECKS.ORCS, 2),
+  new Card(3, 'Orcos Saqueadores', CARD_TYPES.CRIATURA, 3, null, 'Guerreros básicos que se fortalecen en grupo. La masa del ejército orco.', '/images/cards/orcs/orc_3.png', THEMATIC_DECKS.ORCS, 3),
+  new Card(4, 'Jinete de Lobo', CARD_TYPES.CRIATURA, 4, null, 'Movilidad y rapidez para hostigar al enemigo. Ataques rápidos y sigilosos.', '/images/cards/orcs/orc_4.png', THEMATIC_DECKS.ORCS, 4),
+  new Card(5, 'Orco Berserker', CARD_TYPES.CRIATURA, 5, null, 'Más fuerte que los saqueadores, pierde control en la batalla. Furia desatada.', '/images/cards/orcs/orc_5.png', THEMATIC_DECKS.ORCS, 5),
+  new Card(6, 'Portaestandarte de Guerra', CARD_TYPES.CRIATURA, 6, null, 'Aumenta la moral de todos los orcos presentes. Mantiene la horda unida.', '/images/cards/orcs/orc_6.png', THEMATIC_DECKS.ORCS, 6),
+  new Card(7, 'Orco Desgarrador', CARD_TYPES.CRIATURA, 7, null, 'Cazador brutal que se enfurece con la sangre derramada. Terror del campo de batalla.', '/images/cards/orcs/orc_7.png', THEMATIC_DECKS.ORCS, 7),
+  new Card(8, 'Tambores de Hierro', CARD_TYPES.CRIATURA, 8, null, 'Versión mejorada, capaces de inspirar ataques frenéticos en masa. Ritmo de guerra.', '/images/cards/orcs/orc_8.png', THEMATIC_DECKS.ORCS, 8),
+  new Card(9, 'Orco Chamán de Sangre', CARD_TYPES.CRIATURA, 9, null, 'Sacrifica reclutas para otorgar furia a los berserkers. Convierte sangre en poder.', '/images/cards/orcs/orc_9.png', THEMATIC_DECKS.ORCS, 9),
+  new Card(10, 'Orco Campeón', CARD_TYPES.CRIATURA, 10, null, 'Guerrero letal, líder nato en el frente de batalla. Destructor de líneas enemigas.', '/images/cards/orcs/orc_10.png', THEMATIC_DECKS.ORCS, 10),
+  new Card(11, 'Montaraz de Jabalí de Guerra', CARD_TYPES.CRIATURA, 11, null, 'Caballería pesada que rompe líneas enemigas. Ataque devastador.', '/images/cards/orcs/orc_11.png', THEMATIC_DECKS.ORCS, 11),
+  new Card(12, 'Señor de la Guerra Orco', CARD_TYPES.CRIATURA, 12, null, 'El general absoluto, domina con estrategia primitiva y brutal. Unifica toda la horda.', '/images/cards/orcs/orc_12.png', THEMATIC_DECKS.ORCS, 12),
+  new Card(13, 'Gran Horda Orca', CARD_TYPES.CRIATURA, 13, null, 'Manifestación del poder colectivo: miles de guerreros avanzando como una ola imparable.', '/images/cards/orcs/orc_13.png', THEMATIC_DECKS.ORCS, 13)
+];
+
 // Función para obtener un mazo temático
 function getThematicDeck(deckType) {
   switch (deckType) {
@@ -247,6 +319,14 @@ function getThematicDeck(deckType) {
       return [...DRAGONS_DECK];
     case THEMATIC_DECKS.MAGES:
       return [...MAGES_DECK];
+    case THEMATIC_DECKS.DWARVES:
+      return [...DWARVES_DECK];
+    case THEMATIC_DECKS.ELVES:
+      return [...ELVES_DECK];
+    case THEMATIC_DECKS.DARK_ELVES:
+      return [...DARK_ELVES_DECK];
+    case THEMATIC_DECKS.ORCS:
+      return [...ORCS_DECK];
     default:
       return [...ANGELS_DECK]; // Por defecto
   }
@@ -270,6 +350,10 @@ module.exports = {
   DEMONS_DECK,
   DRAGONS_DECK,
   MAGES_DECK,
+  DWARVES_DECK,
+  ELVES_DECK,
+  DARK_ELVES_DECK,
+  ORCS_DECK,
   getThematicDeck,
   shuffleDeck,
   BASE_DECK

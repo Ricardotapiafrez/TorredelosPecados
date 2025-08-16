@@ -44,6 +44,30 @@ La funcionalidad de selección de mazos permite a los jugadores y bots elegir en
 - **Personalidad IA**: Estratégica y versátil
 - **Ideal para**: Jugadores que valoran la flexibilidad
 
+### ⚒️ Mazo de Enanos
+- **Tema**: Construcción y sinergia
+- **Estrategia**: Construye desde la base y potencia con máquinas de guerra
+- **Personalidad IA**: Metódica y constructiva
+- **Ideal para**: Jugadores que disfrutan de estrategias de construcción
+
+### 🌿 Mazo de Elfos del Bosque
+- **Tema**: Crecimiento y armonía
+- **Estrategia**: Desarrolla gradualmente y equilibra el ciclo natural
+- **Personalidad IA**: Pacífica y equilibrada
+- **Ideal para**: Jugadores que valoran la armonía y el desarrollo gradual
+
+### 🖤 Mazo de Elfos Oscuros
+- **Tema**: Sacrificio y corrupción
+- **Estrategia**: Sacrifica a los débiles para invocar la oscuridad absoluta
+- **Personalidad IA**: Corrupta y sacrificial
+- **Ideal para**: Jugadores que disfrutan de estrategias de sacrificio y poder oscuro
+
+### 🪖 Mazo de Orcos
+- **Tema**: Horda y fuerza bruta
+- **Estrategia**: Construye hordas masivas y usa tambores para potenciar ataques
+- **Personalidad IA**: Agresiva y masiva
+- **Ideal para**: Jugadores que prefieren ataques directos y poder en masa
+
 ## 🎮 Cómo Usar
 
 ### 1. En el Lobby

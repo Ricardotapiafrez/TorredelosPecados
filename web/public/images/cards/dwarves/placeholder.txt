@@ -1,0 +1,59 @@
+# 🃏 Mazo de Enanos - Imágenes de Cartas
+
+## 📋 Lista de Cartas (1-13)
+
+### 🏗️ Cimientos (1-5)
+1. Aprendiz Minero (As)
+2. Herrero Raso (Dos)
+3. Guerrero del Yunque (Tres)
+4. Arquero de las Cavernas (Cuatro)
+5. Centinela de la Muralla (Cinco)
+
+### ⚙️ Transición (6-10)
+6. Ingeniero Runario (Seis)
+7. Cañón de Pólvora Negra (Siete)
+8. Capataz de la Forja (Ocho)
+9. Sacerdote de las Runas (Nueve)
+10. Campeón del Yunque (Diez)
+
+### 👑 Cúspide (11-13)
+11. Máquina de Guerra Colosal (Jota)
+12. Señor de la Fortaleza (Reina)
+13. Rey Rúnico Eterno (Rey)
+
+## 🎨 Especificaciones de Imágenes
+
+### Tema Visual
+- **Estilo**: Fantasía medieval con elementos de forja y runas
+- **Paleta de Colores**: Marrones, dorados, rojos y grises metálicos
+- **Elementos**: Martillos, yunques, runas, máquinas de guerra, fortalezas
+
+### Características por Nivel
+
+#### 🏗️ Cimientos (1-5)
+- **Aprendiz Minero**: Joven enano con pico y linterna en una mina
+- **Herrero Raso**: Enano en una forja simple con martillo
+- **Guerrero del Yunque**: Soldado enano con hacha y escudo
+- **Arquero de las Cavernas**: Enano arquero con flechas rúnicas
+- **Centinela de la Muralla**: Guardián enano en las puertas de una fortaleza
+
+#### ⚙️ Transición (6-10)
+- **Ingeniero Runario**: Enano con herramientas y runas brillantes
+- **Cañón de Pólvora Negra**: Máquina de asedio enana con humo
+- **Capataz de la Forja**: Enano líder dirigiendo una forja
+- **Sacerdote de las Runas**: Enano con vestimentas sagradas y runas flotantes
+- **Campeón del Yunque**: Guerrero legendario enano con armadura dorada
+
+#### 👑 Cúspide (11-13)
+- **Máquina de Guerra Colosal**: Golem mecánico gigante mitad máquina
+- **Señor de la Fortaleza**: Líder militar enano en una fortaleza imponente
+- **Rey Rúnico Eterno**: Figura mítica enana con corona rúnica y poder ancestral
+
+## 📐 Especificaciones Técnicas
+- **Resolución**: 300x420 píxeles (formato carta estándar)
+- **Formato**: PNG con transparencia
+- **Calidad**: Alta resolución para impresión
+- **Nomenclatura**: dwarf_1.png, dwarf_2.png, ..., dwarf_13.png
+
+## 🎯 Notas de Diseño
+Cada carta representa un nivel de la sociedad enana, desde los aprendices hasta el rey rúnico. Los enanos son una civilización forjadora que combina la artesanía con la magia ancestral de las runas. Las cartas más bajas representan la base (trabajo, defensa, recursos) y las cartas altas, las fuerzas legendarias y mágicas que solo se manifiestan en batalla épica.

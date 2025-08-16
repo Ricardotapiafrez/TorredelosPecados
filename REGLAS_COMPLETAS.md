@@ -216,6 +216,10 @@ Cada mazo representa un tema de fantasía con **13 criaturas únicas**, cada una
 | 😈 **Demonios** | Pecados Capitales | Agresivo/Caos | ⭐⭐⭐ |
 | 🐉 **Dragones** | Poder Primitivo | Fuerza Bruta | ⭐⭐ |
 | 🧙‍♂️ **Magos** | Magia Arcana | Control/Manipulación | ⭐⭐⭐⭐ |
+| ⚒️ **Enanos** | Forja y Runas | Construcción/Sinergia | ⭐⭐⭐ |
+| 🌿 **Elfos** | Ciclo Natural | Crecimiento/Armonía | ⭐⭐⭐ |
+| 🖤 **Elfos Oscuros** | Sombras y Corrupción | Sacrificio/Venenos | ⭐⭐⭐⭐ |
+| 🪖 **Orcos** | Hordas y Fuerza Bruta | Masa/Ataque | ⭐⭐⭐ |
 
 ---
 
@@ -323,6 +327,110 @@ Cada mazo representa un tema de fantasía con **13 criaturas únicas**, cada una
 
 ---
 
+### ⚒️ Mazo de Enanos
+
+<div align="center">
+
+**⚒️ Forja, Runas, Máquinas de Guerra, Fortaleza - La Civilización Forjadora**
+
+</div>
+
+| Valor | Criatura | Especialización | Descripción |
+|-------|----------|-----------------|-------------|
+| **As (1)** | Aprendiz Minero | Recursos | Joven enano que extrae los primeros metales. Base de recursos |
+| **Dos (2)** | Herrero Raso | Forja | Forjador de armas simples. Apoya a cartas 1 y 3 creando equipamiento |
+| **Tres (3)** | Guerrero del Yunque | Defensa | Soldado entrenado, armado con hacha y escudo. Defiende a los bajos números |
+| **Cuatro (4)** | Arquero de las Cavernas | Ataque a Distancia | Enano que dispara flechas reforzadas con runas. Combina con 5 para ataques a distancia |
+| **Cinco (5)** | Centinela de la Muralla | Fortificación | Guardián de las puertas de la fortaleza. Fortifica 3 y 4 |
+| **Seis (6)** | Ingeniero Runario | Máquinas | Diseñador de mecanismos rúnicos. Potencia máquinas de guerra |
+| **Siete (7)** | Cañón de Pólvora Negra | Asedio | Máquina de asedio creada por los ingenieros. Ataque devastador, requiere apoyo de 6 |
+| **Ocho (8)** | Capataz de la Forja | Coordinación | Enano líder de herreros, organiza la producción. Refuerza a 2 y 3 |
+| **Nueve (9)** | Sacerdote de las Runas | Magia Rúnica | Portador de la magia ancestral de Moradin. Potencia conjuros y protege aliados |
+| **Diez (10)** | Campeón del Yunque | Liderazgo | Guerrero legendario que inspira a las tropas. Sinergia con 3, 5 y 8 |
+| **Jota (11)** | Máquina de Guerra Colosal | Golem | Una forja viviente, mitad máquina mitad golem. Ataca junto al 7, amplificado por el 6 |
+| **Reina (12)** | Señor de la Fortaleza | Comando | Líder militar que coordina todas las defensas. Ordena del 3 al 10 como ejército |
+| **Rey (13)** | Rey Rúnico Eterno | Supremacía | Figura mítica que despierta en tiempos de guerra. Su sola presencia refuerza a todo el mazo y activa el poder de las runas |
+
+---
+
+### 🌿 Mazo de Elfos del Bosque
+
+<div align="center">
+
+**🌿 Ciclo Natural, Armonía, Crecimiento - El Reino de la Naturaleza**
+
+</div>
+
+| Valor | Criatura | Especialización | Descripción |
+|-------|----------|-----------------|-------------|
+| **As (1)** | Semilla Viva | Inicio | Un brote mágico que late con energía natural, usado para invocar otras criaturas |
+| **Dos (2)** | Guardián del Claro | Protección | Elfo con armadura ligera de hojas, protege los límites del bosque |
+| **Tres (3)** | Arquero Silvano | Ataque a Distancia | Experto en emboscadas, dispara flechas imbuidas con savia venenosa |
+| **Cuatro (4)** | Druida del Roble | Curación | Conecta con la naturaleza, puede curar aliados o invocar raíces |
+| **Cinco (5)** | Jinete de Ciervo Blanco | Movimiento | Elfos que montan ciervos sagrados, rápidos como el viento |
+| **Seis (6)** | Bestia del Bosque Sombrío | Fuerza Bruta | Criatura salvaje y territorial, obediente solo ante los druidas |
+| **Siete (7)** | Invocadora de Espíritus | Ilusiones | Llama a espíritus menores que fortalecen aliados y confunden enemigos |
+| **Ocho (8)** | Hombre-Árbol Errante | Defensa | Un árbol consciente que se mueve lentamente pero ofrece gran defensa |
+| **Nueve (9)** | Águila Real del Alba | Aire | Ave majestuosa que domina los cielos, exploración y ataque aéreo |
+| **Diez (10)** | Druida Mayor | Equilibrio | Sabio venerable que controla el ciclo de vida y muerte en la foresta |
+| **Jota (11)** | Guardián de las Raíces | Coloso | Un coloso vegetal con raíces que atrapan ejércitos enteros |
+| **Reina (12)** | Espíritu Ancestral | Sabiduría | Manifestación espiritual de los bosques primigenios |
+| **Rey (13)** | Reina de los Elfos | Soberanía | Soberana inmortal, protectora de la naturaleza y guía absoluta |
+
+---
+
+### 🖤 Mazo de Elfos Oscuros
+
+<div align="center">
+
+**🖤 Sombras, Sacrificio, Venenos, Magia Prohibida - El Imperio de la Corrupción**
+
+</div>
+
+| Valor | Criatura | Especialización | Descripción |
+|-------|----------|-----------------|-------------|
+| **As (1)** | Esclavo Sombrío | Sacrificio | Un elfo débil, marcado con runas de dolor, usado como carne de cañón |
+| **Dos (2)** | Murciélagos de Sangre | Drenaje | Criaturas menores que drenan vitalidad al enemigo |
+| **Tres (3)** | Asesina de Medianoche | Veneno | Elfa entrenada en venenos, elimina objetivos solitarios |
+| **Cuatro (4)** | Tejedora de Sombras | Ilusiones | Maga que invoca ilusiones oscuras y crea dobles etéreos |
+| **Cinco (5)** | Guardia de la Penumbra | Defensa | Soldado endurecido con armaduras imbuidas en veneno |
+| **Seis (6)** | Sacerdotisa del Dolor | Sacrificio | Se fortalece al sacrificar aliados menores (1-3) |
+| **Siete (7)** | Araña Venenosa Colosal | Terror | Bestia de cavernas sombrías, su mordida paraliza ejércitos |
+| **Ocho (8)** | Hechicero Maldito | Corrupción | Practicante de magia prohibida, drena energía enemiga |
+| **Nueve (9)** | Jinete de Pesadilla | Terror | Guerrero montado en bestias espectrales, infunde terror |
+| **Diez (10)** | General de las Sombras | Comando | Líder militar, potencia a todas las tropas 2-6 |
+| **Jota (11)** | Demonio Vinculado | Invocación | Requiere sacrificar una carta aliada (1-5) para entrar |
+| **Reina (12)** | Reina Oscura | Soberanía | Encarnación de la belleza letal, controla venenos y sacrificios |
+| **Rey (13)** | Deidad Prohibida: Nyth'ra | Consumo | Fuerza ancestral de corrupción que consume todo |
+
+---
+
+### 🪖 Mazo de Orcos
+
+<div align="center">
+
+**🪖 Fuerza Bruta, Hordas, Tambores de Guerra, Berserkers - El Poder de la Masa**
+
+</div>
+
+| Valor | Criatura | Especialización | Descripción |
+|-------|----------|-----------------|-------------|
+| **As (1)** | Orco Recluta | Base | El más débil, carne de cañón. Solo en número es útil |
+| **Dos (2)** | Tambores Tribales | Potenciación | No atacan, pero su estruendo convoca y potencia a los reclutas |
+| **Tres (3)** | Orcos Saqueadores | Masa | Guerreros básicos que se fortalecen en grupo |
+| **Cuatro (4)** | Jinete de Lobo | Movilidad | Movilidad y rapidez para hostigar al enemigo |
+| **Cinco (5)** | Orco Berserker | Furia | Más fuerte que los saqueadores, pierde control en la batalla |
+| **Seis (6)** | Portaestandarte de Guerra | Moral | Aumenta la moral de todos los orcos presentes |
+| **Siete (7)** | Orco Desgarrador | Terror | Cazador brutal que se enfurece con la sangre derramada |
+| **Ocho (8)** | Tambores de Hierro | Potenciación | Versión mejorada, inspiran ataques frenéticos en masa |
+| **Nueve (9)** | Orco Chamán de Sangre | Sacrificio | Sacrifica reclutas para otorgar furia a los berserkers |
+| **Diez (10)** | Orco Campeón | Liderazgo | Guerrero letal, líder nato en el frente de batalla |
+| **Jota (11)** | Montaraz de Jabalí de Guerra | Caballería | Caballería pesada que rompe líneas enemigas |
+| **Reina (12)** | Señor de la Guerra Orco | Comando | El general absoluto, domina con estrategia primitiva y brutal |
+| **Rey (13)** | Gran Horda Orca | Poder Colectivo | Manifestación del poder colectivo: miles de guerreros como ola imparable |
+
+---
+
 ## 🎭 Temática de los Mazos
 
 ### 👼 Mazo de Ángeles
@@ -398,6 +506,76 @@ Los dragones interactúan en **jerarquías naturales**: los menores sirven a los
 
 #### 🎯 Filosofía de Juego
 La interacción entre magos es **jerárquica y cíclica**: los jóvenes aprenden de los medianos, los medianos luchan por especialización, y los grandes magos gobiernan el balance. El Archimago de la Destrucción es temido incluso por los ancianos.
+
+---
+
+### ⚒️ Mazo de Enanos
+
+> **⚒️ Civilización Forjadora**: Los enanos son una civilización forjadora que vive en profundos salones de piedra, alimentados por las runas antiguas y las brasas eternas de su forja.
+
+#### 📊 Estructura Temática
+
+| Nivel | Cartas | Especialización | Función |
+|-------|--------|-----------------|---------|
+| **🏗️ Cimientos** | 1-5 | Base de recursos y defensa | Mineros, herreros y guardianes mantienen viva la economía y las defensas |
+| **⚙️ Transición** | 6-10 | Poder bélico y coordinación | Ingenieros, sacerdotes y campeones coordinan máquinas y guerreros |
+| **👑 Cúspide** | 11-13 | Fuerzas legendarias y mágicas | Máquinas colosales, señores de guerra y el Rey Rúnico Eterno |
+
+#### 🎯 Filosofía de Juego
+Los enanos interactúan en **jerarquías de forja**: las cartas bajas refuerzan y sostienen a las medias, las medias dan acceso a la maquinaria y runas, y las altas culminan en una sinergia explosiva. Cuando el Rey Rúnico Eterno despierta, todo el poder acumulado de las cartas previas se activa.
+
+---
+
+### 🌿 Mazo de Elfos del Bosque
+
+> **🌿 Reino de la Naturaleza**: Los elfos del bosque representan el ciclo natural de crecimiento y armonía, donde cada criatura tiene su lugar en el ecosistema del bosque.
+
+#### 📊 Estructura Temática
+
+| Nivel | Cartas | Ciclo | Función |
+|-------|--------|-------|---------|
+| **🌱 Inicio** | 1-4 | Nacimiento y protección | Semillas, guardianes, arqueros y druidas jóvenes |
+| **🌳 Movimiento** | 5-9 | Fuerza del bosque | Jinetes, bestias, espíritus, hombres-árbol y águilas |
+| **👑 Sabiduría** | 10-13 | Poder ancestral | Druidas mayores, guardianes colosales y la reina |
+
+#### 🎯 Filosofía de Juego
+Los elfos interactúan en **ciclos naturales**: las cartas bajas representan el inicio del ciclo de vida, las medias muestran la fuerza del bosque en movimiento, y las altas encarnan la sabiduría y poder ancestral. La Reina de los Elfos equilibra el ciclo entre vida y muerte, guiando todo el reino natural.
+
+---
+
+### 🖤 Mazo de Elfos Oscuros
+
+> **🖤 Imperio de la Corrupción**: En las profundidades donde la luz no toca, los Elfos Oscuros han forjado un imperio de sombras donde cada carta representa un peldaño en su jerarquía corrupta.
+
+#### 📊 Estructura Temática
+
+| Nivel | Cartas | Jerarquía | Función |
+|-------|--------|-----------|---------|
+| **💀 Sacrificables** | 1-3 | Esclavos y peones | Los más débiles, usados como carne de cañón |
+| **🕷️ Conversores** | 4-6 | Magos y sacerdotisas | Convierten el dolor y la muerte en poder |
+| **👻 Expansores** | 7-9 | Bestias y guerreros | Expanden el terror y el veneno |
+| **⚔️ Militar** | 10-11 | Poder militar y sacrificial | General coordina, Demonio exige sangre |
+| **👑 Corrupción** | 12-13 | Soberanía absoluta | Reina manipula, Deidad consume todo |
+
+#### 🎯 Filosofía de Juego
+Los elfos oscuros interactúan en **jerarquías corruptas**: los números bajos mueren para fortalecer a los altos, y la victoria siempre depende del sacrificio de los débiles para invocar la oscuridad absoluta. La Deidad Prohibida consume tanto aliados como enemigos, marcando el fin inevitable de toda batalla.
+
+---
+
+### 🪖 Mazo de Orcos
+
+> **🪖 Poder de la Masa**: El poder de los Orcos no reside en la sutileza ni en la magia refinada, sino en la masa, la brutalidad y el estruendo de sus tambores.
+
+#### 📊 Estructura Temática
+
+| Nivel | Cartas | Función | Descripción |
+|-------|--------|---------|-------------|
+| **🪖 Base** | 1-4 | Base del ejército | Reclutas, saqueadores y jinetes que atacan en enjambres |
+| **⚔️ Furia** | 5-9 | Furia desatada | Berserkers, portaestandartes, tambores y chamanes |
+| **👑 Clímax** | 10-13 | Poder de la horda | Campeones, jinetes, señor de guerra y gran horda |
+
+#### 🎯 Filosofía de Juego
+Los orcos interactúan en **hordas masivas**: los números bajos forman la base del ejército, los medianos desatan la furia con tambores y berserkers, y los altos encarnan el clímax de la horda. Los tambores potencian a las hordas, los chamanes sacrifican reclutas para fortalecer berserkers, y el Señor de la Guerra organiza toda la fuerza tribal en una ola imparable.
 
 ---
 
@@ -502,8 +680,115 @@ Si tienes preguntas o necesitas ayuda:
 
 ---
 
-*📅 Última actualización: 16 de Agosto, 2024*  
+*📅 Última actualización: 16 de Agosto, 2025*  
 *🎮 Versión del juego: 1.0*  
 *📝 Mantenido por el equipo de Torre de los Pecados*
 
 </div>
+
+
+futuros mazos:
+
+
+🧝 Razas fantásticas clásicas
+
+
+
+
+
+
+
+
+
+
+Mazo Gnomos (inventos, explosivos, mecánicas caóticas)
+
+Mazo Hombres Lagarto (escamas, tótems, rituales ancestrales)
+
+Mazo Vampiros (robo de vida, control nocturno, murciélagos)
+
+Mazo Licántropos (transformaciones, velocidad, furia lunar)
+
+🧚 Criaturas mágicas y míticas
+
+Mazo Hadas (ilusiones, control, encantamientos, trampas)
+
+Mazo Dragones (fuego, hielo, trueno, reyes del cielo)
+
+Mazo Grifos y Bestias Aladas (dominio aéreo, velocidad, emboscadas)
+
+Mazo Bestias Mágicas (unicornios, quimeras, fénix)
+
+Mazo Titanes (gigantes elementales, terremotos, destrucción masiva)
+
+Mazo Espíritus (fantasmas, posesiones, invulnerabilidad)
+
+Mazo Elementales (fuego, agua, tierra, aire, caos, éter)
+
+Mazo Kraken/Marinos (sirenas, leviatanes, abismos oceánicos)
+
+⚔️ Culturas y estilos de combate
+
+Mazo Samuráis (honor, duelos, precisión, disciplina)
+
+Mazo Ninjas (sigilo, veneno, emboscadas, clones)
+
+Mazo Vikingos (barcos, saqueos, ira de Odín)
+
+Mazo Gladiadores (arenas, combates uno a uno, espectáculo sangriento)
+
+Mazo Caballeros (justicia, escudos, juramentos, lanzas)
+
+Mazo Bárbaros (furia, resistencia, hordas indomables)
+
+Mazo Piratas (caos marítimo, cañones, saqueos, trampas)
+
+Mazo Asesinos (sigilo, dagas, veneno, combos rápidos)
+
+🔮 Magia y esoterismo
+
+Mazo Magos Arcanos (hechizos elementales, portales, control del tiempo)
+
+Mazo Nigromantes (no-muertos, cementerios, zombis, esqueletos)
+
+Mazo Sacerdotes (curaciones, ángeles, exorcismos)
+
+Mazo Brujas (maleficios, calderos, pactos demoníacos)
+
+Mazo Ilusionistas (engaño, copias, confusión)
+
+Mazo Alquimistas (pociones, transmutaciones, mutantes)
+
+Mazo Demonios (fuego infernal, contratos, caos)
+
+Mazo Ángeles (luz, protección, justicia divina)
+
+🌍 Civilizaciones y mitologías
+
+Mazo Egipcios (momias, faraones, dioses solares)
+
+Mazo Griegos (dioses olímpicos, héroes, monstruos mitológicos)
+
+Mazo Nórdicos (valkirias, runas, lobos de Fenrir)
+
+Mazo Celtas (bosques, druidas, piedras rúnicas)
+
+Mazo Aztecas/Mayas (sacrificios, jaguares, calendarios cósmicos)
+
+Mazo Chinos (dragones orientales, monjes shaolin, espíritus guardianes)
+
+Mazo Árabes (djin, alfombras voladoras, oasis mágicos)
+
+⚙️ Otros estilos creativos
+
+Mazo Mecánicos/Steampunk (gólems de engranajes, autómatas, cañones)
+
+Mazo Tecnómagos (cibernética + magia, hechizos eléctricos)
+
+Mazo Cazadores (trampas, bestias domadas, emboscadas)
+
+Mazo Exploradores (mapas, reliquias, trampas del desierto)
+
+Mazo Sombras (espías, espectros, asesinatos nocturnos)
+
+Mazo Caos Puro (efectos impredecibles, deformación de la realidad)

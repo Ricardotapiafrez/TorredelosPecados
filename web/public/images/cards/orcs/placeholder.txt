@@ -1,0 +1,65 @@
+# 🃏 Mazo de Orcos - Imágenes de Cartas
+
+## 📋 Lista de Cartas (1-13)
+
+### 🪖 Base (1-4)
+1. Orco Recluta (As)
+2. Tambores Tribales (Dos)
+3. Orcos Saqueadores (Tres)
+4. Jinete de Lobo (Cuatro)
+
+### ⚔️ Furia (5-9)
+5. Orco Berserker (Cinco)
+6. Portaestandarte de Guerra (Seis)
+7. Orco Desgarrador (Siete)
+8. Tambores de Hierro (Ocho)
+9. Orco Chamán de Sangre (Nueve)
+
+### 👑 Clímax (10-13)
+10. Orco Campeón (Diez)
+11. Montaraz de Jabalí de Guerra (Jota)
+12. Señor de la Guerra Orco (Reina)
+13. Gran Horda Orca (Rey)
+
+## 🎨 Especificaciones de Imágenes
+
+### Tema Visual
+- **Estilo**: Fantasía tribal con elementos de guerra y brutalidad
+- **Paleta de Colores**: Verdes, marrones, rojos y grises metálicos
+- **Elementos**: Armas primitivas, tambores de guerra, estandartes, bestias de guerra
+
+### Características por Nivel
+
+#### 🪖 Base (1-4)
+- **Orco Recluta**: Orco débil con armas básicas y armadura mínima
+- **Tambores Tribales**: Orcos tocando tambores de guerra con estandartes
+- **Orcos Saqueadores**: Grupo de orcos con armas de saqueo
+- **Jinete de Lobo**: Orco montando un lobo de guerra
+
+#### ⚔️ Furia (5-9)
+- **Orco Berserker**: Orco en estado de furia con armas de doble filo
+- **Portaestandarte de Guerra**: Orco con estandarte tribal y armadura
+- **Orco Desgarrador**: Orco cazador con armas de caza y pieles
+- **Tambores de Hierro**: Orcos con tambores de hierro más grandes
+- **Orco Chamán de Sangre**: Orco chamán con símbolos de sangre y rituales
+
+#### 👑 Clímax (10-13)
+- **Orco Campeón**: Orco guerrero legendario con armadura de élite
+- **Montaraz de Jabalí de Guerra**: Orco montando un jabalí gigante de guerra
+- **Señor de la Guerra Orco**: Orco general con armadura de mando y corona tribal
+- **Gran Horda Orca**: Multitud de orcos avanzando como una ola
+
+## 📐 Especificaciones Técnicas
+- **Resolución**: 300x420 píxeles (formato carta estándar)
+- **Formato**: PNG con transparencia
+- **Calidad**: Alta resolución para impresión
+- **Nomenclatura**: orc_1.png, orc_2.png, ..., orc_13.png
+
+## 🎯 Notas de Diseño
+Cada carta representa un nivel en la jerarquía militar orca, desde los reclutas más débiles hasta la gran horda. Los orcos son guerreros brutales que confían en la masa y la fuerza colectiva. Las cartas más bajas representan la base del ejército y las cartas altas, el poder colectivo de la horda.
+
+### Elementos Clave del Diseño
+- **Brutalidad Visual**: Todas las cartas deben mostrar fuerza y ferocidad
+- **Horda Colectiva**: Elementos que sugieran poder en masa y números
+- **Tambores de Guerra**: Los tambores son elementos centrales del mazo
+- **Elementos Tribales**: Estandartes, símbolos tribales y armas primitivas

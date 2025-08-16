@@ -1,0 +1,65 @@
+# 🃏 Mazo de Elfos del Bosque - Imágenes de Cartas
+
+## 📋 Lista de Cartas (1-13)
+
+### 🌱 Inicio (1-4)
+1. Semilla Viva (As)
+2. Guardián del Claro (Dos)
+3. Arquero Silvano (Tres)
+4. Druida del Roble (Cuatro)
+
+### 🌳 Movimiento (5-9)
+5. Jinete de Ciervo Blanco (Cinco)
+6. Bestia del Bosque Sombrío (Seis)
+7. Invocadora de Espíritus del Bosque (Siete)
+8. Hombre-Árbol Errante (Ocho)
+9. Águila Real del Alba (Nueve)
+
+### 👑 Sabiduría (10-13)
+10. Druida Mayor del Bosque Eterno (Diez)
+11. Guardián de las Raíces (Jota)
+12. Espíritu Ancestral del Roble (Reina)
+13. Reina de los Elfos del Bosque (Rey)
+
+## 🎨 Especificaciones de Imágenes
+
+### Tema Visual
+- **Estilo**: Fantasía natural con elementos del bosque
+- **Paleta de Colores**: Verdes, marrones, dorados y azules naturales
+- **Elementos**: Hojas, ramas, flores, animales del bosque, espíritus naturales
+
+### Características por Nivel
+
+#### 🌱 Inicio (1-4)
+- **Semilla Viva**: Brote mágico brillante con energía natural
+- **Guardián del Claro**: Elfo con armadura de hojas y ramas
+- **Arquero Silvano**: Elfo arquero con flechas de madera y veneno
+- **Druida del Roble**: Elfo con vestimentas naturales y símbolos druídicos
+
+#### 🌳 Movimiento (5-9)
+- **Jinete de Ciervo Blanco**: Elfo montando un ciervo sagrado blanco
+- **Bestia del Bosque Sombrío**: Criatura salvaje con elementos naturales
+- **Invocadora de Espíritus**: Elfo con espíritus flotantes a su alrededor
+- **Hombre-Árbol Errante**: Ent joven con ramas y hojas
+- **Águila Real del Alba**: Águila majestuosa con elementos élficos
+
+#### 👑 Sabiduría (10-13)
+- **Druida Mayor**: Elfo anciano con vestimentas sagradas y símbolos de poder
+- **Guardián de las Raíces**: Coloso vegetal con raíces extendidas
+- **Espíritu Ancestral**: Manifestación espiritual de un roble antiguo
+- **Reina de los Elfos**: Soberana élfica con corona de hojas y poder natural
+
+## 📐 Especificaciones Técnicas
+- **Resolución**: 300x420 píxeles (formato carta estándar)
+- **Formato**: PNG con transparencia
+- **Calidad**: Alta resolución para impresión
+- **Nomenclatura**: elf_1.png, elf_2.png, ..., elf_13.png
+
+## 🎯 Notas de Diseño
+Cada carta representa un nivel en la jerarquía del bosque, desde la semilla hasta la soberanía. Los elfos del bosque son guardianes de la naturaleza que viven en armonía con el ciclo natural. Las cartas más bajas representan el inicio del ciclo de vida (semillas, guardianes, arqueros) y las cartas altas, la sabiduría ancestral y el poder de la reina élfica.
+
+### Elementos Clave del Diseño
+- **Naturaleza Viva**: Todas las cartas deben mostrar elementos naturales vibrantes
+- **Armonía**: Los colores y composiciones deben transmitir equilibrio y paz
+- **Ciclo de Vida**: Desde el crecimiento (semilla) hasta la sabiduría (reina)
+- **Elementos Élficos**: Puntas de orejas, vestimentas naturales, conexión con la magia natural

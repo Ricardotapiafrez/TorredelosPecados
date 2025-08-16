@@ -68,6 +68,38 @@ export function useDeckSelection(options: UseDeckSelectionOptions) {
       description: 'Los Maestros del Arcano - Conocimiento arcano y manipulación de la realidad',
       theme: 'Versatilidad y control',
       strategy: 'Adapta tu juego según la situación'
+    },
+    {
+      id: 'dwarves',
+      name: 'Mazo de Enanos',
+      icon: '⚒️',
+      description: 'Forja, Runas, Máquinas de Guerra, Fortaleza - Civilización forjadora',
+      theme: 'Construcción y sinergia',
+      strategy: 'Construye desde la base y potencia con máquinas de guerra'
+    },
+    {
+      id: 'elves',
+      name: 'Mazo de Elfos del Bosque',
+      icon: '🌿',
+      description: 'Ciclo Natural, Armonía, Crecimiento - Reino de la Naturaleza',
+      theme: 'Crecimiento y armonía',
+      strategy: 'Desarrolla gradualmente y equilibra el ciclo natural'
+    },
+    {
+      id: 'dark_elves',
+      name: 'Mazo de Elfos Oscuros',
+      icon: '🖤',
+      description: 'Sombras, Sacrificio, Venenos, Magia Prohibida - Imperio de la Corrupción',
+      theme: 'Sacrificio y corrupción',
+      strategy: 'Sacrifica a los débiles para invocar la oscuridad absoluta'
+    },
+    {
+      id: 'orcs',
+      name: 'Mazo de Orcos',
+      icon: '🪖',
+      description: 'Fuerza Bruta, Hordas, Tambores de Guerra, Berserkers - El Poder de la Masa',
+      theme: 'Horda y fuerza bruta',
+      strategy: 'Construye hordas masivas y usa tambores para potenciar ataques'
     }
   ]
 

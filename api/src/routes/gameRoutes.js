@@ -1,5 +1,5 @@
 const express = require('express');
-const { THEMATIC_DECKS, ANGELS_DECK, DEMONS_DECK, DRAGONS_DECK, MAGES_DECK } = require('../models/Card');
+const { THEMATIC_DECKS, ANGELS_DECK, DEMONS_DECK, DRAGONS_DECK, MAGES_DECK, DWARVES_DECK, ELVES_DECK, DARK_ELVES_DECK, ORCS_DECK } = require('../models/Card');
 const router = express.Router();
 
 // Obtener salas públicas
@@ -172,6 +172,62 @@ router.get('/decks', (req, res) => {
             description: card.description,
             isSpecial: card.isSpecial
           }))
+        },
+        {
+          id: THEMATIC_DECKS.DWARVES,
+          name: 'Mazo de Enanos',
+          description: 'Forja, Runas, Máquinas de Guerra, Fortaleza - Civilización forjadora',
+          theme: 'Construcción y sinergia',
+          strategy: 'Construye desde la base y potencia con máquinas de guerra',
+          cards: DWARVES_DECK.map(card => ({
+            id: card.id,
+            name: card.name,
+            value: card.value,
+            description: card.description,
+            isSpecial: card.isSpecial
+          }))
+        },
+        {
+          id: THEMATIC_DECKS.ELVES,
+          name: 'Mazo de Elfos del Bosque',
+          description: 'Ciclo Natural, Armonía, Crecimiento - Reino de la Naturaleza',
+          theme: 'Crecimiento y armonía',
+          strategy: 'Desarrolla gradualmente y equilibra el ciclo natural',
+          cards: ELVES_DECK.map(card => ({
+            id: card.id,
+            name: card.name,
+            value: card.value,
+            description: card.description,
+            isSpecial: card.isSpecial
+          }))
+        },
+        {
+          id: THEMATIC_DECKS.DARK_ELVES,
+          name: 'Mazo de Elfos Oscuros',
+          description: 'Sombras, Sacrificio, Venenos, Magia Prohibida - Imperio de la Corrupción',
+          theme: 'Sacrificio y corrupción',
+          strategy: 'Sacrifica a los débiles para invocar la oscuridad absoluta',
+          cards: DARK_ELVES_DECK.map(card => ({
+            id: card.id,
+            name: card.name,
+            value: card.value,
+            description: card.description,
+            isSpecial: card.isSpecial
+          }))
+        },
+        {
+          id: THEMATIC_DECKS.ORCS,
+          name: 'Mazo de Orcos',
+          description: 'Fuerza Bruta, Hordas, Tambores de Guerra, Berserkers - El Poder de la Masa',
+          theme: 'Horda y fuerza bruta',
+          strategy: 'Construye hordas masivas y usa tambores para potenciar ataques',
+          cards: ORCS_DECK.map(card => ({
+            id: card.id,
+            name: card.name,
+            value: card.value,
+            description: card.description,
+            isSpecial: card.isSpecial
+          }))
         }
       ]
     });
@@ -198,6 +254,18 @@ router.get('/decks/:deckId', (req, res) => {
         break;
       case THEMATIC_DECKS.MAGES:
         deck = MAGES_DECK;
+        break;
+      case THEMATIC_DECKS.DWARVES:
+        deck = DWARVES_DECK;
+        break;
+      case THEMATIC_DECKS.ELVES:
+        deck = ELVES_DECK;
+        break;
+      case THEMATIC_DECKS.DARK_ELVES:
+        deck = DARK_ELVES_DECK;
+        break;
+      case THEMATIC_DECKS.ORCS:
+        deck = ORCS_DECK;
         break;
       default:
         return res.status(404).json({ error: 'Mazo no encontrado' });

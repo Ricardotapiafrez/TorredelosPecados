@@ -1,0 +1,73 @@
+# 🃏 Mazo de Elfos Oscuros - Imágenes de Cartas
+
+## 📋 Lista de Cartas (1-13)
+
+### 💀 Sacrificables (1-3)
+1. Esclavo Sombrío (As)
+2. Murciélagos de Sangre (Dos)
+3. Asesina de Medianoche (Tres)
+
+### 🕷️ Conversores (4-6)
+4. Tejedora de Sombras (Cuatro)
+5. Guardia de la Penumbra (Cinco)
+6. Sacerdotisa del Dolor (Seis)
+
+### 👻 Expansores (7-9)
+7. Araña Venenosa Colosal (Siete)
+8. Hechicero Maldito (Ocho)
+9. Jinete de Pesadilla (Nueve)
+
+### ⚔️ Militar (10-11)
+10. General de las Sombras (Diez)
+11. Demonio Vinculado (Jota)
+
+### 👑 Corrupción (12-13)
+12. Reina Oscura (Reina)
+13. Deidad Prohibida: Nyth'ra la Devoradora (Rey)
+
+## 🎨 Especificaciones de Imágenes
+
+### Tema Visual
+- **Estilo**: Fantasía oscura con elementos de corrupción y sombras
+- **Paleta de Colores**: Negros, grises, púrpuras y rojos oscuros
+- **Elementos**: Sombras, venenos, runas de dolor, armaduras corruptas, criaturas de pesadilla
+
+### Características por Nivel
+
+#### 💀 Sacrificables (1-3)
+- **Esclavo Sombrío**: Elfo débil con runas de dolor marcadas en su piel
+- **Murciélagos de Sangre**: Criaturas vampíricas pequeñas con ojos rojos
+- **Asesina de Medianoche**: Elfa oscura con armas envenenadas y sigilo
+
+#### 🕷️ Conversores (4-6)
+- **Tejedora de Sombras**: Maga con vestimentas oscuras y sombras flotantes
+- **Guardia de la Penumbra**: Soldado con armadura corrupta y veneno
+- **Sacerdotisa del Dolor**: Elfa con símbolos de sacrificio y dolor
+
+#### 👻 Expansores (7-9)
+- **Araña Venenosa Colosal**: Araña gigante con veneno y elementos oscuros
+- **Hechicero Maldito**: Mago corrupto con magia prohibida
+- **Jinete de Pesadilla**: Guerrero montado en bestia espectral
+
+#### ⚔️ Militar (10-11)
+- **General de las Sombras**: Líder militar con armadura de sombras
+- **Demonio Vinculado**: Demonio invocado con cadenas y sacrificios
+
+#### 👑 Corrupción (12-13)
+- **Reina Oscura**: Soberana élfica con belleza letal y poder corrupto
+- **Deidad Prohibida**: Entidad ancestral de corrupción absoluta
+
+## 📐 Especificaciones Técnicas
+- **Resolución**: 300x420 píxeles (formato carta estándar)
+- **Formato**: PNG con transparencia
+- **Calidad**: Alta resolución para impresión
+- **Nomenclatura**: dark_elf_1.png, dark_elf_2.png, ..., dark_elf_13.png
+
+## 🎯 Notas de Diseño
+Cada carta representa un peldaño en la jerarquía corrupta de los elfos oscuros. Los números bajos son sacrificables, los medianos convierten el dolor en poder, y los altos encarnan la corrupción absoluta. La victoria depende del sacrificio de los débiles para invocar la oscuridad.
+
+### Elementos Clave del Diseño
+- **Corrupción Visual**: Todas las cartas deben mostrar elementos de decadencia y corrupción
+- **Jerarquía del Mal**: Desde esclavos hasta deidades, mostrando la escala de poder corrupto
+- **Sacrificio**: Elementos que sugieran el uso de vidas menores para poder mayor
+- **Elementos Élficos Oscuros**: Puntas de orejas, pero con elementos corruptos y sombríos
