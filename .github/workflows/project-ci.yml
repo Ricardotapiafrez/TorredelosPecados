@@ -32,7 +32,7 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         
       - name: Validate project structure
         run: |
@@ -95,7 +95,7 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         
       - name: Deploy backend
         if: github.event.inputs.components == 'all' || github.event.inputs.components == 'backend'
