@@ -50,6 +50,22 @@ else
     echo "ℹ️  Archivo .env ya existe en el backend"
 fi
 
+echo "🚀 Configurando workflows CI/CD..."
+
+# Hacer el script de gestión ejecutable
+chmod +x scripts/manage-workflows.sh
+
+# Deshabilitar monitoreo automático para desarrollo
+echo "📧 Deshabilitando monitoreo automático para evitar emails excesivos..."
+./scripts/manage-workflows.sh disable-monitoring
+
+# Deshabilitar CodeQL automático para desarrollo
+echo "🔒 Deshabilitando CodeQL automático para evitar emails excesivos..."
+./scripts/manage-workflows.sh disable-codeql
+
+echo "✅ Workflows configurados correctamente"
+echo "💡 Para ver el estado de workflows: ./scripts/manage-workflows.sh status"
+
 echo ""
 echo "🎉 ¡Instalación completada!"
 echo "=========================="

@@ -289,3 +289,29 @@ Se ha implementado un sistema completo de CI/CD que incluye:
 El sistema está listo para uso inmediato y proporciona una base sólida para el desarrollo continuo del proyecto Torre de los Pecados.
 
 **Estado**: ✅ **COMPLETADO** - Listo para producción
+
+## 🔧 Gestión de Workflows
+
+### ⚠️ Comandos Críticos para Evitar Emails Excesivos
+
+Para evitar recibir emails excesivos de GitHub, usa estos comandos:
+
+```bash
+# 🚨 DESHABILITAR monitoreo automático (OBLIGATORIO para desarrollo)
+./scripts/manage-workflows.sh disable-monitoring
+
+# ✅ Habilitar monitoreo automático (solo para producción)
+./scripts/manage-workflows.sh enable-monitoring
+
+# 📊 Ver estado de workflows activos
+./scripts/manage-workflows.sh status
+
+# 🧹 Limpiar workflows fallidos
+./scripts/manage-workflows.sh cleanup
+```
+
+### 📖 Documentación Completa
+
+- [Guía de Gestión de Workflows](README-WORKFLOWS.md)
+- [Resumen de Correcciones](../WORKFLOW_CORRECTIONS_SUMMARY.md)
+- [Implementación CI/CD](../CI_CD_IMPLEMENTATION_SUMMARY.md)

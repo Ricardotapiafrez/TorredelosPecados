@@ -313,3 +313,87 @@ Para reportar bugs o solicitar nuevas funcionalidades:
 ---
 
 *¡Feliz desarrollo! 🚀*
+
+# 🛠️ Guía del Desarrollador - Torre de los Pecados
+
+## 🔧 Gestión de Workflows CI/CD
+
+### ⚠️ Importante: Evitar Emails Excesivos
+
+El proyecto incluye workflows de CI/CD que pueden generar emails excesivos si no se configuran correctamente. Para desarrollo, se recomienda deshabilitar el monitoreo automático.
+
+### Comandos Esenciales
+
+```bash
+# 🚨 DESHABILITAR monitoreo automático (OBLIGATORIO para desarrollo)
+./scripts/manage-workflows.sh disable-monitoring
+
+# ✅ Habilitar monitoreo automático (solo para producción)
+./scripts/manage-workflows.sh enable-monitoring
+
+# 🔒 DESHABILITAR CodeQL automático (RECOMENDADO para desarrollo)
+./scripts/manage-workflows.sh disable-codeql
+
+# ✅ Habilitar CodeQL automático (solo para producción)
+./scripts/manage-workflows.sh enable-codeql
+
+# 📊 Ver estado de workflows activos
+./scripts/manage-workflows.sh status
+
+# 🧹 Limpiar workflows fallidos
+./scripts/manage-workflows.sh cleanup
+```
+
+### Flujo de Trabajo Recomendado
+
+1. **Al clonar el proyecto**:
+   ```bash
+   ./scripts/manage-workflows.sh disable-monitoring
+   ./scripts/manage-workflows.sh disable-codeql
+   ```
+
+2. **Durante desarrollo**:
+   ```bash
+   # Verificar estado ocasionalmente
+   ./scripts/manage-workflows.sh status
+   
+   # Limpiar si hay muchos fallos
+   ./scripts/manage-workflows.sh cleanup
+   ```
+
+3. **Antes de desplegar a producción**:
+   ```bash
+   # Actualizar URLs
+   ./scripts/manage-workflows.sh update-urls production [backend-url] [frontend-url]
+   
+   # Habilitar monitoreo y CodeQL
+   ./scripts/manage-workflows.sh enable-monitoring
+   ./scripts/manage-workflows.sh enable-codeql
+   ```
+
+### Troubleshooting
+
+**Problema**: Recibes muchos emails de GitHub
+**Solución**: 
+```bash
+./scripts/manage-workflows.sh disable-monitoring
+./scripts/manage-workflows.sh disable-codeql
+```
+
+**Problema**: Workflows fallidos acumulados
+**Solución**:
+```bash
+./scripts/manage-workflows.sh cleanup
+```
+
+**Problema**: Quieres probar un workflow
+**Solución**:
+```bash
+./scripts/manage-workflows.sh test-workflow monitoring
+```
+
+### Documentación Detallada
+
+- 📖 [Guía Completa de Workflows](.github/README-WORKFLOWS.md)
+- 📋 [Correcciones Implementadas](WORKFLOW_CORRECTIONS_SUMMARY.md)
+- 🔧 [Implementación CI/CD](CI_CD_IMPLEMENTATION_SUMMARY.md)

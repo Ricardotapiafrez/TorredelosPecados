@@ -159,3 +159,35 @@ Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más det
 ---
 
 ¡Que disfrutes jugando Torre de los Pecados! 🃏✨
+
+## 🚀 Gestión de CI/CD
+
+### Comandos Rápidos para Workflows
+
+Para evitar emails excesivos de GitHub y gestionar los workflows de CI/CD:
+
+```bash
+# Deshabilitar monitoreo automático (RECOMENDADO para desarrollo)
+./scripts/manage-workflows.sh disable-monitoring
+
+# Habilitar monitoreo automático (para producción)
+./scripts/manage-workflows.sh enable-monitoring
+
+# Deshabilitar CodeQL automático (RECOMENDADO para desarrollo)
+./scripts/manage-workflows.sh disable-codeql
+
+# Habilitar CodeQL automático (para producción)
+./scripts/manage-workflows.sh enable-codeql
+
+# Ver estado de workflows activos
+./scripts/manage-workflows.sh status
+
+# Limpiar workflows fallidos
+./scripts/manage-workflows.sh cleanup
+```
+
+### Documentación Completa
+
+- 📖 [Guía de Workflows CI/CD](.github/README-WORKFLOWS.md)
+- 📋 [Resumen de Correcciones](WORKFLOW_CORRECTIONS_SUMMARY.md)
+- 🔧 [Resumen de Implementación CI/CD](CI_CD_IMPLEMENTATION_SUMMARY.md)

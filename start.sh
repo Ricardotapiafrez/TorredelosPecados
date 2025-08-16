@@ -87,3 +87,21 @@ trap cleanup SIGINT
 
 # Mantener el script corriendo
 wait
+
+echo "🔧 Verificando configuración de workflows..."
+
+# Verificar si el monitoreo está deshabilitado para desarrollo
+if grep -q "#    - cron: '0 \* \* \* \*'" .github/workflows/monitoring.yml; then
+    echo "✅ Monitoreo automático deshabilitado (correcto para desarrollo)"
+else
+    echo "⚠️  Monitoreo automático habilitado - considera deshabilitarlo para desarrollo:"
+    echo "   ./scripts/manage-workflows.sh disable-monitoring"
+fi
+
+# Verificar si CodeQL está deshabilitado para desarrollo
+if grep -q "#    - cron: '0 3 \* \* 0'" .github/workflows/codeql-analysis.yml; then
+    echo "✅ CodeQL automático deshabilitado (correcto para desarrollo)"
+else
+    echo "⚠️  CodeQL automático habilitado - considera deshabilitarlo para desarrollo:"
+    echo "   ./scripts/manage-workflows.sh disable-codeql"
+fi
