@@ -51,7 +51,7 @@ class Game {
   }
 
   // Agregar jugador
-  addPlayer(playerId, name, socketId) {
+  addPlayer(playerId, name, socketId, selectedDeck = null) {
     if (this.players.length >= this.maxPlayers) {
       throw new Error('Sala llena');
     }
@@ -60,7 +60,9 @@ class Game {
       throw new Error('El juego ya comenzó');
     }
 
-    const player = new Player(playerId, name, socketId);
+    // Si no se especifica mazo, usar el mazo por defecto del juego
+    const deckType = selectedDeck || this.deckType;
+    const player = new Player(playerId, name, socketId, deckType);
     this.players.push(player);
     
     return player;
@@ -92,6 +94,36 @@ class Game {
     return this.players.find(p => p.id === playerId) || null;
   }
 
+  // Cambiar mazo de un jugador
+  changePlayerDeck(playerId, deckType) {
+    const player = this.getPlayer(playerId);
+    if (!player) {
+      throw new Error('Jugador no encontrado');
+    }
+
+    if (this.gameState !== 'waiting') {
+      throw new Error('No se puede cambiar mazo durante el juego');
+    }
+
+    const success = player.setSelectedDeck(deckType);
+    if (success) {
+      console.log(`🎴 Mazo cambiado para ${player.name}: ${deckType}`);
+    }
+    
+    return success;
+  }
+
+  // Obtener información de mazos de todos los jugadores
+  getPlayersDeckInfo() {
+    return this.players.map(player => ({
+      id: player.id,
+      name: player.name,
+      selectedDeck: player.selectedDeck,
+      deckInfo: player.getDeckInfo(),
+      isBot: player.isBot
+    }));
+  }
+
   // Iniciar juego
   startGame() {
     if (this.players.length < 2) {
@@ -116,20 +148,40 @@ class Game {
 
   // Repartir cartas iniciales según las reglas
   dealInitialCards() {
-    // Repartir 12 cartas a cada jugador
-    for (let i = 0; i < 12; i++) {
-      for (const player of this.players) {
-        if (this.deck.length > 0) {
-          const card = this.deck.pop();
-          player.addCardToHand(card);
-        }
+    console.log(`🎴 Repartiendo cartas iniciales...`);
+    
+    // Crear mazos individuales para cada jugador
+    for (const player of this.players) {
+      console.log(`🎴 Creando mazo para ${player.name}: ${player.selectedDeck}`);
+      
+      // Crear 12 cartas del mazo seleccionado por el jugador
+      const playerDeck = [];
+      const baseDeck = getThematicDeck(player.selectedDeck);
+      
+      // Crear 12 cartas (una copia de cada carta del mazo base)
+      for (let i = 0; i < 12; i++) {
+        const cardIndex = i % baseDeck.length;
+        const card = Object.assign(Object.create(Object.getPrototypeOf(baseDeck[cardIndex])), baseDeck[cardIndex]);
+        playerDeck.push(card);
       }
+      
+      // Mezclar el mazo del jugador
+      playerDeck.sort(() => Math.random() - 0.5);
+      
+      // Repartir las 12 cartas al jugador
+      for (const card of playerDeck) {
+        player.addCardToHand(card);
+      }
+      
+      console.log(`✅ ${player.name} recibió 12 cartas del mazo ${player.selectedDeck}`);
     }
     
     // Organizar las criaturas de cada jugador
     for (const player of this.players) {
       player.organizeCreatures();
     }
+    
+    console.log(`🎴 Reparto de cartas completado`);
   }
 
   // Iniciar turno

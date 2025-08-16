@@ -8,13 +8,15 @@ import CardValidationIndicator from './CardValidationIndicator'
 import { CardEffect } from './VisualEffects'
 
 interface Card {
-  id: number
+  id?: number
   name: string
   type: 'criatura' | 'hechizo' | 'trampa'
   power: number
+  value?: number
   description: string
   image?: string
   deck?: 'angels' | 'demons' | 'dragons' | 'mages'
+  isSpecial?: boolean
 }
 
 interface GameCardProps {
@@ -131,7 +133,7 @@ export default function GameCard({
     }
     
     // Si tiene un mazo específico, construir la ruta de la imagen
-    if (card.deck) {
+    if (card.deck && card.id) {
       const cardNumber = card.id.toString().padStart(2, '0')
       const cardName = card.name.toLowerCase().replace(/\s+/g, '_').replace(/[áéíóúñ]/g, (match) => {
         const accents: { [key: string]: string } = {
@@ -219,7 +221,7 @@ export default function GameCard({
         )}
 
         {/* Efecto visual */}
-        {visualEffect && (
+        {visualEffect && card.id && (
           <CardEffect
             cardId={card.id.toString()}
             effect={{
@@ -274,7 +276,7 @@ export default function GameCard({
           {/* Card Footer */}
           <div className="text-center mt-2">
             <div className="text-xs text-gray-500 font-mono">
-              #{card.id.toString().padStart(3, '0')}
+              #{card.id ? card.id.toString().padStart(3, '0') : '000'}
             </div>
           </div>
         </div>

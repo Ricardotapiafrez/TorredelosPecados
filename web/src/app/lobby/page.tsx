@@ -12,13 +12,17 @@ import {
   BarChart3,
   Settings,
   RefreshCw,
-  Home
+  Home,
+  Cards,
+  Key,
+  MessageCircle
 } from 'lucide-react'
 import PublicRoomsList from '@/components/PublicRoomsList'
 import RoomStats from '@/components/RoomStats'
 import InvitationCodeManager from '@/components/InvitationCodeManager'
 import JoinWithCode from '@/components/JoinWithCode'
 import DeckConfigurationPanel from '@/components/DeckConfigurationPanel'
+import DeckSelectionPanel from '@/components/DeckSelectionPanel'
 import ChatPanel from '@/components/ChatPanel'
 import { usePublicRooms } from '@/hooks/usePublicRooms'
 import { useInvitationCodes } from '@/hooks/useInvitationCodes'
@@ -34,6 +38,7 @@ export default function LobbyPage() {
   const [showInvitations, setShowInvitations] = useState(false)
   const [showJoinWithCode, setShowJoinWithCode] = useState(false)
   const [showDeckConfiguration, setShowDeckConfiguration] = useState(false)
+  const [showDeckSelection, setShowDeckSelection] = useState(false)
   const [showChat, setShowChat] = useState(false)
   const [selectedRoom, setSelectedRoom] = useState<RoomInfo | null>(null)
   const [joinModal, setJoinModal] = useState<{ roomId: string; roomName: string } | null>(null)
@@ -247,6 +252,14 @@ export default function LobbyPage() {
               </button>
 
               <button
+                onClick={() => setShowDeckSelection(!showDeckSelection)}
+                className="flex items-center space-x-2 px-4 py-2 bg-orange-500 hover:bg-orange-600 rounded-lg transition-colors"
+              >
+                <Settings className="w-4 h-4" />
+                <span>Seleccionar Mazos</span>
+              </button>
+
+              <button
                 onClick={() => setShowChat(!showChat)}
                 className="flex items-center space-x-2 px-4 py-2 bg-purple-500 hover:bg-purple-600 rounded-lg transition-colors"
               >
@@ -323,6 +336,28 @@ export default function LobbyPage() {
                 canModifyCard={canModifyCard}
                 onClearError={clearDeckError}
                 roomId={selectedRoom?.id}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Selección de mazos */}
+        <AnimatePresence>
+          {showDeckSelection && (
+            <motion.div
+              className="mb-6"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+            >
+              <DeckSelectionPanel
+                socket={socket}
+                currentPlayerId="current-player-id" // Esto debería venir del contexto del usuario
+                isHost={true} // Esto debería venir del contexto del usuario
+                onDeckChanged={(playerId, deckType, deckInfo) => {
+                  console.log(`Mazo cambiado para ${playerId}: ${deckType}`)
+                }}
+                onClose={() => setShowDeckSelection(false)}
               />
             </motion.div>
           )}

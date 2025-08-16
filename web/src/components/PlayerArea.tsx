@@ -259,23 +259,19 @@ export default function PlayerArea({
           </h4>
           <div className="flex space-x-2 overflow-x-auto pb-2">
             {player.hand?.map((card, index) => {
-              // Obtener validación para esta carta
-              const cardValidation = validationInfo?.playableCards?.find((c: any) => c.id === card.id)
-              const validation = cardValidation ? {
-                isValid: true,
-                isPlayable: true,
-                errors: [],
+              // Determinar si la carta es jugable según las reglas del juego
+              const isPlayable = isCurrentPlayer && isMyTurn && onCardClick
+              
+              // Crear validación básica para la carta
+              const validation = {
+                isValid: isPlayable,
+                isPlayable: isPlayable,
+                errors: isPlayable ? [] : ['No es tu turno'],
                 warnings: [],
-                reason: 'Carta jugable',
+                reason: isPlayable ? 'Carta jugable' : 'No es tu turno',
                 isSpecial: card.value === 2 || card.value === 8 || card.value === 10,
                 requiresTarget: card.value === 2 || card.value === 8 || card.value === 10,
-                willPurify: card.value === 10 || card.value === validationInfo?.lastPlayedCard?.value
-              } : {
-                isValid: false,
-                isPlayable: false,
-                errors: ['No puedes jugar esta carta'],
-                warnings: [],
-                reason: 'Valor insuficiente'
+                willPurify: card.value === 10
               }
 
               return (
@@ -288,8 +284,8 @@ export default function PlayerArea({
                   <GameCard
                     card={card}
                     onClick={() => onCardClick?.(index)}
-                    isPlayable={isCurrentPlayer && isMyTurn}
-                    isDraggable={isCurrentPlayer && isMyTurn}
+                    isPlayable={isPlayable}
+                    isDraggable={isPlayable}
                     validation={validation}
                     showValidation={showValidation}
                     onDragStart={(card, event) => {

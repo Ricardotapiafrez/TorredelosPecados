@@ -113,6 +113,7 @@ export default function GameBoard({
     notifications: true,
     soundEffects: true,
   })
+  const [showHelp, setShowHelp] = useState(false)
 
   // Hooks para el modo solitario, cooperativo y desafío
   const {
@@ -319,20 +320,64 @@ export default function GameBoard({
     }
   }, [gameState?.gameState, isCurrentTurn, gameState?.turnTime])
 
-  // Actualizar cartas jugables
+  // Calcular cartas jugables según las reglas del juego
   useEffect(() => {
-    if (currentPlayer && isMyTurn) {
-      // Simular obtención de cartas jugables (esto vendría del servidor)
-      const playable = currentPlayer.hand.map((_, index) => index)
-      setPlayableCards(playable)
+    if (!currentPlayer || !isMyTurn || gameState.gameState !== 'playing') {
+      setPlayableCards([])
+      return
     }
-  }, [currentPlayer, isMyTurn])
+
+    const playable: number[] = []
+    const hand = currentPlayer.hand || []
+    
+    // Si no hay carta anterior jugada, todas las cartas son jugables
+    if (!gameState.lastPlayedCard) {
+      hand.forEach((_, index) => playable.push(index))
+    } else {
+      // Verificar cada carta según las reglas
+      hand.forEach((card, index) => {
+        // Cartas especiales (2, 8, 10) siempre son jugables
+        if (card.value === 2 || card.value === 8 || card.value === 10) {
+          playable.push(index)
+          return
+        }
+        
+        // Si el siguiente jugador puede jugar cualquier cosa (por efecto del 2)
+        if (gameState.nextPlayerCanPlayAnything) {
+          playable.push(index)
+          return
+        }
+        
+        // Regla normal: debe ser igual o mayor valor
+        if (card.value >= gameState.lastPlayedCard.value) {
+          playable.push(index)
+        }
+      })
+    }
+
+    console.log(`🎯 Cartas jugables para ${currentPlayer.name}:`, playable.map(i => hand[i]?.name))
+    setPlayableCards(playable)
+  }, [currentPlayer, isMyTurn, gameState.lastPlayedCard, gameState.nextPlayerCanPlayAnything, gameState.gameState])
 
   // Funciones para manejar drag & drop
   const handleCardDrop = (card: Card, targetZone: string, targetPlayerId?: string) => {
     if (!isMyTurn) return
 
     console.log(`Carta ${card.name} soltada en zona: ${targetZone}`, { targetPlayerId })
+    
+    // Encontrar el índice de la carta en la mano del jugador
+    const cardIndex = currentPlayer?.hand.findIndex(c => c.id === card.id)
+    if (cardIndex === undefined || cardIndex < 0) {
+      console.log(`❌ Carta ${card.name} no encontrada en la mano`)
+      return
+    }
+
+    // Verificar si la carta es jugable
+    if (!playableCards.includes(cardIndex)) {
+      console.log(`❌ Carta ${card.name} no es jugable en este momento`)
+      addErrorSound({ x: window.innerWidth / 2, y: window.innerHeight / 2 })
+      return
+    }
     
     // Efectos visuales y de sonido
     addCardDropSound({ x: window.innerWidth / 2, y: window.innerHeight / 2 })
@@ -341,26 +386,14 @@ export default function GameBoard({
     // Determinar la acción basada en la zona de destino
     switch (targetZone) {
       case 'discard-pile':
-        // Encontrar el índice de la carta en la mano del jugador
-        const cardIndex = currentPlayer?.hand.findIndex(c => c.id === card.id)
-        if (cardIndex !== undefined && cardIndex >= 0) {
-          handlePlayCard(cardIndex)
-        }
-        break
       case 'tower-of-sins':
-        // Lógica para jugar carta en la torre de los pecados
-        const towerCardIndex = currentPlayer?.hand.findIndex(c => c.id === card.id)
-        if (towerCardIndex !== undefined && towerCardIndex >= 0) {
-          handlePlayCard(towerCardIndex)
-        }
+        // Jugar carta en la torre de los pecados
+        handlePlayCard(cardIndex)
         break
       case 'player-target':
         // Lógica para cartas que requieren objetivo
         if (targetPlayerId) {
-          const targetCardIndex = currentPlayer?.hand.findIndex(c => c.id === card.id)
-          if (targetCardIndex !== undefined && targetCardIndex >= 0) {
-            handlePlayCard(targetCardIndex, targetPlayerId)
-          }
+          handlePlayCard(cardIndex, targetPlayerId)
         }
         break
       default:
@@ -450,10 +483,15 @@ export default function GameBoard({
   }
 
   const handleCardClick = (cardIndex: number) => {
-    if (!isMyTurn || !playableCards.includes(cardIndex)) return
+    if (!isMyTurn || !playableCards.includes(cardIndex)) {
+      console.log(`❌ Carta ${cardIndex} no es jugable en este momento`)
+      return
+    }
 
     const card = currentPlayer?.hand[cardIndex]
     if (!card) return
+
+    console.log(`🎯 Jugando carta: ${card.name} (valor: ${card.value})`)
 
     // Verificar si la carta requiere selección de objetivo
     if (card.value === 2 || card.value === 8 || card.value === 10) {
@@ -489,6 +527,28 @@ export default function GameBoard({
     setSelectedCard(null)
     setShowTargetSelection(false)
   }
+
+  const getPlayableCardsInfo = () => {
+    if (!currentPlayer || !isMyTurn) return null
+    
+    const playableCardsList = playableCards.map(index => currentPlayer.hand[index]).filter(Boolean)
+    
+    if (playableCardsList.length === 0) {
+      return {
+        message: 'No tienes cartas jugables',
+        action: 'Debes tomar la Torre de los Pecados',
+        type: 'warning'
+      }
+    }
+    
+    return {
+      message: `Tienes ${playableCardsList.length} carta(s) jugable(s)`,
+      cards: playableCardsList.map(card => `${card.name} (${card.value})`),
+      type: 'info'
+    }
+  }
+
+  const playableInfo = getPlayableCardsInfo()
 
   // Pantalla de espera
   if (gameState.gameState === 'waiting') {
@@ -670,51 +730,48 @@ export default function GameBoard({
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-900 via-primary-800 to-secondary-900 p-4">
       <div className="max-w-7xl mx-auto">
-                  {/* Header del juego */}
-          <motion.div 
-            className="flex justify-between items-center mb-6"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div>
-              <h1 className="text-3xl font-fantasy font-bold text-primary-400">
-                🏰 Torre de los Pecados
-              </h1>
-              <div className="flex items-center space-x-4 text-gray-300 mt-1">
-                <span>Mazo: {getDeckIcon(gameState.deckType)} {gameState.deckType.toUpperCase()}</span>
-                <span>Turno: {gameState.turnNumber}</span>
-                <span>Fase: {getPhaseName(gameState.currentPhase)}</span>
-              </div>
-            </div>
-
-            {/* Botón de reglas de validación */}
+        {/* Header del juego */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center space-x-4">
+            <motion.h1 
+              className="text-3xl font-fantasy font-bold text-primary-400"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+            >
+              🏰 Torre de los Pecados
+            </motion.h1>
+            <motion.div 
+              className="text-sm text-secondary-300"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+            >
+              Mazo: {getDeckIcon(gameState.deckType)} {gameState.deckType.toUpperCase()}
+            </motion.div>
+          </div>
+          
+          <div className="flex items-center space-x-4">
+            {/* Botón de ayuda */}
             <motion.button
+              onClick={() => setShowHelp(!showHelp)}
+              className="btn-secondary text-sm"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => setShowValidationRules(true)}
-              className="btn-secondary text-sm px-4 py-2 flex items-center space-x-2"
             >
-              <span>📖</span>
-              <span>Reglas</span>
+              ❓ Ayuda
             </motion.button>
-          
-          {isCurrentTurn && (
+            
+            {/* Información del turno */}
             <motion.div 
-              className="text-center"
-              animate={{ scale: [1, 1.05, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
+              className="text-sm text-secondary-300"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
             >
-              <div className="text-2xl font-bold text-accent-400 mb-1 flex items-center space-x-2">
-                <Play className="w-6 h-6" />
-                <span>Tu Turno</span>
-              </div>
-              <div className="text-lg text-white flex items-center space-x-2">
-                <Clock className="w-5 h-5" />
-                <span>{timeLeft}s</span>
-              </div>
+              Turno: {gameState.players.find(p => p.id === gameState.currentPlayerId)?.name || 'Desconocido'}
             </motion.div>
-          )}
-        </motion.div>
+          </div>
+        </div>
 
         {/* Torre de los Pecados */}
         <motion.div 
@@ -766,6 +823,9 @@ export default function GameBoard({
               <div className="mt-3 text-sm text-gray-300">
                 Última carta: <span className="font-semibold">{gameState.lastPlayedCard.name}</span> 
                 (Valor: {gameState.lastPlayedCard.value})
+                {gameState.nextPlayerCanPlayAnything && (
+                  <span className="ml-2 text-yellow-400">✨ Puedes jugar cualquier carta</span>
+                )}
               </div>
             )}
           </DropZone>
@@ -773,26 +833,43 @@ export default function GameBoard({
 
         {/* Área de jugadores */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          {gameState.players.map((player, index) => (
-            <motion.div
-              key={player.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-            >
+          {gameState.players
+            .filter(player => player.id !== currentPlayerId)
+            .map((player, index) => (
               <PlayerArea
+                key={player.id}
                 player={player}
-                isCurrentPlayer={player.id === currentPlayerId}
-                isMyTurn={gameState.currentPlayerId === player.id}
+                isMyTurn={player.id === gameState.currentPlayerId}
                 onCardClick={player.id === currentPlayerId ? handleCardClick : undefined}
                 onCardDrop={player.id === currentPlayerId ? handleCardDrop : undefined}
-                showHand={player.id === currentPlayerId}
-                validationInfo={validationInfo}
-                showValidation={showValidation && player.id === currentPlayerId}
+                showHand={false}
+                validationInfo={{
+                  playableCards: playableCards.map(index => currentPlayer?.hand[index]).filter(Boolean),
+                  lastPlayedCard: gameState.lastPlayedCard,
+                  nextPlayerCanPlayAnything: gameState.nextPlayerCanPlayAnything
+                }}
+                showValidation={false}
               />
-            </motion.div>
-          ))}
+            ))}
         </div>
+
+        {/* Área del jugador actual */}
+        {currentPlayer && (
+          <PlayerArea
+            player={currentPlayer}
+            isCurrentPlayer={true}
+            isMyTurn={isMyTurn}
+            onCardClick={handleCardClick}
+            onCardDrop={handleCardDrop}
+            showHand={true}
+            validationInfo={{
+              playableCards: playableCards.map(index => currentPlayer.hand[index]).filter(Boolean),
+              lastPlayedCard: gameState.lastPlayedCard,
+              nextPlayerCanPlayAnything: gameState.nextPlayerCanPlayAnything
+            }}
+            showValidation={true}
+          />
+        )}
 
         {/* Área de acciones del jugador actual */}
         {currentPlayer && isMyTurn && (
@@ -801,6 +878,36 @@ export default function GameBoard({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
+            {/* Información de cartas jugables */}
+            {playableInfo && (
+              <motion.div
+                className={`p-4 rounded-lg border-2 ${
+                  playableInfo.type === 'warning' 
+                    ? 'border-yellow-400 bg-yellow-900/20 text-yellow-300'
+                    : 'border-green-400 bg-green-900/20 text-green-300'
+                }`}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+              >
+                <h3 className="font-semibold mb-2">{playableInfo.message}</h3>
+                {playableInfo.action && (
+                  <p className="text-sm opacity-90">{playableInfo.action}</p>
+                )}
+                {playableInfo.cards && playableInfo.cards.length > 0 && (
+                  <div className="mt-2">
+                    <p className="text-sm font-semibold mb-1">Cartas jugables:</p>
+                    <div className="flex flex-wrap gap-1 justify-center">
+                      {playableInfo.cards.map((cardName, index) => (
+                        <span key={index} className="px-2 py-1 bg-secondary-700 rounded text-xs">
+                          {cardName}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </motion.div>
+            )}
+
             {/* Zona de drop para cartas */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <DropZone
@@ -1007,6 +1114,80 @@ export default function GameBoard({
         isVisible={showAIPanel && isMyTurn}
         className="fixed bottom-4 right-4 w-80 z-40"
       />
+
+      {/* Modal de ayuda */}
+      <AnimatePresence>
+        {showHelp && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-secondary-800 p-6 rounded-lg max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto"
+            >
+              <h2 className="text-2xl font-bold text-primary-400 mb-4">📖 Reglas del Juego</h2>
+              
+              <div className="space-y-4 text-sm">
+                <div>
+                  <h3 className="font-semibold text-accent-400 mb-2">🎯 Objetivo</h3>
+                  <p className="text-secondary-300">
+                    Deshazte de todas tus criaturas para no ser el último y cargar con la "Torre de los Pecados".
+                  </p>
+                </div>
+
+                <div>
+                  <h3 className="font-semibold text-accent-400 mb-2">🎮 Cómo Jugar</h3>
+                  <ul className="text-secondary-300 space-y-2">
+                    <li>• <strong>Primer jugador:</strong> Puede descartar cualquier criatura</li>
+                    <li>• <strong>Jugadores siguientes:</strong> Deben descartar una criatura de <strong>igual o mayor valor</strong></li>
+                    <li>• <strong>Si no puedes jugar:</strong> Debes tomar toda la "Torre de los Pecados"</li>
+                    <li>• <strong>Cartas especiales (2, 8, 10):</strong> Siempre se pueden jugar</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 className="font-semibold text-accent-400 mb-2">🃏 Cartas Especiales</h3>
+                  <ul className="text-secondary-300 space-y-2">
+                    <li>• <strong>Valor 2:</strong> Poder Universal - Se puede jugar sobre cualquier carta</li>
+                    <li>• <strong>Valor 8:</strong> Poder de Salto - El siguiente jugador pierde su turno</li>
+                    <li>• <strong>Valor 10:</strong> Poder de Purificación - Limpia la Torre de los Pecados</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 className="font-semibold text-accent-400 mb-2">🔄 Fases del Juego</h3>
+                  <ul className="text-secondary-300 space-y-2">
+                    <li>• <strong>Fase de Mano:</strong> Juegas con las cartas en tu mano</li>
+                    <li>• <strong>Fase Boca Arriba:</strong> Juegas con las 3 cartas boca arriba</li>
+                    <li>• <strong>Fase Boca Abajo:</strong> Juegas con las 3 cartas boca abajo (sin verlas)</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 className="font-semibold text-accent-400 mb-2">🏆 Victoria</h3>
+                  <p className="text-secondary-300">
+                    El primer jugador en deshacerse de todas sus criaturas gana. El último es el "Pecador".
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-6 flex justify-end">
+                <button
+                  onClick={() => setShowHelp(false)}
+                  className="btn-primary"
+                >
+                  Entendido
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

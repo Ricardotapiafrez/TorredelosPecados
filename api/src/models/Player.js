@@ -1,8 +1,9 @@
 class Player {
-  constructor(id, name, socketId) {
+  constructor(id, name, socketId, selectedDeck = 'angels') {
     this.id = id;
     this.name = name;
     this.socketId = socketId;
+    this.selectedDeck = selectedDeck; // Mazo seleccionado por el jugador
     
     // Fase 1: Mano (12 cartas iniciales)
     this.hand = []; // Cartas en mano (máximo 3 durante el juego)
@@ -25,6 +26,7 @@ class Player {
     this.score = 0;
     this.isSinner = false; // Si es el perdedor (pecador)
     this.isDisconnected = false; // Estado de conexión
+    this.isBot = false; // Si es un bot
   }
 
   // Inicializar el jugador con 12 cartas
@@ -212,6 +214,7 @@ class Player {
     return {
       id: this.id,
       name: this.name,
+      selectedDeck: this.selectedDeck,
       faceUpCreatures: this.faceUpCreatures,
       faceDownCreatures: this.faceDownCreatures.map(() => ({ hidden: true })), // Solo mostrar que hay cartas ocultas
       currentPhase: this.currentPhase,
@@ -222,6 +225,7 @@ class Player {
       isAlive: this.isAlive,
       score: this.score,
       isSinner: this.isSinner,
+      isBot: this.isBot,
       handSize: this.hand.length,
       soulWellSize: this.soulWell.length,
       totalCardsRemaining: this.getTotalCardsRemaining()
@@ -233,6 +237,7 @@ class Player {
     return {
       id: this.id,
       name: this.name,
+      selectedDeck: this.selectedDeck,
       hand: this.hand,
       faceUpCreatures: this.faceUpCreatures,
       faceDownCreatures: this.faceDownCreatures,
@@ -244,6 +249,7 @@ class Player {
       isAlive: this.isAlive,
       score: this.score,
       isSinner: this.isSinner,
+      isBot: this.isBot,
       handSize: this.hand.length,
       soulWellSize: this.soulWell.length
     };
@@ -328,12 +334,38 @@ class Player {
     this.isReady = false;
     this.isAlive = true;
     this.isSinner = false;
+    this.isBot = false;
   }
 
   // Marcar como pecador (perdedor)
   markAsSinner() {
     this.isSinner = true;
     console.log(`😈 ${this.name} ha sido marcado como PECADOR - Debe cargar con la Torre de los Pecados`);
+  }
+
+  // Cambiar mazo seleccionado
+  setSelectedDeck(deckType) {
+    const validDecks = ['angels', 'demons', 'dragons', 'mages'];
+    if (validDecks.includes(deckType)) {
+      this.selectedDeck = deckType;
+      console.log(`🎴 ${this.name} cambió su mazo a: ${deckType}`);
+      return true;
+    } else {
+      console.log(`⚠️ ${this.name} intentó cambiar a mazo inválido: ${deckType}`);
+      return false;
+    }
+  }
+
+  // Obtener información del mazo seleccionado
+  getDeckInfo() {
+    const deckInfo = {
+      angels: { name: 'Mazo de Ángeles', icon: '👼', description: 'La Luz Divina - Pureza, justicia y orden divino' },
+      demons: { name: 'Mazo de Demonios', icon: '😈', description: 'La Oscuridad del Abismo - Los siete pecados capitales' },
+      dragons: { name: 'Mazo de Dragones', icon: '🐉', description: 'Los Señores del Cielo - Poder primitivo y sabiduría ancestral' },
+      mages: { name: 'Mazo de Magos', icon: '🧙‍♂️', description: 'Los Maestros del Arcano - Conocimiento arcano y manipulación de la realidad' }
+    };
+    
+    return deckInfo[this.selectedDeck] || deckInfo.angels;
   }
 }
 

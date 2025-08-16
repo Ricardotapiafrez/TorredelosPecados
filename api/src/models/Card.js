@@ -104,6 +104,7 @@ class Card {
       type: this.type,
       power: this.power,
       value: this.value,
+      description: this.description,
       deck: this.deck,
       isSpecial: this.isSpecial,
       image: this.image

@@ -182,6 +182,15 @@ io.on('connection', (socket) => {
     }
   });
 
+  // Eventos para selección de mazos
+  socket.on('changePlayerDeck', (data) => {
+    gameService.changePlayerDeck(socket, data);
+  });
+
+  socket.on('getPlayersDeckInfo', () => {
+    gameService.getPlayersDeckInfo(socket);
+  });
+
   // Sistema de configuración de mazos temáticos
   socket.on('getDeckConfigurations', () => {
     try {

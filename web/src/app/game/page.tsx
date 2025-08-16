@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { io, Socket } from 'socket.io-client'
-import { ArrowLeft, Users, Clock, Crown, AlertCircle } from 'lucide-react'
+import { ArrowLeft, Users, Clock, Crown, AlertCircle, Cpu } from 'lucide-react'
 import Link from 'next/link'
 import PlayerArea from '@/components/PlayerArea'
 import GameCard from '@/components/GameCard'
@@ -53,6 +53,8 @@ export default function GamePage() {
   const [error, setError] = useState<string | null>(null);
   const [timeLeft, setTimeLeft] = useState(30);
   const [selectedCard, setSelectedCard] = useState<number | null>(null);
+  const [gameMode, setGameMode] = useState<'human' | 'bot'>('human');
+  const [botCount, setBotCount] = useState(1);
 
   // Initialize socket connection
   useEffect(() => {
@@ -87,6 +89,11 @@ export default function GamePage() {
       setError(null);
     });
 
+    socket.on('gameStarted', (data: GameState) => {
+      setGameState(data);
+      setError(null);
+    });
+
     socket.on('playerJoined', (data: { player: any }) => {
       // Actualizar el estado del juego cuando otro jugador se une
       if (gameState) {
@@ -104,6 +111,9 @@ export default function GamePage() {
 
     return () => {
       socket.off('gameStateUpdate');
+      socket.off('roomCreated');
+      socket.off('roomJoined');
+      socket.off('gameStarted');
       socket.off('playerJoined');
       socket.off('timeUpdate');
       socket.off('error');
@@ -141,7 +151,7 @@ export default function GamePage() {
 
   const setReady = (ready: boolean) => {
     if (!socket) return;
-    socket.emit('setReady', { ready });
+    socket.emit('setPlayerReady', { ready });
   };
 
   const startGame = () => {
@@ -197,6 +207,63 @@ export default function GamePage() {
               />
             </div>
 
+            {!roomId.trim() && (
+              <>
+                <div>
+                  <label className="block text-sm font-medium mb-2">Modo de Juego</label>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      onClick={() => setGameMode('human')}
+                      className={`p-3 rounded-lg border transition-colors ${
+                        gameMode === 'human'
+                          ? 'bg-primary-600 border-primary-400 text-white'
+                          : 'bg-secondary-700 border-secondary-600 text-secondary-300 hover:bg-secondary-600'
+                      }`}
+                    >
+                      <div className="flex items-center justify-center space-x-2">
+                        <Users className="w-4 h-4" />
+                        <span>Multijugador</span>
+                      </div>
+                    </button>
+                    <button
+                      onClick={() => setGameMode('bot')}
+                      className={`p-3 rounded-lg border transition-colors ${
+                        gameMode === 'bot'
+                          ? 'bg-primary-600 border-primary-400 text-white'
+                          : 'bg-secondary-700 border-secondary-600 text-secondary-300 hover:bg-secondary-600'
+                      }`}
+                    >
+                      <div className="flex items-center justify-center space-x-2">
+                        <Cpu className="w-4 h-4" />
+                        <span>vs Bots</span>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+
+                {gameMode === 'bot' && (
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Número de Bots</label>
+                    <div className="flex space-x-2">
+                      {[1, 2, 3].map((count) => (
+                        <button
+                          key={count}
+                          onClick={() => setBotCount(count)}
+                          className={`flex-1 p-3 rounded-lg border transition-colors ${
+                            botCount === count
+                              ? 'bg-accent-600 border-accent-400 text-white'
+                              : 'bg-secondary-700 border-secondary-600 text-secondary-300 hover:bg-secondary-600'
+                          }`}
+                        >
+                          {count} Bot{count > 1 ? 'es' : ''}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+
             <div className="flex space-x-4">
               <button
                 onClick={() => {
@@ -209,7 +276,16 @@ export default function GamePage() {
                     socket?.emit('joinRoom', { roomId: roomId.trim(), playerName: playerName.trim() });
                   } else {
                     // Crear nueva sala
-                    socket?.emit('createRoom', { playerName: playerName.trim() });
+                    const roomData: any = { 
+                      playerName: playerName.trim(),
+                      gameMode: gameMode
+                    };
+                    
+                    if (gameMode === 'bot') {
+                      roomData.botCount = botCount;
+                    }
+                    
+                    socket?.emit('createRoom', roomData);
                   }
                 }}
                 disabled={!socket || !playerName.trim()}

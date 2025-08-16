@@ -163,6 +163,29 @@ class GameService {
     }
   }
 
+  // Agregar bots al juego
+  addBotsToGame(game, botCount) {
+    const botNames = ['Bot Alpha', 'Bot Beta', 'Bot Gamma', 'Bot Delta'];
+    const availableDecks = ['angels', 'demons', 'dragons', 'mages'];
+    
+    for (let i = 0; i < botCount; i++) {
+      const botId = uuidv4();
+      const botName = botNames[i] || `Bot ${i + 1}`;
+      
+      // Seleccionar mazo aleatorio para el bot
+      const selectedDeck = availableDecks[Math.floor(Math.random() * availableDecks.length)];
+      const bot = game.addPlayer(botId, botName, null, selectedDeck); // Los bots no tienen socket
+      
+      // Marcar bot como listo automáticamente
+      bot.isReady = true;
+      bot.isBot = true; // Marcar como bot
+      
+      console.log(`🤖 ${botName} agregado con mazo ${selectedDeck}`);
+    }
+    
+    console.log(`🤖 ${botCount} bots agregados al juego con mazos variados`);
+  }
+
   // Validar estado del juego
   validateGameState(roomId) {
     const game = this.games.get(roomId);
@@ -197,13 +220,16 @@ class GameService {
   // Crear una nueva sala
   createRoom(socket, data) {
     try {
-      const { playerName, maxPlayers = 6, deckType = THEMATIC_DECKS.ANGELS } = data;
+      const { playerName, maxPlayers = 6, deckType = THEMATIC_DECKS.ANGELS, gameMode = 'human', botCount = 1 } = data;
       const roomId = uuidv4();
       const playerId = uuidv4();
 
       // Crear nuevo juego con mazo temático
       const game = new Game(roomId, maxPlayers, deckType);
       const player = game.addPlayer(playerId, playerName, socket.id);
+      
+      // Actualizar socketId del jugador
+      player.socketId = socket.id;
       
       // Guardar referencias
       this.games.set(roomId, game);
@@ -212,14 +238,19 @@ class GameService {
       // Unir socket a la sala
       socket.join(roomId);
       
-      // Notificar al jugador
+      // Si es modo bot, agregar bots automáticamente
+      if (gameMode === 'bot') {
+        this.addBotsToGame(game, botCount);
+      }
+      
+      // Notificar al jugador con el estado actualizado
       socket.emit('roomCreated', {
         roomId,
         playerId,
         gameState: game.getGameState(playerId)
       });
 
-      console.log(`Sala creada: ${roomId} por ${playerName} con mazo ${deckType}`);
+      console.log(`Sala creada: ${roomId} por ${playerName} con mazo ${deckType} (modo: ${gameMode}${gameMode === 'bot' ? `, ${botCount} bots` : ''})`);
     } catch (error) {
       socket.emit('error', { message: error.message });
     }
@@ -228,7 +259,7 @@ class GameService {
   // Unirse a una sala
   joinRoom(socket, data) {
     try {
-      const { roomId, playerName } = data;
+      const { roomId, playerName, selectedDeck } = data;
       const game = this.games.get(roomId);
       
       if (!game) {
@@ -236,7 +267,10 @@ class GameService {
       }
 
       const playerId = uuidv4();
-      const player = game.addPlayer(playerId, playerName, socket.id);
+      const player = game.addPlayer(playerId, playerName, socket.id, selectedDeck);
+      
+      // Actualizar socketId del jugador
+      player.socketId = socket.id;
       
       // Guardar referencias
       this.playerSockets.set(socket.id, { playerId, roomId });
@@ -256,7 +290,7 @@ class GameService {
         player: player.getPublicInfo()
       });
 
-      console.log(`${playerName} se unió a la sala ${roomId}`);
+      console.log(`${playerName} se unió a la sala ${roomId} con mazo ${player.selectedDeck}`);
     } catch (error) {
       socket.emit('error', { message: error.message });
     }
@@ -405,7 +439,7 @@ class GameService {
   // Marcar jugador como listo
   setPlayerReady(socket, data) {
     try {
-      const { isReady } = data;
+      const { ready } = data;
       const playerInfo = this.playerSockets.get(socket.id);
       
       if (!playerInfo) {
@@ -420,20 +454,27 @@ class GameService {
       }
 
       const player = game.players.find(p => p.id === playerId);
-      player.isReady = isReady;
+      player.isReady = ready;
+
+      console.log(`🎯 ${player.name} marcado como ${ready ? 'listo' : 'no listo'}`);
 
       // Notificar a todos los jugadores
       game.players.forEach(player => {
         const gameState = game.getGameState(player.id);
-        this.io.to(player.socketId).emit('gameStateUpdated', gameState);
+        if (player.socketId) {
+          this.io.to(player.socketId).emit('gameStateUpdate', gameState);
+        }
       });
 
       // Verificar si todos están listos para iniciar
       const allReady = game.players.every(p => p.isReady);
+      
       if (allReady && game.players.length >= 2) {
+        console.log(`🎉 Todos los jugadores están listos, enviando allPlayersReady`);
         this.io.to(roomId).emit('allPlayersReady');
       }
     } catch (error) {
+      console.error('❌ Error en setPlayerReady:', error.message);
       socket.emit('error', { message: error.message });
     }
   }
@@ -501,6 +542,79 @@ class GameService {
         discardPileSize: validationInfo.discardPileSize,
         shouldTakeDiscardPile: this.validationService.shouldTakeDiscardPile(game, playerId)
       });
+    } catch (error) {
+      socket.emit('error', { message: error.message });
+    }
+  }
+
+  // Cambiar mazo de un jugador
+  changePlayerDeck(socket, data) {
+    try {
+      const { playerId, deckType } = data;
+      const playerInfo = this.playerSockets.get(socket.id);
+      
+      if (!playerInfo) {
+        throw new Error('Jugador no encontrado');
+      }
+
+      const game = this.games.get(playerInfo.roomId);
+      if (!game) {
+        throw new Error('Juego no encontrado');
+      }
+
+      // Verificar que el jugador puede cambiar su propio mazo o es el host
+      const requestingPlayer = game.getPlayer(playerInfo.playerId);
+      const targetPlayer = game.getPlayer(playerId);
+      
+      if (!targetPlayer) {
+        throw new Error('Jugador objetivo no encontrado');
+      }
+
+      if (requestingPlayer.id !== playerId && !requestingPlayer.isHost) {
+        throw new Error('No tienes permisos para cambiar el mazo de otro jugador');
+      }
+
+      const success = game.changePlayerDeck(playerId, deckType);
+      
+      if (success) {
+        // Notificar a todos los jugadores en la sala
+        socket.to(playerInfo.roomId).emit('playerDeckChanged', {
+          playerId,
+          deckType,
+          deckInfo: targetPlayer.getDeckInfo()
+        });
+
+        // Notificar al jugador que solicitó el cambio
+        socket.emit('deckChanged', {
+          playerId,
+          deckType,
+          deckInfo: targetPlayer.getDeckInfo()
+        });
+
+        console.log(`🎴 ${targetPlayer.name} cambió su mazo a: ${deckType}`);
+      } else {
+        throw new Error('No se pudo cambiar el mazo');
+      }
+    } catch (error) {
+      socket.emit('error', { message: error.message });
+    }
+  }
+
+  // Obtener información de mazos de todos los jugadores
+  getPlayersDeckInfo(socket) {
+    try {
+      const playerInfo = this.playerSockets.get(socket.id);
+      if (!playerInfo) {
+        throw new Error('Jugador no encontrado');
+      }
+
+      const game = this.games.get(playerInfo.roomId);
+      if (!game) {
+        throw new Error('Juego no encontrado');
+      }
+
+      const playersDeckInfo = game.getPlayersDeckInfo();
+      socket.emit('playersDeckInfo', { players: playersDeckInfo });
     } catch (error) {
       socket.emit('error', { message: error.message });
     }
@@ -1202,15 +1316,18 @@ class GameService {
       const humanPlayer = game.addPlayer(uuidv4(), playerName, socket.id);
       humanPlayer.isHuman = true;
       
-      // Agregar 3 jugadores IA
+      // Agregar 3 jugadores IA con mazos variados
       const aiNames = this.generateAINames(deckType);
       const aiDifficulties = this.generateAIDifficulties(aiDifficulty);
+      const availableDecks = ['angels', 'demons', 'dragons', 'mages'];
       
       for (let i = 0; i < 3; i++) {
-        const aiPlayer = game.addPlayer(uuidv4(), aiNames[i], null);
+        // Seleccionar mazo aleatorio para cada IA
+        const aiDeckType = availableDecks[Math.floor(Math.random() * availableDecks.length)];
+        const aiPlayer = game.addPlayer(uuidv4(), aiNames[i], null, aiDeckType);
         aiPlayer.isAI = true;
         aiPlayer.aiDifficulty = aiDifficulties[i];
-        aiPlayer.aiPersonality = this.generateAIPersonality(deckType, aiDifficulties[i]);
+        aiPlayer.aiPersonality = this.generateAIPersonality(aiDeckType, aiDifficulties[i]);
       }
       
       // Guardar juego
@@ -1485,15 +1602,18 @@ class GameService {
       humanPlayer.isHuman = true;
       humanPlayer.isHost = true; // El primer jugador es el host
       
-      // Agregar 2 jugadores IA
+      // Agregar 2 jugadores IA con mazos variados
       const aiNames = this.generateAINames(deckType);
       const aiDifficulties = this.generateAIDifficulties(aiDifficulty);
+      const availableDecks = ['angels', 'demons', 'dragons', 'mages'];
       
       for (let i = 0; i < 2; i++) {
-        const aiPlayer = game.addPlayer(uuidv4(), aiNames[i], null);
+        // Seleccionar mazo aleatorio para cada IA
+        const aiDeckType = availableDecks[Math.floor(Math.random() * availableDecks.length)];
+        const aiPlayer = game.addPlayer(uuidv4(), aiNames[i], null, aiDeckType);
         aiPlayer.isAI = true;
         aiPlayer.aiDifficulty = aiDifficulties[i];
-        aiPlayer.aiPersonality = this.generateAIPersonality(deckType, aiDifficulties[i]);
+        aiPlayer.aiPersonality = this.generateAIPersonality(aiDeckType, aiDifficulties[i]);
       }
       
       // Guardar juego
@@ -1692,7 +1812,7 @@ class GameService {
       
       // Agregar IA experta con personalidad especial
       const aiNames = this.generateAINames(deckType);
-      const aiPlayer = game.addPlayer(uuidv4(), aiNames[0], null);
+      const aiPlayer = game.addPlayer(uuidv4(), aiNames[0], null, deckType);
       aiPlayer.isAI = true;
       aiPlayer.aiDifficulty = challengeLevel;
       aiPlayer.aiPersonality = this.generateChallengePersonality(deckType, challengeLevel);

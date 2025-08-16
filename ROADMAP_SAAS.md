@@ -52,7 +52,7 @@ Este documento define la ruta de desarrollo profesional para convertir "Torre de
   - [x] Crear tests unitarios para lógica del juego
   - [x] Implementar tests de integración para Socket.io
   - [x] Crear tests E2E para flujo completo
-  - [x] Implementar CI/CD básico
+  - [ ] Implementar CI/CD básico ---> PENDIENTE DE AZURE Y FASE FINAL
 
 **🎯 Entregables Fase 1**: Juego completamente funcional con 4 jugadores, todos los mazos temáticos, y interfaz básica pero usable.
 
