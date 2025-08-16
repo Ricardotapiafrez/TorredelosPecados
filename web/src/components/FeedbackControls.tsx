@@ -10,7 +10,8 @@ import {
   Eye, 
   EyeOff,
   X,
-  Check
+  Check,
+  Brain
 } from 'lucide-react'
 import clsx from 'clsx'
 
@@ -28,6 +29,9 @@ interface FeedbackControlsProps {
   isVisible?: boolean
   onClose?: () => void
   className?: string
+  showAIPanel?: boolean
+  onToggleAIPanel?: () => void
+  isMyTurn?: boolean
 }
 
 export default function FeedbackControls({
@@ -35,7 +39,10 @@ export default function FeedbackControls({
   onSettingsChange,
   isVisible = false,
   onClose,
-  className = ''
+  className = '',
+  showAIPanel = false,
+  onToggleAIPanel,
+  isMyTurn = false
 }: FeedbackControlsProps) {
   const [isExpanded, setIsExpanded] = useState(false)
 
@@ -109,15 +116,39 @@ export default function FeedbackControls({
           exit={{ opacity: 0, y: 20, scale: 0.8 }}
           transition={{ duration: 0.3 }}
         >
-          {/* Botón principal */}
-          <motion.button
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="bg-gray-800 border border-gray-600 rounded-lg p-3 shadow-xl hover:bg-gray-700 transition-colors"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Settings className="w-5 h-5 text-gray-300" />
-          </motion.button>
+          {/* Botones de control */}
+          <div className="flex items-center gap-2">
+            {/* Botón de IA */}
+            {isMyTurn && onToggleAIPanel && (
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={onToggleAIPanel}
+                className={clsx(
+                  "bg-gray-800 border rounded-lg p-3 shadow-xl transition-colors",
+                  showAIPanel 
+                    ? "border-purple-500 bg-purple-500/20" 
+                    : "border-gray-600 hover:bg-gray-700"
+                )}
+                title="Asistente IA"
+              >
+                <Brain className={clsx(
+                  "w-5 h-5 transition-colors",
+                  showAIPanel ? "text-purple-400" : "text-gray-300"
+                )} />
+              </motion.button>
+            )}
+
+            {/* Botón de configuración */}
+            <motion.button
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="bg-gray-800 border border-gray-600 rounded-lg p-3 shadow-xl hover:bg-gray-700 transition-colors"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Settings className="w-5 h-5 text-gray-300" />
+            </motion.button>
+          </div>
 
           {/* Panel expandido */}
           <AnimatePresence>

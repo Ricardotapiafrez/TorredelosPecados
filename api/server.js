@@ -483,6 +483,127 @@ io.on('connection', (socket) => {
     }
   });
 
+  // ==================== EVENTOS DE IA ====================
+
+  // Obtener sugerencia de IA
+  socket.on('getAISuggestion', (data) => {
+    gameService.getAISuggestion(socket, data);
+  });
+
+  // Obtener dificultades de IA disponibles
+  socket.on('getAIDifficulties', () => {
+    gameService.getAIDifficulties(socket);
+  });
+
+  // Obtener estrategias de mazo
+  socket.on('getDeckStrategies', () => {
+    gameService.getDeckStrategies(socket);
+  });
+
+  // Configurar jugador como IA
+  socket.on('setPlayerAsAI', (data) => {
+    try {
+      const { roomId, playerId, difficulty } = data;
+      const success = gameService.setPlayerAsAI(roomId, playerId, difficulty);
+      
+      if (success) {
+        socket.emit('playerSetAsAISuccess', {
+          playerId,
+          difficulty,
+          message: 'Jugador configurado como IA exitosamente'
+        });
+      } else {
+        socket.emit('error', { message: 'Error configurando IA' });
+      }
+    } catch (error) {
+      socket.emit('error', { message: error.message });
+    }
+  });
+
+  // ==================== MODO SOLITARIO ====================
+
+  // Crear juego solitario
+  socket.on('createSoloGame', (data) => {
+    gameService.createSoloGame(socket, data);
+  });
+
+  // Obtener información de juego solitario
+  socket.on('getSoloGameInfo', (data) => {
+    try {
+      const { roomId } = data;
+      const info = gameService.getSoloGameInfo(roomId);
+      
+      if (info) {
+        socket.emit('soloGameInfo', { info });
+      } else {
+        socket.emit('error', { message: 'Juego solitario no encontrado' });
+      }
+    } catch (error) {
+      socket.emit('error', { message: error.message });
+    }
+  });
+
+  // ==================== MODO COOPERATIVO ====================
+
+  // Crear juego cooperativo
+  socket.on('createCoopGame', (data) => {
+    gameService.createCoopGame(socket, data);
+  });
+
+  // Unirse a juego cooperativo
+  socket.on('joinCoopGame', (data) => {
+    gameService.joinCoopGame(socket, data);
+  });
+
+  // Obtener información de juego cooperativo
+  socket.on('getCoopGameInfo', (data) => {
+    try {
+      const { roomId } = data;
+      const info = gameService.getCoopGameInfo(roomId);
+      
+      if (info) {
+        socket.emit('coopGameInfo', { info });
+      } else {
+        socket.emit('error', { message: 'Juego cooperativo no encontrado' });
+      }
+    } catch (error) {
+      socket.emit('error', { message: error.message });
+    }
+  });
+
+  // Obtener lista de juegos cooperativos disponibles
+  socket.on('getAvailableCoopGames', () => {
+    try {
+      const games = gameService.getAvailableCoopGames();
+      socket.emit('availableCoopGames', { games });
+    } catch (error) {
+      socket.emit('error', { message: error.message });
+    }
+  });
+
+  // ==================== MODO DESAFÍO ====================
+
+  // Crear juego de desafío
+  socket.on('createChallengeGame', (data) => {
+    gameService.createChallengeGame(socket, data);
+  });
+
+  // Obtener información de juego de desafío
+  socket.on('getChallengeGameInfo', (data) => {
+    try {
+      const { roomId } = data;
+      const info = gameService.getChallengeGameInfo(roomId);
+      
+      if (info) {
+        socket.emit('challengeGameInfo', { info });
+      } else {
+        socket.emit('error', { message: 'Juego de desafío no encontrado' });
+      }
+    } catch (error) {
+      socket.emit('error', { message: error.message });
+    }
+  });
+
   // Reconexión
   socket.on('reconnect', (data) => {
     gameService.handleReconnection(socket, data);

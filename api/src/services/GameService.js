@@ -4,6 +4,7 @@ const { THEMATIC_DECKS } = require('../models/Card');
 const ValidationService = require('./ValidationService');
 const DeckConfigurationService = require('./DeckConfigurationService');
 const ChatService = require('./ChatService');
+const AIService = require('./AIService');
 
 class GameService {
   constructor(io) {
@@ -16,6 +17,7 @@ class GameService {
     this.validationService = new ValidationService();
     this.deckConfigurationService = new DeckConfigurationService();
     this.chatService = new ChatService();
+    this.aiService = new AIService();
     
     // Sistema de invitaciones
     this.invitationCodes = new Map(); // Map<code, {roomId, createdBy, createdAt, expiresAt, maxUses, currentUses}>
@@ -352,6 +354,11 @@ class GameService {
             }))
           }
         });
+      }
+
+      // En modo solitario, cooperativo o desafío, ejecutar turnos de IA automáticamente
+      if ((game.gameMode === 'solo' || game.gameMode === 'coop' || game.gameMode === 'challenge') && game.gameState === 'playing') {
+        this.handleAITurns(game, roomId);
       }
 
       console.log(`Carta jugada en sala ${roomId}: ${card.name} por ${playerId}`);
@@ -1030,6 +1037,949 @@ class GameService {
       });
     } catch (error) {
       socket.emit('error', { message: error.message });
+    }
+  }
+
+  // ==================== MÉTODOS DE IA ====================
+
+  // Obtener sugerencia de IA para el jugador actual
+  getAISuggestion(socket, data) {
+    try {
+      const playerInfo = this.playerSockets.get(socket.id);
+      
+      if (!playerInfo) {
+        throw new Error('Jugador no encontrado');
+      }
+
+      const { playerId, roomId } = playerInfo;
+      const game = this.games.get(roomId);
+      
+      if (!game) {
+        throw new Error('Juego no encontrado');
+      }
+
+      if (game.gameState !== 'playing') {
+        throw new Error('El juego no está en progreso');
+      }
+
+      if (game.currentPlayerId !== playerId) {
+        throw new Error('No es tu turno');
+      }
+
+      const difficulty = data.difficulty || 'intermediate';
+      const analysis = this.aiService.analyzeHand(game.getGameState(), playerId, difficulty);
+      
+      socket.emit('aiSuggestion', {
+        analysis,
+        difficulty,
+        timestamp: new Date()
+      });
+    } catch (error) {
+      socket.emit('error', { message: error.message });
+    }
+  }
+
+  // Obtener información de dificultades de IA disponibles
+  getAIDifficulties(socket) {
+    try {
+      const difficulties = this.aiService.getAvailableDifficulties();
+      const difficultyInfo = {};
+      
+      for (const difficulty of difficulties) {
+        difficultyInfo[difficulty] = this.aiService.getDifficultyInfo(difficulty);
+      }
+      
+      socket.emit('aiDifficulties', {
+        difficulties: difficultyInfo,
+        available: difficulties
+      });
+    } catch (error) {
+      socket.emit('error', { message: error.message });
+    }
+  }
+
+  // Obtener información de estrategias de mazo
+  getDeckStrategies(socket) {
+    try {
+      const strategies = this.aiService.getAvailableDeckStrategies();
+      const strategyInfo = {};
+      
+      for (const strategy of strategies) {
+        strategyInfo[strategy] = this.aiService.getDeckStrategyInfo(strategy);
+      }
+      
+      socket.emit('deckStrategies', {
+        strategies: strategyInfo,
+        available: strategies
+      });
+    } catch (error) {
+      socket.emit('error', { message: error.message });
+    }
+  }
+
+  // Ejecutar turno de IA automáticamente
+  executeAITurn(game, playerId, difficulty = 'intermediate') {
+    try {
+      const gameState = game.getGameState();
+      const decision = this.aiService.decideCard(gameState, playerId, difficulty);
+      
+      if (!decision) {
+        // Si no hay cartas jugables, tomar el mazo de descarte
+        console.log(`🤖 IA ${playerId} no tiene cartas jugables, tomando mazo de descarte`);
+        game.takeDiscardPile(playerId);
+        return { action: 'takeDiscardPile', reason: 'No hay cartas jugables' };
+      }
+
+      // Jugar la carta seleccionada
+      console.log(`🤖 IA ${playerId} jugando carta: ${decision.card.name} (puntuación: ${decision.score})`);
+      game.playCard(playerId, decision.index);
+      
+      return { 
+        action: 'playCard', 
+        cardIndex: decision.index,
+        card: decision.card,
+        score: decision.score,
+        reason: this.aiService.explainDecision(decision, gameState, difficulty)
+      };
+    } catch (error) {
+      console.error(`Error ejecutando turno de IA: ${error.message}`);
+      return { action: 'error', reason: error.message };
+    }
+  }
+
+  // Configurar jugador como IA
+  setPlayerAsAI(roomId, playerId, difficulty = 'intermediate') {
+    try {
+      const game = this.games.get(roomId);
+      if (!game) {
+        throw new Error('Juego no encontrado');
+      }
+
+      const player = game.getPlayer(playerId);
+      if (!player) {
+        throw new Error('Jugador no encontrado');
+      }
+
+      player.isAI = true;
+      player.aiDifficulty = difficulty;
+      
+      console.log(`🤖 Jugador ${player.name} configurado como IA (${difficulty})`);
+      
+      // Notificar a otros jugadores
+      this.io.to(roomId).emit('playerSetAsAI', {
+        playerId,
+        playerName: player.name,
+        difficulty,
+        message: `${player.name} ahora es controlado por IA (${difficulty})`
+      });
+
+      return true;
+    } catch (error) {
+      console.error(`Error configurando IA: ${error.message}`);
+      return false;
+    }
+  }
+
+  // ==================== MODO SOLITARIO ====================
+
+  // Crear sala de modo solitario
+  createSoloGame(socket, data) {
+    try {
+      const { playerName, deckType = 'angels', aiDifficulty = 'intermediate' } = data;
+      
+      if (!playerName || playerName.trim().length === 0) {
+        throw new Error('Nombre de jugador requerido');
+      }
+
+      // Crear ID único para la sala
+      const roomId = `solo_${uuidv4()}`;
+      
+      // Crear juego con 4 jugadores (1 humano + 3 IA)
+      const game = new Game(roomId, 4, deckType);
+      game.gameMode = 'solo'; // Marcar como modo solitario
+      
+      // Agregar jugador humano
+      const humanPlayer = game.addPlayer(uuidv4(), playerName, socket.id);
+      humanPlayer.isHuman = true;
+      
+      // Agregar 3 jugadores IA
+      const aiNames = this.generateAINames(deckType);
+      const aiDifficulties = this.generateAIDifficulties(aiDifficulty);
+      
+      for (let i = 0; i < 3; i++) {
+        const aiPlayer = game.addPlayer(uuidv4(), aiNames[i], null);
+        aiPlayer.isAI = true;
+        aiPlayer.aiDifficulty = aiDifficulties[i];
+        aiPlayer.aiPersonality = this.generateAIPersonality(deckType, aiDifficulties[i]);
+      }
+      
+      // Guardar juego
+      this.games.set(roomId, game);
+      this.playerSockets.set(socket.id, { playerId: humanPlayer.id, roomId });
+      
+      // Unir socket a la sala
+      socket.join(roomId);
+      
+      console.log(`🎮 Modo solitario creado: ${playerName} vs 3 IA (${deckType})`);
+      
+      // Notificar al jugador
+      socket.emit('soloGameCreated', {
+        roomId,
+        playerId: humanPlayer.id,
+        gameState: game.getGameState(),
+        aiPlayers: game.players.filter(p => p.isAI).map(p => ({
+          id: p.id,
+          name: p.name,
+          difficulty: p.aiDifficulty,
+          personality: p.aiPersonality
+        }))
+      });
+
+      return { roomId, playerId: humanPlayer.id };
+    } catch (error) {
+      console.error(`Error creando modo solitario: ${error.message}`);
+      socket.emit('error', { message: error.message });
+      return null;
+    }
+  }
+
+  // Generar nombres para jugadores IA
+  generateAINames(deckType) {
+    const nameTemplates = {
+      angels: ['Gabriel', 'Miguel', 'Rafael', 'Uriel', 'Azrael', 'Metatrón'],
+      demons: ['Lucifer', 'Belial', 'Asmodeo', 'Mammón', 'Leviatán', 'Satanás'],
+      dragons: ['Drakon', 'Fafnir', 'Smaug', 'Alduin', 'Bahamut', 'Tiamat'],
+      mages: ['Merlín', 'Gandalf', 'Dumbledore', 'Morgana', 'Circe', 'Nostradamus']
+    };
+
+    const templates = nameTemplates[deckType] || nameTemplates.angels;
+    const names = [];
+    
+    // Seleccionar 3 nombres únicos
+    while (names.length < 3) {
+      const randomName = templates[Math.floor(Math.random() * templates.length)];
+      if (!names.includes(randomName)) {
+        names.push(randomName);
+      }
+    }
+    
+    return names;
+  }
+
+  // Generar dificultades para IA
+  generateAIDifficulties(baseDifficulty) {
+    const difficulties = ['beginner', 'intermediate', 'advanced', 'expert'];
+    const baseIndex = difficulties.indexOf(baseDifficulty);
+    
+    // Crear una distribución variada de dificultades
+    const aiDifficulties = [];
+    
+    // Una IA con dificultad base
+    aiDifficulties.push(baseDifficulty);
+    
+    // Una IA ligeramente más fácil
+    const easierIndex = Math.max(0, baseIndex - 1);
+    aiDifficulties.push(difficulties[easierIndex]);
+    
+    // Una IA ligeramente más difícil
+    const harderIndex = Math.min(3, baseIndex + 1);
+    aiDifficulties.push(difficulties[harderIndex]);
+    
+    // Mezclar el orden
+    return this.shuffleArray(aiDifficulties);
+  }
+
+  // Generar personalidad para IA
+  generateAIPersonality(deckType, difficulty) {
+    const personalities = {
+      angels: {
+        beginner: { name: 'Protector Novato', style: 'defensive', aggression: 0.2 },
+        intermediate: { name: 'Guardián Celestial', style: 'balanced', aggression: 0.4 },
+        advanced: { name: 'Arcángel Estratégico', style: 'tactical', aggression: 0.6 },
+        expert: { name: 'Serafín Supremo', style: 'master', aggression: 0.8 }
+      },
+      demons: {
+        beginner: { name: 'Diablillo Aprendiz', style: 'chaotic', aggression: 0.6 },
+        intermediate: { name: 'Demonio Astuto', style: 'aggressive', aggression: 0.7 },
+        advanced: { name: 'Señor del Infierno', style: 'ruthless', aggression: 0.8 },
+        expert: { name: 'Príncipe de las Tinieblas', style: 'brutal', aggression: 0.9 }
+      },
+      dragons: {
+        beginner: { name: 'Dragón Joven', style: 'proud', aggression: 0.5 },
+        intermediate: { name: 'Dragón Ancestral', style: 'dominant', aggression: 0.6 },
+        advanced: { name: 'Dragón Sabio', style: 'calculated', aggression: 0.7 },
+        expert: { name: 'Dragón Legendario', style: 'overwhelming', aggression: 0.8 }
+      },
+      mages: {
+        beginner: { name: 'Aprendiz de Magia', style: 'curious', aggression: 0.3 },
+        intermediate: { name: 'Mago Experto', style: 'strategic', aggression: 0.5 },
+        advanced: { name: 'Archimago', style: 'manipulative', aggression: 0.6 },
+        expert: { name: 'Mago Supremo', style: 'omniscient', aggression: 0.7 }
+      }
+    };
+
+    return personalities[deckType]?.[difficulty] || personalities.angels.intermediate;
+  }
+
+  // Mezclar array
+  shuffleArray(array) {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  }
+
+  // Ejecutar turno de IA (solitario y cooperativo)
+  executeAITurn(game, playerId) {
+    try {
+      const player = game.getPlayer(playerId);
+      if (!player || !player.isAI) {
+        return { action: 'error', reason: 'Jugador no es IA' };
+      }
+
+      // Aplicar personalidad de la IA
+      const personality = player.aiPersonality;
+      const baseDecision = this.aiService.decideCard(game.getGameState(), playerId, player.aiDifficulty);
+      
+      if (!baseDecision) {
+        // Si no hay cartas jugables, tomar el mazo de descarte
+        console.log(`🤖 ${player.name} (${personality.name}) no tiene cartas jugables, tomando mazo de descarte`);
+        game.takeDiscardPile(playerId);
+        return { 
+          action: 'takeDiscardPile', 
+          reason: 'No hay cartas jugables',
+          playerName: player.name,
+          personality: personality.name
+        };
+      }
+
+      // Aplicar personalidad a la decisión
+      const adjustedDecision = this.applyPersonalityToDecision(baseDecision, personality, game.getGameState());
+      
+      // Jugar la carta seleccionada
+      console.log(`🤖 ${player.name} (${personality.name}) jugando carta: ${adjustedDecision.card.name} (${adjustedDecision.reason})`);
+      game.playCard(playerId, adjustedDecision.index);
+      
+      return { 
+        action: 'playCard', 
+        cardIndex: adjustedDecision.index,
+        card: adjustedDecision.card,
+        reason: adjustedDecision.reason,
+        playerName: player.name,
+        personality: personality.name,
+        difficulty: player.aiDifficulty
+      };
+    } catch (error) {
+      console.error(`Error ejecutando turno de IA: ${error.message}`);
+      return { action: 'error', reason: error.message };
+    }
+  }
+
+  // Aplicar personalidad a la decisión de IA
+  applyPersonalityToDecision(decision, personality, gameState) {
+    let adjustedDecision = { ...decision };
+    
+    // Ajustar según el estilo de personalidad
+    switch (personality.style) {
+      case 'defensive':
+        // Preferir cartas de bajo valor y defensivas
+        if (decision.card.value <= 5) {
+          adjustedDecision.reason = `${decision.reason} (estilo defensivo)`;
+        }
+        break;
+        
+      case 'aggressive':
+        // Preferir cartas de alto valor y ofensivas
+        if (decision.card.value >= 8) {
+          adjustedDecision.reason = `${decision.reason} (estilo agresivo)`;
+        }
+        break;
+        
+      case 'tactical':
+        // Preferir cartas especiales
+        if (decision.card.isSpecial) {
+          adjustedDecision.reason = `${decision.reason} (estilo táctico)`;
+        }
+        break;
+        
+      case 'chaotic':
+        // A veces tomar decisiones aleatorias
+        if (Math.random() < 0.3) {
+          const playableCards = this.aiService.getPlayableCards(gameState, gameState.players.find(p => p.id === decision.playerId)?.hand || []);
+          if (playableCards.length > 1) {
+            const randomIndex = Math.floor(Math.random() * playableCards.length);
+            adjustedDecision = playableCards[randomIndex];
+            adjustedDecision.reason = 'Decisión caótica';
+          }
+        }
+        break;
+        
+      default:
+        adjustedDecision.reason = decision.reason;
+    }
+    
+    return adjustedDecision;
+  }
+
+  // Obtener información del modo solitario
+  getSoloGameInfo(roomId) {
+    try {
+      const game = this.games.get(roomId);
+      if (!game || game.gameMode !== 'solo') {
+        throw new Error('Juego solitario no encontrado');
+      }
+
+      const humanPlayer = game.players.find(p => p.isHuman);
+      const aiPlayers = game.players.filter(p => p.isAI);
+
+      return {
+        roomId,
+        gameMode: 'solo',
+        humanPlayer: {
+          id: humanPlayer.id,
+          name: humanPlayer.name,
+          handSize: humanPlayer.hand.length,
+          score: humanPlayer.score
+        },
+        aiPlayers: aiPlayers.map(p => ({
+          id: p.id,
+          name: p.name,
+          difficulty: p.aiDifficulty,
+          personality: p.aiPersonality,
+          handSize: p.hand.length,
+          score: p.score
+        })),
+        gameState: game.gameState,
+        currentPlayerId: game.currentPlayerId,
+        deckType: game.deckType
+      };
+    } catch (error) {
+      console.error(`Error obteniendo información de modo solitario: ${error.message}`);
+      return null;
+    }
+  }
+
+  // ==================== MODO COOPERATIVO ====================
+
+  // Crear sala de modo cooperativo
+  createCoopGame(socket, data) {
+    try {
+      const { playerName, deckType = 'angels', aiDifficulty = 'intermediate', maxPlayers = 2 } = data;
+      
+      if (!playerName || playerName.trim().length === 0) {
+        throw new Error('Nombre de jugador requerido');
+      }
+
+      // Crear ID único para la sala
+      const roomId = `coop_${uuidv4()}`;
+      
+      // Crear juego con 4 jugadores (2 humanos + 2 IA)
+      const game = new Game(roomId, 4, deckType);
+      game.gameMode = 'coop'; // Marcar como modo cooperativo
+      game.maxHumanPlayers = maxPlayers; // Máximo 2 jugadores humanos
+      
+      // Agregar primer jugador humano
+      const humanPlayer = game.addPlayer(uuidv4(), playerName, socket.id);
+      humanPlayer.isHuman = true;
+      humanPlayer.isHost = true; // El primer jugador es el host
+      
+      // Agregar 2 jugadores IA
+      const aiNames = this.generateAINames(deckType);
+      const aiDifficulties = this.generateAIDifficulties(aiDifficulty);
+      
+      for (let i = 0; i < 2; i++) {
+        const aiPlayer = game.addPlayer(uuidv4(), aiNames[i], null);
+        aiPlayer.isAI = true;
+        aiPlayer.aiDifficulty = aiDifficulties[i];
+        aiPlayer.aiPersonality = this.generateAIPersonality(deckType, aiDifficulties[i]);
+      }
+      
+      // Guardar juego
+      this.games.set(roomId, game);
+      this.playerSockets.set(socket.id, { playerId: humanPlayer.id, roomId });
+      
+      // Unir socket a la sala
+      socket.join(roomId);
+      
+      console.log(`🎮 Modo cooperativo creado: ${playerName} vs 2 IA (${deckType})`);
+      
+      // Notificar al jugador
+      socket.emit('coopGameCreated', {
+        roomId,
+        playerId: humanPlayer.id,
+        gameState: game.getGameState(),
+        aiPlayers: game.players.filter(p => p.isAI).map(p => ({
+          id: p.id,
+          name: p.name,
+          difficulty: p.aiDifficulty,
+          personality: p.aiPersonality
+        })),
+        maxHumanPlayers: maxPlayers,
+        currentHumanPlayers: 1
+      });
+
+      return { roomId, playerId: humanPlayer.id };
+    } catch (error) {
+      console.error(`Error creando modo cooperativo: ${error.message}`);
+      socket.emit('error', { message: error.message });
+      return null;
+    }
+  }
+
+  // Unirse a juego cooperativo existente
+  joinCoopGame(socket, data) {
+    try {
+      const { roomId, playerName } = data;
+      
+      if (!playerName || playerName.trim().length === 0) {
+        throw new Error('Nombre de jugador requerido');
+      }
+
+      const game = this.games.get(roomId);
+      if (!game || game.gameMode !== 'coop') {
+        throw new Error('Juego cooperativo no encontrado');
+      }
+
+      // Verificar si hay espacio para más jugadores humanos
+      const humanPlayers = game.players.filter(p => p.isHuman);
+      if (humanPlayers.length >= game.maxHumanPlayers) {
+        throw new Error('Sala llena de jugadores humanos');
+      }
+
+      // Verificar si el juego ya comenzó
+      if (game.gameState !== 'waiting') {
+        throw new Error('El juego ya ha comenzado');
+      }
+
+      // Agregar jugador humano
+      const humanPlayer = game.addPlayer(uuidv4(), playerName, socket.id);
+      humanPlayer.isHuman = true;
+      
+      // Guardar socket del jugador
+      this.playerSockets.set(socket.id, { playerId: humanPlayer.id, roomId });
+      
+      // Unir socket a la sala
+      socket.join(roomId);
+      
+      console.log(`👥 Jugador ${playerName} se unió al modo cooperativo en ${roomId}`);
+      
+      // Notificar al jugador que se unió
+      socket.emit('joinedCoopGame', {
+        roomId,
+        playerId: humanPlayer.id,
+        gameState: game.getGameState(),
+        aiPlayers: game.players.filter(p => p.isAI).map(p => ({
+          id: p.id,
+          name: p.name,
+          difficulty: p.aiDifficulty,
+          personality: p.aiPersonality
+        })),
+        humanPlayers: game.players.filter(p => p.isHuman).map(p => ({
+          id: p.id,
+          name: p.name,
+          isHost: p.isHost
+        }))
+      });
+
+      // Notificar a otros jugadores
+      socket.to(roomId).emit('playerJoinedCoopGame', {
+        playerId: humanPlayer.id,
+        playerName: humanPlayer.name,
+        humanPlayers: game.players.filter(p => p.isHuman).map(p => ({
+          id: p.id,
+          name: p.name,
+          isHost: p.isHost
+        }))
+      });
+
+      return { roomId, playerId: humanPlayer.id };
+    } catch (error) {
+      console.error(`Error uniéndose al modo cooperativo: ${error.message}`);
+      socket.emit('error', { message: error.message });
+      return null;
+    }
+  }
+
+  // Obtener información del modo cooperativo
+  getCoopGameInfo(roomId) {
+    try {
+      const game = this.games.get(roomId);
+      if (!game || game.gameMode !== 'coop') {
+        throw new Error('Juego cooperativo no encontrado');
+      }
+
+      const humanPlayers = game.players.filter(p => p.isHuman);
+      const aiPlayers = game.players.filter(p => p.isAI);
+
+      return {
+        roomId,
+        gameMode: 'coop',
+        humanPlayers: humanPlayers.map(p => ({
+          id: p.id,
+          name: p.name,
+          isHost: p.isHost,
+          handSize: p.hand.length,
+          score: p.score
+        })),
+        aiPlayers: aiPlayers.map(p => ({
+          id: p.id,
+          name: p.name,
+          difficulty: p.aiDifficulty,
+          personality: p.aiPersonality,
+          handSize: p.hand.length,
+          score: p.score
+        })),
+        gameState: game.gameState,
+        currentPlayerId: game.currentPlayerId,
+        deckType: game.deckType,
+        maxHumanPlayers: game.maxHumanPlayers,
+        currentHumanPlayers: humanPlayers.length
+      };
+    } catch (error) {
+      console.error(`Error obteniendo información de modo cooperativo: ${error.message}`);
+      return null;
+    }
+  }
+
+  // Obtener lista de juegos cooperativos disponibles
+  getAvailableCoopGames() {
+    const coopGames = [];
+    
+    for (const [roomId, game] of this.games) {
+      if (game.gameMode === 'coop' && game.gameState === 'waiting') {
+        const humanPlayers = game.players.filter(p => p.isHuman);
+        const aiPlayers = game.players.filter(p => p.isAI);
+        
+        coopGames.push({
+          roomId,
+          deckType: game.deckType,
+          aiDifficulty: aiPlayers[0]?.aiDifficulty || 'intermediate',
+          humanPlayers: humanPlayers.length,
+          maxHumanPlayers: game.maxHumanPlayers,
+          hostName: humanPlayers.find(p => p.isHost)?.name || 'Desconocido',
+          createdAt: game.createdAt || new Date()
+        });
+      }
+    }
+    
+    return coopGames.sort((a, b) => b.createdAt - a.createdAt);
+  }
+
+  // ==================== MODO DESAFÍO ====================
+
+  // Crear sala de modo desafío
+  createChallengeGame(socket, data) {
+    try {
+      const { playerName, deckType = 'angels', challengeLevel = 'expert' } = data;
+      
+      if (!playerName || playerName.trim().length === 0) {
+        throw new Error('Nombre de jugador requerido');
+      }
+
+      // Crear ID único para la sala
+      const roomId = `challenge_${uuidv4()}`;
+      
+      // Crear juego con 2 jugadores (1 humano + 1 IA experta)
+      const game = new Game(roomId, 2, deckType);
+      game.gameMode = 'challenge'; // Marcar como modo desafío
+      game.challengeLevel = challengeLevel; // Nivel de desafío
+      
+      // Agregar jugador humano
+      const humanPlayer = game.addPlayer(uuidv4(), playerName, socket.id);
+      humanPlayer.isHuman = true;
+      
+      // Agregar IA experta con personalidad especial
+      const aiNames = this.generateAINames(deckType);
+      const aiPlayer = game.addPlayer(uuidv4(), aiNames[0], null);
+      aiPlayer.isAI = true;
+      aiPlayer.aiDifficulty = challengeLevel;
+      aiPlayer.aiPersonality = this.generateChallengePersonality(deckType, challengeLevel);
+      aiPlayer.isChallengeAI = true; // Marcar como IA de desafío
+      
+      // Guardar juego
+      this.games.set(roomId, game);
+      this.playerSockets.set(socket.id, { playerId: humanPlayer.id, roomId });
+      
+      // Unir socket a la sala
+      socket.join(roomId);
+      
+      console.log(`⚔️ Modo desafío creado: ${playerName} vs IA ${challengeLevel} (${deckType})`);
+      
+      // Notificar al jugador
+      socket.emit('challengeGameCreated', {
+        roomId,
+        playerId: humanPlayer.id,
+        gameState: game.getGameState(),
+        aiPlayer: {
+          id: aiPlayer.id,
+          name: aiPlayer.name,
+          difficulty: aiPlayer.aiDifficulty,
+          personality: aiPlayer.aiPersonality,
+          challengeLevel: challengeLevel
+        },
+        challengeLevel: challengeLevel
+      });
+
+      return { roomId, playerId: humanPlayer.id };
+    } catch (error) {
+      console.error(`Error creando modo desafío: ${error.message}`);
+      socket.emit('error', { message: error.message });
+      return null;
+    }
+  }
+
+  // Generar personalidad especial para IA de desafío
+  generateChallengePersonality(deckType, challengeLevel) {
+    const basePersonalities = {
+      angels: {
+        name: 'Arcángel Miguel',
+        style: 'Defensivo Celestial',
+        aggression: 0.3,
+        special: 'Purificación Divina'
+      },
+      demons: {
+        name: 'Lucifer',
+        style: 'Infernal Agresivo',
+        aggression: 0.9,
+        special: 'Corrupción Total'
+      },
+      dragons: {
+        name: 'Bahamut',
+        style: 'Destructor Supremo',
+        aggression: 0.8,
+        special: 'Aliento Devastador'
+      },
+      mages: {
+        name: 'Merlín',
+        style: 'Arcano Maestro',
+        aggression: 0.6,
+        special: 'Hechizos Prohibidos'
+      }
+    };
+
+    const base = basePersonalities[deckType] || basePersonalities.angels;
+    
+    // Ajustar según nivel de desafío
+    const levelMultipliers = {
+      'expert': { aggression: 1.2, name: base.name },
+      'master': { aggression: 1.5, name: `${base.name} (Maestro)` },
+      'legendary': { aggression: 2.0, name: `${base.name} (Legendario)` }
+    };
+
+    const multiplier = levelMultipliers[challengeLevel] || levelMultipliers.expert;
+    
+    return {
+      name: multiplier.name,
+      style: base.style,
+      aggression: Math.min(base.aggression * multiplier.aggression, 1.0),
+      special: base.special,
+      challengeLevel: challengeLevel,
+      isChallengeAI: true
+    };
+  }
+
+  // Obtener información del modo desafío
+  getChallengeGameInfo(roomId) {
+    try {
+      const game = this.games.get(roomId);
+      if (!game || game.gameMode !== 'challenge') {
+        throw new Error('Juego de desafío no encontrado');
+      }
+
+      const humanPlayer = game.players.find(p => p.isHuman);
+      const aiPlayer = game.players.find(p => p.isAI);
+
+      return {
+        roomId,
+        gameMode: 'challenge',
+        humanPlayer: {
+          id: humanPlayer.id,
+          name: humanPlayer.name,
+          handSize: humanPlayer.hand.length,
+          score: humanPlayer.score
+        },
+        aiPlayer: {
+          id: aiPlayer.id,
+          name: aiPlayer.name,
+          difficulty: aiPlayer.aiDifficulty,
+          personality: aiPlayer.aiPersonality,
+          handSize: aiPlayer.hand.length,
+          score: aiPlayer.score,
+          challengeLevel: game.challengeLevel
+        },
+        gameState: game.gameState,
+        currentPlayerId: game.currentPlayerId,
+        deckType: game.deckType,
+        challengeLevel: game.challengeLevel
+      };
+    } catch (error) {
+      console.error(`Error obteniendo información de modo desafío: ${error.message}`);
+      return null;
+    }
+  }
+
+  // Ejecutar turno de IA en modo desafío (más agresivo)
+  executeChallengeAITurn(game, playerId) {
+    try {
+      const player = game.getPlayer(playerId);
+      if (!player || !player.isAI || !player.isChallengeAI) {
+        return { action: 'error', reason: 'Jugador no es IA de desafío' };
+      }
+
+      // Personalidad especial de desafío
+      const personality = player.aiPersonality;
+      const baseDecision = this.aiService.decideCard(game.getGameState(), playerId, player.aiDifficulty);
+      
+      if (!baseDecision) {
+        // En modo desafío, la IA es más agresiva al tomar el mazo
+        console.log(`⚔️ ${player.name} (${personality.name}) no tiene cartas jugables, tomando mazo de descarte`);
+        game.takeDiscardPile(playerId);
+        return { 
+          action: 'takeDiscardPile', 
+          reason: 'Estrategia de desafío: acumular cartas',
+          playerName: player.name,
+          personality: personality.name,
+          challengeLevel: personality.challengeLevel
+        };
+      }
+
+      // Aplicar personalidad de desafío (más agresiva)
+      const challengeDecision = this.applyChallengePersonality(baseDecision, personality, game.getGameState());
+      
+      // Jugar la carta seleccionada
+      console.log(`⚔️ ${player.name} (${personality.name}) jugando carta: ${challengeDecision.card.name} (${challengeDecision.reason})`);
+      game.playCard(playerId, challengeDecision.index);
+      
+      return { 
+        action: 'playCard', 
+        cardIndex: challengeDecision.index,
+        card: challengeDecision.card,
+        reason: challengeDecision.reason,
+        playerName: player.name,
+        personality: personality.name,
+        difficulty: player.aiDifficulty,
+        challengeLevel: personality.challengeLevel
+      };
+    } catch (error) {
+      console.error(`Error ejecutando turno de IA de desafío: ${error.message}`);
+      return { action: 'error', reason: error.message };
+    }
+  }
+
+  // Aplicar personalidad de desafío a la decisión
+  applyChallengePersonality(decision, personality, gameState) {
+    const adjustedDecision = { ...decision };
+    
+    // En modo desafío, la IA es más agresiva
+    if (personality.challengeLevel === 'master') {
+      // Maestro: prioriza cartas de alto valor y efectos especiales
+      adjustedDecision.reason = `[MAESTRO] ${decision.reason} - Estrategia superior`;
+    } else if (personality.challengeLevel === 'legendary') {
+      // Legendario: máxima agresividad y estrategia compleja
+      adjustedDecision.reason = `[LEGENDARIO] ${decision.reason} - Dominio total`;
+    } else {
+      // Experto: estrategia avanzada
+      adjustedDecision.reason = `[EXPERTA] ${decision.reason} - Desafío intenso`;
+    }
+    
+    return adjustedDecision;
+  }
+
+  // Manejar turnos automáticos de IA (solitario y cooperativo)
+  handleAITurns(game, roomId) {
+    // Usar setTimeout para dar tiempo a que se procesen los eventos
+    setTimeout(() => {
+      this.processAITurns(game, roomId);
+    }, 1000); // 1 segundo de delay entre turnos
+  }
+
+  // Procesar turnos de IA (solitario y cooperativo)
+  processAITurns(game, roomId) {
+    try {
+      // Verificar si el juego sigue activo
+      if (game.gameState !== 'playing') {
+        return;
+      }
+
+      const currentPlayer = game.players[game.currentPlayerIndex];
+      
+      // Si el jugador actual es IA, ejecutar su turno
+      if (currentPlayer && currentPlayer.isAI) {
+        console.log(`🤖 Turno de IA: ${currentPlayer.name} (${currentPlayer.aiPersonality.name})`);
+        
+        let aiResult;
+        if (currentPlayer.isChallengeAI) {
+          // IA de desafío con comportamiento especial
+          aiResult = this.executeChallengeAITurn(game, currentPlayer.id);
+        } else {
+          // IA normal
+          aiResult = this.executeAITurn(game, currentPlayer.id);
+        }
+        
+        // Notificar la acción de la IA
+        this.io.to(roomId).emit('aiAction', {
+          playerId: currentPlayer.id,
+          playerName: currentPlayer.name,
+          personality: currentPlayer.aiPersonality.name,
+          action: aiResult.action,
+          card: aiResult.card,
+          reason: aiResult.reason,
+          difficulty: currentPlayer.aiDifficulty,
+          challengeLevel: currentPlayer.aiPersonality.challengeLevel,
+          isChallengeAI: currentPlayer.isChallengeAI
+        });
+
+        // Actualizar estado del juego para todos los jugadores
+        game.players.forEach(player => {
+          if (player.socketId) { // Solo actualizar jugadores humanos
+            const gameState = game.getGameState(player.id);
+            this.io.to(player.socketId).emit('gameStateUpdated', gameState);
+          }
+        });
+
+        // Notificar cambio de turno
+        this.io.to(roomId).emit('turnChanged', {
+          turnInfo: game.getTurnInfo(),
+          previousPlayerId: currentPlayer.id,
+          nextPlayerId: game.players[game.currentPlayerIndex]?.id
+        });
+
+        // Verificar si el juego terminó
+        if (game.gameState === 'finished') {
+          const gameMode = game.gameMode === 'solo' ? 'solitario' : 'cooperativo';
+          console.log(`🎮 Juego ${gameMode} terminado en sala ${roomId}`);
+          
+          this.io.to(roomId).emit('gameEnded', {
+            winner: game.winner ? game.winner.getPublicInfo() : null,
+            sinner: game.sinner ? game.sinner.getPublicInfo() : null,
+            gameSummary: {
+              totalTurns: game.turnNumber,
+              finalDiscardPileSize: game.discardPile.length,
+              playersStatus: game.players.map(p => ({
+                id: p.id,
+                name: p.name,
+                status: p.hasWon() ? 'winner' : p.isSinner ? 'sinner' : 'active',
+                cardsRemaining: p.getTotalCardsRemaining(),
+                score: p.score
+              }))
+            }
+          });
+          return;
+        }
+
+        // Continuar con el siguiente turno de IA si es necesario
+        const nextPlayer = game.players[game.currentPlayerIndex];
+        if (nextPlayer && nextPlayer.isAI) {
+          // Delay antes del siguiente turno de IA
+          setTimeout(() => {
+            this.processAITurns(game, roomId);
+          }, 2000); // 2 segundos entre turnos de IA
+        }
+      }
+    } catch (error) {
+      console.error(`Error procesando turnos de IA: ${error.message}`);
     }
   }
 

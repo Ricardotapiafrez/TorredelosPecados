@@ -1,4 +1,4 @@
-// File: /Users/ricardotapiafrez/Desktop/GIT/TorreDoLosPecadosSaaS/web/src/app/layout.tsx
+// File: /Users/ricardotapiafrez/Desktop/GIT/TorredelosPecados/web/src/app/layout.tsx
 import * as entry from '../../../src/app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

@@ -15,9 +15,11 @@ import { CelebrationEffect } from './VisualEffects'
 import FeedbackControls from './FeedbackControls'
 import RealTimeNotificationCenter from './RealTimeNotificationCenter'
 import ConnectionStatus from './ConnectionStatus'
+import AISuggestionPanel from './AISuggestionPanel'
 import { usePlayValidation } from '@/hooks/usePlayValidation'
 import { useActionFeedback } from '@/hooks/useActionFeedback'
 import { useRealTimeNotifications } from '@/hooks/useRealTimeNotifications'
+import { useAI } from '@/hooks/useAI'
 import { Card } from '@/types/game'
 
 interface Player {
@@ -57,20 +59,32 @@ interface GameState {
 }
 
 interface GameBoardProps {
-  gameState: GameState
-  currentPlayerId: string
-  onPlayCard: (cardIndex: number, targetPlayerId?: string) => void
+  socket: any
+  roomId: string
+  playerId: string
+  isSoloMode?: boolean
+  isCoopMode?: boolean
+  isChallengeMode?: boolean
+  gameState?: GameState
+  currentPlayerId?: string
+  onPlayCard?: (cardIndex: number, targetPlayerId?: string) => void
   onCardDrop?: (card: Card, targetZone: string, targetPlayerId?: string) => void
-  onTakeDiscardPile: () => void
-  onSetReady: (isReady: boolean) => void
-  onStartGame: () => void
+  onTakeDiscardPile?: () => void
+  onSetReady?: (isReady: boolean) => void
+  onStartGame?: () => void
   onSkipTurn?: () => void
   onSelectTarget?: (targetPlayerId: string) => void
 }
 
 export default function GameBoard({
-  gameState,
-  currentPlayerId,
+  socket,
+  roomId,
+  playerId,
+  isSoloMode = false,
+  isCoopMode = false,
+  isChallengeMode = false,
+  gameState: propGameState,
+  currentPlayerId: propCurrentPlayerId,
   onPlayCard,
   onCardDrop,
   onTakeDiscardPile,
@@ -79,7 +93,9 @@ export default function GameBoard({
   onSkipTurn,
   onSelectTarget
 }: GameBoardProps) {
-  const [timeLeft, setTimeLeft] = useState(gameState.turnTime)
+  const [gameState, setGameState] = useState<GameState | null>(propGameState || null)
+  const [currentPlayerId, setCurrentPlayerId] = useState<string>(propCurrentPlayerId || playerId)
+  const [timeLeft, setTimeLeft] = useState(30)
   const [selectedCard, setSelectedCard] = useState<number | null>(null)
   const [showTargetSelection, setShowTargetSelection] = useState(false)
   const [playableCards, setPlayableCards] = useState<number[]>([])
@@ -92,9 +108,36 @@ export default function GameBoard({
   const [showSoundEffects, setShowSoundEffects] = useState(true)
   const [showRealTimeNotifications, setShowRealTimeNotifications] = useState(true)
   const [showConnectionStatus, setShowConnectionStatus] = useState(true)
+  const [showAIPanel, setShowAIPanel] = useState(false)
   const [feedbackSettings, setFeedbackSettings] = useState({
     notifications: true,
     soundEffects: true,
+  })
+
+  // Hooks para el modo solitario, cooperativo y desafío
+  const {
+    suggestion,
+    difficulties,
+    currentDifficulty,
+    loading: aiLoading,
+    error: aiError,
+    getSuggestion,
+    clearSuggestion,
+    clearAIError,
+    setCurrentDifficulty
+  } = useAI({ socket, enabled: !isSoloMode && !isCoopMode && !isChallengeMode })
+
+  const {
+    suggestion: soloSuggestion,
+    difficulties: soloDifficulties,
+    currentDifficulty: soloCurrentDifficulty,
+    loading: soloAILoading,
+    error: soloAIError,
+    getSuggestion: getSoloSuggestion,
+    clearSuggestion: clearSoloSuggestion,
+    clearAIError: clearSoloAIError,
+    setCurrentDifficulty: setSoloCurrentDifficulty
+  } = useAI({ socket, enabled: isSoloMode || isCoopMode || isChallengeMode })
     visualEffects: true,
     validationIndicators: true,
     celebrationEffects: true
@@ -171,13 +214,102 @@ export default function GameBoard({
     }
   })
 
+  // Hook de IA (modo normal)
+  const {
+    suggestion,
+    difficulties,
+    strategies,
+    loading: aiLoading,
+    error: aiError,
+    currentDifficulty,
+    getSuggestion,
+    setPlayerAsAI,
+    loadDifficulties,
+    loadStrategies,
+    clearSuggestion,
+    clearError: clearAIError,
+    setCurrentDifficulty
+  } = useAI({
+    socket,
+    enabled: !isSoloMode
+  })
+
+  // Hook de IA (modo solitario)
+  const {
+    suggestion: soloSuggestion,
+    difficulties: soloDifficulties,
+    strategies: soloStrategies,
+    loading: soloAILoading,
+    error: soloAIError,
+    currentDifficulty: soloCurrentDifficulty,
+    getSuggestion: getSoloSuggestion,
+    setPlayerAsAI: setSoloPlayerAsAI,
+    loadDifficulties: loadSoloDifficulties,
+    loadStrategies: loadSoloStrategies,
+    clearSuggestion: clearSoloSuggestion,
+    clearError: clearSoloAIError,
+    setCurrentDifficulty: setSoloCurrentDifficulty
+  } = useAI({
+    socket,
+    enabled: isSoloMode
+  })
+
+  // Efectos para Socket.io en modo solitario, cooperativo y desafío
+  useEffect(() => {
+    if (!socket || (!isSoloMode && !isCoopMode && !isChallengeMode)) return
+
+    const handleGameStateUpdated = (data: any) => {
+      setGameState(data)
+      setCurrentPlayerId(data.currentPlayerId)
+    }
+
+    const handleCardPlayed = (data: any) => {
+      console.log('Carta jugada:', data)
+      addCardPlayedFeedback(data.card, data.playerId)
+    }
+
+    const handleTurnChanged = (data: any) => {
+      console.log('Turno cambiado:', data)
+      setCurrentPlayerId(data.turnInfo.currentPlayerId)
+      addTurnChangedFeedback(data.turnInfo)
+    }
+
+    const handleGameEnded = (data: any) => {
+      console.log('Juego terminado:', data)
+      addGameEndedFeedback(data.winner, data.sinner)
+    }
+
+    const handleAIAction = (data: any) => {
+      console.log('Acción de IA:', data)
+      addFeedback({
+        type: 'info',
+        message: `${data.playerName} (${data.personality}): ${data.action}`,
+        duration: 3000
+      })
+    }
+
+    socket.on('gameStateUpdated', handleGameStateUpdated)
+    socket.on('cardPlayed', handleCardPlayed)
+    socket.on('turnChanged', handleTurnChanged)
+    socket.on('gameEnded', handleGameEnded)
+    socket.on('aiAction', handleAIAction)
+
+    return () => {
+      socket.off('gameStateUpdated', handleGameStateUpdated)
+      socket.off('cardPlayed', handleCardPlayed)
+      socket.off('turnChanged', handleTurnChanged)
+      socket.off('gameEnded', handleGameEnded)
+      socket.off('aiAction', handleAIAction)
+    }
+  }, [socket, isSoloMode, isCoopMode, isChallengeMode, addCardPlayedFeedback, addTurnChangedFeedback, addGameEndedFeedback, addFeedback])
+
   // Timer del turno
   useEffect(() => {
-    if (gameState.gameState === 'playing' && isCurrentTurn) {
+    if (gameState?.gameState === 'playing' && isCurrentTurn) {
       const timer = setInterval(() => {
         setTimeLeft(prev => {
           if (prev <= 1) {
-            return gameState.turnTime
+            return gameState.turnTime || 30
           }
           return prev - 1
         })
@@ -185,7 +317,7 @@ export default function GameBoard({
 
       return () => clearInterval(timer)
     }
-  }, [gameState.gameState, isCurrentTurn, gameState.turnTime])
+  }, [gameState?.gameState, isCurrentTurn, gameState?.turnTime])
 
   // Actualizar cartas jugables
   useEffect(() => {
@@ -212,14 +344,14 @@ export default function GameBoard({
         // Encontrar el índice de la carta en la mano del jugador
         const cardIndex = currentPlayer?.hand.findIndex(c => c.id === card.id)
         if (cardIndex !== undefined && cardIndex >= 0) {
-          onPlayCard(cardIndex)
+          handlePlayCard(cardIndex)
         }
         break
       case 'tower-of-sins':
         // Lógica para jugar carta en la torre de los pecados
         const towerCardIndex = currentPlayer?.hand.findIndex(c => c.id === card.id)
         if (towerCardIndex !== undefined && towerCardIndex >= 0) {
-          onPlayCard(towerCardIndex)
+          handlePlayCard(towerCardIndex)
         }
         break
       case 'player-target':
@@ -227,7 +359,7 @@ export default function GameBoard({
         if (targetPlayerId) {
           const targetCardIndex = currentPlayer?.hand.findIndex(c => c.id === card.id)
           if (targetCardIndex !== undefined && targetCardIndex >= 0) {
-            onPlayCard(targetCardIndex, targetPlayerId)
+            handlePlayCard(targetCardIndex, targetPlayerId)
           }
         }
         break
@@ -238,6 +370,39 @@ export default function GameBoard({
 
     // Llamar al callback personalizado si existe
     onCardDrop?.(card, targetZone, targetPlayerId)
+  }
+
+  // Funciones para modo solitario, cooperativo y desafío
+  const handlePlayCard = (cardIndex: number, targetPlayerId?: string) => {
+    if ((isSoloMode || isCoopMode || isChallengeMode) && socket) {
+      socket.emit('playCard', { cardIndex, targetPlayerId })
+    } else if (onPlayCard) {
+      onPlayCard(cardIndex, targetPlayerId)
+    }
+  }
+
+  const handleTakeDiscardPile = () => {
+    if ((isSoloMode || isCoopMode || isChallengeMode) && socket) {
+      socket.emit('takeDiscardPile')
+    } else if (onTakeDiscardPile) {
+      onTakeDiscardPile()
+    }
+  }
+
+  const handleSetReady = (isReady: boolean) => {
+    if ((isSoloMode || isCoopMode || isChallengeMode) && socket) {
+      socket.emit('setPlayerReady', { isReady })
+    } else if (onSetReady) {
+      onSetReady(isReady)
+    }
+  }
+
+  const handleStartGame = () => {
+    if ((isSoloMode || isCoopMode || isChallengeMode) && socket) {
+      socket.emit('startGame')
+    } else if (onStartGame) {
+      onStartGame()
+    }
   }
 
   const handleDragOver = (event: React.DragEvent) => {
@@ -805,6 +970,9 @@ export default function GameBoard({
         settings={feedbackSettings}
         onSettingsChange={setFeedbackSettings}
         isVisible={true}
+        showAIPanel={showAIPanel}
+        onToggleAIPanel={() => setShowAIPanel(!showAIPanel)}
+        isMyTurn={isMyTurn}
       />
 
       {/* Centro de Notificaciones en Tiempo Real */}
@@ -823,6 +991,21 @@ export default function GameBoard({
         playerId={currentPlayerId}
         roomId={roomId}
         isVisible={showConnectionStatus}
+      />
+
+      {/* Panel de Sugerencias de IA */}
+      <AISuggestionPanel
+        suggestion={suggestion}
+        difficulties={difficulties}
+        currentDifficulty={currentDifficulty}
+        loading={aiLoading}
+        error={aiError}
+        onGetSuggestion={getSuggestion}
+        onClearSuggestion={clearSuggestion}
+        onClearError={clearAIError}
+        onSetDifficulty={setCurrentDifficulty}
+        isVisible={showAIPanel && isMyTurn}
+        className="fixed bottom-4 right-4 w-80 z-40"
       />
     </div>
   )
