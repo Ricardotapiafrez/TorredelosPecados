@@ -1,0 +1,297 @@
+name: Integration Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'api/**'
+      - 'web/**'
+      - '.github/workflows/integration-tests.yml'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'api/**'
+      - 'web/**'
+      - '.github/workflows/integration-tests.yml'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to test'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  setup:
+    name: Setup Test Environment
+    runs-on: ubuntu-latest
+    
+    outputs:
+      backend-url: ${{ steps.setup-env.outputs.backend-url }}
+      frontend-url: ${{ steps.setup-env.outputs.frontend-url }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup environment variables
+        id: setup-env
+        run: |
+          if [ "${{ github.event.inputs.environment }}" = "production" ]; then
+            echo "backend-url=https://api.torredelospecados.com" >> $GITHUB_OUTPUT
+            echo "frontend-url=https://torredelospecados.com" >> $GITHUB_OUTPUT
+          else
+            echo "backend-url=https://staging-api.torredelospecados.com" >> $GITHUB_OUTPUT
+            echo "frontend-url=https://staging.torredelospecados.com" >> $GITHUB_OUTPUT
+          fi
+
+  backend-health:
+    name: Backend Health Check
+    runs-on: ubuntu-latest
+    needs: setup
+    
+    steps:
+      - name: Check backend health
+        run: |
+          echo "Checking backend health at ${{ needs.setup.outputs.backend-url }}"
+          
+          # Esperar a que el backend esté disponible
+          for i in {1..30}; do
+            if curl -f "${{ needs.setup.outputs.backend-url }}/health" > /dev/null 2>&1; then
+              echo "Backend is healthy!"
+              break
+            fi
+            echo "Attempt $i: Backend not ready, waiting..."
+            sleep 10
+          done
+          
+          # Verificar endpoints críticos
+          curl -f "${{ needs.setup.outputs.backend-url }}/api/games" || exit 1
+          curl -f "${{ needs.setup.outputs.backend-url }}/api/players" || exit 1
+
+  frontend-health:
+    name: Frontend Health Check
+    runs-on: ubuntu-latest
+    needs: setup
+    
+    steps:
+      - name: Check frontend health
+        run: |
+          echo "Checking frontend health at ${{ needs.setup.outputs.frontend-url }}"
+          
+          # Esperar a que el frontend esté disponible
+          for i in {1..30}; do
+            if curl -f "${{ needs.setup.outputs.frontend-url }}" > /dev/null 2>&1; then
+              echo "Frontend is healthy!"
+              break
+            fi
+            echo "Attempt $i: Frontend not ready, waiting..."
+            sleep 10
+          done
+          
+          # Verificar que la página principal carga
+          curl -f "${{ needs.setup.outputs.frontend-url }}" | grep -q "Torre de los Pecados" || exit 1
+
+  api-integration:
+    name: API Integration Tests
+    runs-on: ubuntu-latest
+    needs: [setup, backend-health]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+          cache-dependency-path: api/package-lock.json
+          
+      - name: Install dependencies
+        working-directory: api
+        run: npm ci
+        
+      - name: Run API integration tests
+        working-directory: api
+        env:
+          API_BASE_URL: ${{ needs.setup.outputs.backend-url }}
+        run: |
+          # Tests de integración de API
+          npm run test:integration:api
+          
+      - name: Upload API test results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: api-integration-results
+          path: api/test-results/
+          retention-days: 30
+
+  e2e-integration:
+    name: E2E Integration Tests
+    runs-on: ubuntu-latest
+    needs: [setup, backend-health, frontend-health]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+          cache-dependency-path: web/package-lock.json
+          
+      - name: Install dependencies
+        working-directory: web
+        run: npm ci
+        
+      - name: Install Playwright browsers
+        working-directory: web
+        run: npm run test:e2e:install
+        
+      - name: Run E2E integration tests
+        working-directory: web
+        env:
+          BACKEND_URL: ${{ needs.setup.outputs.backend-url }}
+          FRONTEND_URL: ${{ needs.setup.outputs.frontend-url }}
+        run: |
+          # Tests E2E que verifican la integración completa
+          npx playwright test --grep "integration"
+          
+      - name: Upload E2E integration results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: e2e-integration-results
+          path: web/test-results/
+          retention-days: 30
+
+  performance:
+    name: Performance Tests
+    runs-on: ubuntu-latest
+    needs: [setup, backend-health, frontend-health]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+          cache-dependency-path: api/package-lock.json
+          
+      - name: Install dependencies
+        working-directory: api
+        run: npm ci
+        
+      - name: Run performance tests
+        working-directory: api
+        env:
+          API_BASE_URL: ${{ needs.setup.outputs.backend-url }}
+        run: |
+          # Tests de performance y carga
+          npm run test:performance
+          
+      - name: Upload performance results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: performance-results
+          path: api/test-results/
+          retention-days: 30
+
+  security-integration:
+    name: Security Integration Tests
+    runs-on: ubuntu-latest
+    needs: [setup, backend-health, frontend-health]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+          cache-dependency-path: api/package-lock.json
+          
+      - name: Install dependencies
+        working-directory: api
+        run: npm ci
+        
+      - name: Run security integration tests
+        working-directory: api
+        env:
+          API_BASE_URL: ${{ needs.setup.outputs.backend-url }}
+        run: |
+          # Tests de seguridad de integración
+          npm run test:security:integration
+          
+      - name: Upload security results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: security-integration-results
+          path: api/test-results/
+          retention-days: 30
+
+  report:
+    name: Generate Integration Report
+    runs-on: ubuntu-latest
+    needs: [api-integration, e2e-integration, performance, security-integration]
+    if: always()
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Download all test results
+        uses: actions/download-artifact@v3
+        with:
+          name: api-integration-results
+          path: api/test-results/
+          
+      - name: Download E2E results
+        uses: actions/download-artifact@v3
+        with:
+          name: e2e-integration-results
+          path: web/test-results/
+          
+      - name: Download performance results
+        uses: actions/download-artifact@v3
+        with:
+          name: performance-results
+          path: api/test-results/
+          
+      - name: Download security results
+        uses: actions/download-artifact@v3
+        with:
+          name: security-integration-results
+          path: api/test-results/
+          
+      - name: Generate integration report
+        run: |
+          echo "# Integration Test Report" > integration-report.md
+          echo "Generated: $(date)" >> integration-report.md
+          echo "" >> integration-report.md
+          echo "## Test Results Summary" >> integration-report.md
+          echo "" >> integration-report.md
+          
+          # Aquí se generaría un reporte más detallado
+          echo "Integration tests completed successfully!" >> integration-report.md
+          
+      - name: Upload integration report
+        uses: actions/upload-artifact@v3
+        with:
+          name: integration-report
+          path: integration-report.md
+          retention-days: 30

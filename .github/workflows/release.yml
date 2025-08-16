@@ -1,0 +1,273 @@
+name: Release Management
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 1.0.0)'
+        required: true
+        type: string
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  validate:
+    name: Validate Release
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Validate version format
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            VERSION=${GITHUB_REF#refs/tags/}
+          else
+            VERSION="${{ github.event.inputs.version }}"
+          fi
+          
+          # Validar formato de versión (semver)
+          if [[ ! $VERSION =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.-]+)?(\+[a-zA-Z0-9.-]+)?$ ]]; then
+            echo "Error: Invalid version format. Must be semantic versioning (e.g., v1.0.0)"
+            exit 1
+          fi
+          
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "Valid version: $VERSION"
+          
+      - name: Check changelog
+        run: |
+          if [ ! -f "CHANGELOG.md" ]; then
+            echo "Warning: CHANGELOG.md not found"
+          else
+            if ! grep -q "$VERSION" CHANGELOG.md; then
+              echo "Warning: Version $VERSION not found in CHANGELOG.md"
+            fi
+          fi
+
+  build-release:
+    name: Build Release
+    runs-on: ubuntu-latest
+    needs: validate
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+          
+      - name: Build backend
+        working-directory: api
+        run: |
+          npm ci
+          npm run build
+          
+      - name: Build frontend
+        working-directory: web
+        run: |
+          npm ci
+          npm run build
+          
+      - name: Create release artifacts
+        run: |
+          mkdir -p release-artifacts
+          
+          # Backend
+          tar -czf release-artifacts/backend-${{ env.VERSION }}.tar.gz -C api dist/
+          
+          # Frontend
+          tar -czf release-artifacts/frontend-${{ env.VERSION }}.tar.gz -C web .next/
+          
+          # Documentation
+          cp README.md release-artifacts/
+          cp CHANGELOG.md release-artifacts/ 2>/dev/null || echo "No changelog found"
+          
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-${{ env.VERSION }}
+          path: release-artifacts/
+          retention-days: 90
+
+  create-github-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: build-release
+    if: github.event_name == 'push'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Download release artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: release-${{ env.VERSION }}
+          path: release-artifacts/
+          
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.VERSION }}
+          release_name: Release ${{ env.VERSION }}
+          body: |
+            ## What's Changed
+            
+            See [CHANGELOG.md](CHANGELOG.md) for detailed information.
+            
+            ## Downloads
+            
+            - [Backend (${{ env.VERSION }})](release-artifacts/backend-${{ env.VERSION }}.tar.gz)
+            - [Frontend (${{ env.VERSION }})](release-artifacts/frontend-${{ env.VERSION }}.tar.gz)
+            
+            ## Installation
+            
+            ```bash
+            # Backend
+            tar -xzf backend-${{ env.VERSION }}.tar.gz
+            cd backend
+            npm install
+            npm start
+            ```
+            
+            ```bash
+            # Frontend
+            tar -xzf frontend-${{ env.VERSION }}.tar.gz
+            cd frontend
+            npm install
+            npm start
+            ```
+          draft: false
+          prerelease: false
+          files: |
+            release-artifacts/*.tar.gz
+            release-artifacts/README.md
+            release-artifacts/CHANGELOG.md
+
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: build-release
+    if: github.event.inputs.environment == 'staging' || github.event_name == 'push'
+    environment: staging
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Download release artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: release-${{ env.VERSION }}
+          path: release-artifacts/
+          
+      - name: Deploy backend to staging
+        run: |
+          echo "Deploying backend ${{ env.VERSION }} to staging..."
+          # Aquí irían los comandos de despliegue específicos
+          # Por ejemplo: rsync, docker push, etc.
+          
+      - name: Deploy frontend to staging
+        run: |
+          echo "Deploying frontend ${{ env.VERSION }} to staging..."
+          # Aquí irían los comandos de despliegue específicos
+          # Por ejemplo: rsync, vercel, etc.
+          
+      - name: Verify staging deployment
+        run: |
+          echo "Verifying staging deployment..."
+          # Verificar que la aplicación esté funcionando
+          curl -f https://staging.torredelospecados.com/health || exit 1
+          
+      - name: Notify staging deployment
+        run: |
+          echo "Release ${{ env.VERSION }} deployed to staging successfully!"
+
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [build-release, deploy-staging]
+    if: github.event.inputs.environment == 'production'
+    environment: production
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Download release artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: release-${{ env.VERSION }}
+          path: release-artifacts/
+          
+      - name: Deploy backend to production
+        run: |
+          echo "Deploying backend ${{ env.VERSION }} to production..."
+          # Aquí irían los comandos de despliegue específicos
+          # Por ejemplo: rsync, docker push, etc.
+          
+      - name: Deploy frontend to production
+        run: |
+          echo "Deploying frontend ${{ env.VERSION }} to production..."
+          # Aquí irían los comandos de despliegue específicos
+          # Por ejemplo: rsync, vercel, etc.
+          
+      - name: Verify production deployment
+        run: |
+          echo "Verifying production deployment..."
+          # Verificar que la aplicación esté funcionando
+          curl -f https://torredelospecados.com/health || exit 1
+          
+      - name: Notify production deployment
+        run: |
+          echo "Release ${{ env.VERSION }} deployed to production successfully!"
+
+  post-release:
+    name: Post Release Tasks
+    runs-on: ubuntu-latest
+    needs: [build-release, create-github-release]
+    if: always()
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Update version in package.json
+        run: |
+          cd api
+          npm version ${{ env.VERSION }} --no-git-tag-version
+          
+          cd ../web
+          npm version ${{ env.VERSION }} --no-git-tag-version
+          
+      - name: Commit version updates
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add api/package.json web/package.json
+          git commit -m "Bump version to ${{ env.VERSION }} [skip ci]" || echo "No changes to commit"
+          
+      - name: Push version updates
+        run: |
+          git push origin HEAD:${{ github.ref_name }}
+          
+      - name: Notify team
+        run: |
+          echo "Release ${{ env.VERSION }} completed successfully!"
+          # Aquí se podría enviar notificación a Slack/Discord

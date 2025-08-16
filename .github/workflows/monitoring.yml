@@ -1,0 +1,322 @@
+name: Monitoring & Alerts
+
+on:
+  schedule:
+    # Ejecutar cada 5 minutos
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to monitor'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - staging
+          - production
+      check_type:
+        description: 'Type of check to perform'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - health
+          - performance
+          - security
+
+jobs:
+  health-check:
+    name: Health Check
+    runs-on: ubuntu-latest
+    if: github.event.inputs.check_type == 'all' || github.event.inputs.check_type == 'health'
+    
+    steps:
+      - name: Check backend health
+        run: |
+          ENVIRONMENT="${{ github.event.inputs.environment || 'production' }}"
+          
+          if [ "$ENVIRONMENT" = "production" ]; then
+            BACKEND_URL="https://api.torredelospecados.com"
+            FRONTEND_URL="https://torredelospecados.com"
+          else
+            BACKEND_URL="https://staging-api.torredelospecados.com"
+            FRONTEND_URL="https://staging.torredelospecados.com"
+          fi
+          
+          echo "Checking health for $ENVIRONMENT environment..."
+          
+          # Backend health check
+          if curl -f "$BACKEND_URL/health" > /dev/null 2>&1; then
+            echo "✅ Backend is healthy"
+          else
+            echo "❌ Backend health check failed"
+            exit 1
+          fi
+          
+          # Frontend health check
+          if curl -f "$FRONTEND_URL" > /dev/null 2>&1; then
+            echo "✅ Frontend is healthy"
+          else
+            echo "❌ Frontend health check failed"
+            exit 1
+          fi
+          
+          # Database connectivity (si hay endpoint)
+          if curl -f "$BACKEND_URL/health/db" > /dev/null 2>&1; then
+            echo "✅ Database is healthy"
+          else
+            echo "⚠️ Database health check not available"
+          fi
+          
+          # Redis connectivity (si hay endpoint)
+          if curl -f "$BACKEND_URL/health/redis" > /dev/null 2>&1; then
+            echo "✅ Redis is healthy"
+          else
+            echo "⚠️ Redis health check not available"
+          fi
+
+  performance-check:
+    name: Performance Check
+    runs-on: ubuntu-latest
+    if: github.event.inputs.check_type == 'all' || github.event.inputs.check_type == 'performance'
+    
+    steps:
+      - name: Check response times
+        run: |
+          ENVIRONMENT="${{ github.event.inputs.environment || 'production' }}"
+          
+          if [ "$ENVIRONMENT" = "production" ]; then
+            BACKEND_URL="https://api.torredelospecados.com"
+            FRONTEND_URL="https://torredelospecados.com"
+          else
+            BACKEND_URL="https://staging-api.torredelospecados.com"
+            FRONTEND_URL="https://staging.torredelospecados.com"
+          fi
+          
+          echo "Checking performance for $ENVIRONMENT environment..."
+          
+          # Backend response time
+          BACKEND_TIME=$(curl -w "%{time_total}" -o /dev/null -s "$BACKEND_URL/health")
+          echo "Backend response time: ${BACKEND_TIME}s"
+          
+          if (( $(echo "$BACKEND_TIME > 2.0" | bc -l) )); then
+            echo "⚠️ Backend response time is slow (>2s)"
+          else
+            echo "✅ Backend response time is acceptable"
+          fi
+          
+          # Frontend response time
+          FRONTEND_TIME=$(curl -w "%{time_total}" -o /dev/null -s "$FRONTEND_URL")
+          echo "Frontend response time: ${FRONTEND_TIME}s"
+          
+          if (( $(echo "$FRONTEND_TIME > 3.0" | bc -l) )); then
+            echo "⚠️ Frontend response time is slow (>3s)"
+          else
+            echo "✅ Frontend response time is acceptable"
+          fi
+          
+          # API endpoints performance
+          API_TIME=$(curl -w "%{time_total}" -o /dev/null -s "$BACKEND_URL/api/games")
+          echo "API response time: ${API_TIME}s"
+          
+          if (( $(echo "$API_TIME > 1.0" | bc -l) )); then
+            echo "⚠️ API response time is slow (>1s)"
+          else
+            echo "✅ API response time is acceptable"
+          fi
+
+  security-check:
+    name: Security Check
+    runs-on: ubuntu-latest
+    if: github.event.inputs.check_type == 'all' || github.event.inputs.check_type == 'security'
+    
+    steps:
+      - name: Check security headers
+        run: |
+          ENVIRONMENT="${{ github.event.inputs.environment || 'production' }}"
+          
+          if [ "$ENVIRONMENT" = "production" ]; then
+            BACKEND_URL="https://api.torredelospecados.com"
+            FRONTEND_URL="https://torredelospecados.com"
+          else
+            BACKEND_URL="https://staging-api.torredelospecados.com"
+            FRONTEND_URL="https://staging.torredelospecados.com"
+          fi
+          
+          echo "Checking security for $ENVIRONMENT environment..."
+          
+          # Check security headers
+          BACKEND_HEADERS=$(curl -I "$BACKEND_URL" 2>/dev/null)
+          FRONTEND_HEADERS=$(curl -I "$FRONTEND_URL" 2>/dev/null)
+          
+          # Check for HTTPS
+          if [[ "$BACKEND_URL" == https://* ]]; then
+            echo "✅ Backend uses HTTPS"
+          else
+            echo "❌ Backend does not use HTTPS"
+          fi
+          
+          if [[ "$FRONTEND_URL" == https://* ]]; then
+            echo "✅ Frontend uses HTTPS"
+          else
+            echo "❌ Frontend does not use HTTPS"
+          fi
+          
+          # Check for security headers
+          if echo "$BACKEND_HEADERS" | grep -q "X-Frame-Options"; then
+            echo "✅ Backend has X-Frame-Options header"
+          else
+            echo "⚠️ Backend missing X-Frame-Options header"
+          fi
+          
+          if echo "$FRONTEND_HEADERS" | grep -q "X-Frame-Options"; then
+            echo "✅ Frontend has X-Frame-Options header"
+          else
+            echo "⚠️ Frontend missing X-Frame-Options header"
+          fi
+          
+          # Check for Content Security Policy
+          if echo "$FRONTEND_HEADERS" | grep -q "Content-Security-Policy"; then
+            echo "✅ Frontend has CSP header"
+          else
+            echo "⚠️ Frontend missing CSP header"
+          fi
+
+  uptime-check:
+    name: Uptime Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check uptime
+        run: |
+          ENVIRONMENT="${{ github.event.inputs.environment || 'production' }}"
+          
+          if [ "$ENVIRONMENT" = "production" ]; then
+            BACKEND_URL="https://api.torredelospecados.com"
+            FRONTEND_URL="https://torredelospecados.com"
+          else
+            BACKEND_URL="https://staging-api.torredelospecados.com"
+            FRONTEND_URL="https://staging.torredelospecados.com"
+          fi
+          
+          echo "Checking uptime for $ENVIRONMENT environment..."
+          
+          # Check if services are responding
+          BACKEND_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$BACKEND_URL/health")
+          FRONTEND_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$FRONTEND_URL")
+          
+          if [ "$BACKEND_STATUS" = "200" ]; then
+            echo "✅ Backend is responding (HTTP $BACKEND_STATUS)"
+          else
+            echo "❌ Backend is not responding (HTTP $BACKEND_STATUS)"
+            exit 1
+          fi
+          
+          if [ "$FRONTEND_STATUS" = "200" ]; then
+            echo "✅ Frontend is responding (HTTP $FRONTEND_STATUS)"
+          else
+            echo "❌ Frontend is not responding (HTTP $FRONTEND_STATUS)"
+            exit 1
+          fi
+          
+          # Check SSL certificate expiration
+          BACKEND_SSL=$(echo | openssl s_client -servername api.torredelospecados.com -connect api.torredelospecados.com:443 2>/dev/null | openssl x509 -noout -dates)
+          FRONTEND_SSL=$(echo | openssl s_client -servername torredelospecados.com -connect torredelospecados.com:443 2>/dev/null | openssl x509 -noout -dates)
+          
+          echo "Backend SSL: $BACKEND_SSL"
+          echo "Frontend SSL: $FRONTEND_SSL"
+
+  alert:
+    name: Send Alerts
+    runs-on: ubuntu-latest
+    needs: [health-check, performance-check, security-check, uptime-check]
+    if: always()
+    
+    steps:
+      - name: Check for failures
+        id: check-failures
+        run: |
+          if [ "${{ needs.health-check.result }}" = "failure" ] || \
+             [ "${{ needs.performance-check.result }}" = "failure" ] || \
+             [ "${{ needs.security-check.result }}" = "failure" ] || \
+             [ "${{ needs.uptime-check.result }}" = "failure" ]; then
+            echo "has-failures=true" >> $GITHUB_OUTPUT
+            echo "❌ Some checks failed - sending alert"
+          else
+            echo "has-failures=false" >> $GITHUB_OUTPUT
+            echo "✅ All checks passed"
+          fi
+          
+      - name: Send Slack alert (if failures)
+        if: steps.check-failures.outputs.has-failures == 'true'
+        uses: 8398a7/action-slack@v3
+        with:
+          status: failure
+          text: "🚨 Monitoring alert: Some health checks failed for Torre de los Pecados"
+          channel: '#alerts'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          
+      - name: Send Discord alert (if failures)
+        if: steps.check-failures.outputs.has-failures == 'true'
+        uses: Ilshidur/action-discord@master
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        with:
+          args: |
+            🚨 **Monitoring Alert**
+            Some health checks failed for Torre de los Pecados
+            Environment: ${{ github.event.inputs.environment || 'production' }}
+            Check: ${{ github.event.inputs.check_type || 'all' }}
+            [View Details](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+  generate-report:
+    name: Generate Monitoring Report
+    runs-on: ubuntu-latest
+    needs: [health-check, performance-check, security-check, uptime-check]
+    if: always()
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Generate monitoring report
+        run: |
+          ENVIRONMENT="${{ github.event.inputs.environment || 'production' }}"
+          TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          
+          cat > monitoring-report.md << EOF
+          # Monitoring Report - Torre de los Pecados
+          
+          **Environment**: $ENVIRONMENT
+          **Generated**: $TIMESTAMP
+          **Workflow**: ${{ github.workflow }}
+          **Run ID**: ${{ github.run_id }}
+          
+          ## Health Check Results
+          
+          - **Backend Health**: ${{ needs.health-check.result }}
+          - **Performance Check**: ${{ needs.performance-check.result }}
+          - **Security Check**: ${{ needs.security-check.result }}
+          - **Uptime Check**: ${{ needs.uptime-check.result }}
+          
+          ## Summary
+          
+          EOF
+          
+          if [ "${{ needs.health-check.result }}" = "success" ] && \
+             [ "${{ needs.performance-check.result }}" = "success" ] && \
+             [ "${{ needs.security-check.result }}" = "success" ] && \
+             [ "${{ needs.uptime-check.result }}" = "success" ]; then
+            echo "✅ All systems operational" >> monitoring-report.md
+          else
+            echo "❌ Some systems have issues" >> monitoring-report.md
+          fi
+          
+      - name: Upload monitoring report
+        uses: actions/upload-artifact@v3
+        with:
+          name: monitoring-report-${{ github.event.inputs.environment || 'production' }}
+          path: monitoring-report.md
+          retention-days: 30
