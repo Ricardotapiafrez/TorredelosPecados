@@ -255,25 +255,25 @@ jobs:
         uses: actions/checkout@v4
         
       - name: Download all test results
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v5
         with:
           name: api-integration-results
           path: api/test-results/
           
       - name: Download E2E results
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v5
         with:
           name: e2e-integration-results
           path: web/test-results/
           
       - name: Download performance results
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v5
         with:
           name: performance-results
           path: api/test-results/
           
       - name: Download security results
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v5
         with:
           name: security-integration-results
           path: api/test-results/
