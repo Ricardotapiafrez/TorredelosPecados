@@ -6,92 +6,34 @@ Este documento describe los poderes especiales implementados para las cartas con
 
 ---
 
-## 🔄 Carta 2 - Poder Universal
+## 🃏 Cartas con Poderes Especiales
 
-### 🎯 Efecto
-La carta con valor 2 puede jugarse sobre cualquier carta, sin importar su valor.
+### 🃏 La Criatura del 2 (Poder Universal)
+- Se puede jugar sobre **cualquier criatura**
+- El siguiente jugador puede jugar **lo que quiera**
+- **Mazos específicos**:
+  - **Ángeles**: El Serafín de la Fe - Purifica el mazo de descarte
+  - **Demonios**: Demonio de la Ira - Furia incontrolable
+  - **Dragones**: El Dragón de la Peste - Escupe veneno
+  - **Magos**: El Ilusionista - Conjura cualquier truco
 
-### ⚡ Mecánica
-- **Activación**: Se activa automáticamente al jugar cualquier carta con valor 2
-- **Duración**: Solo afecta al siguiente jugador
-- **Efecto**: El siguiente jugador puede jugar cualquier carta, sin restricciones de valor
+### 🃏 La Criatura del 8 (Poder de Salto)
+- **Salta al siguiente jugador**, como en el juego del UNO
+- El jugador siguiente al saltado pierde su turno
+- **Mazos específicos**:
+  - **Ángeles**: El Emisario de la Fe y la Caridad - Transmite mensajes divinos
+  - **Demonios**: Portador de la Pestilencia - Propaga enfermedades
+  - **Dragones**: El Dragón Etéreo - Atraviesa la realidad
+  - **Magos**: El Mago del Tiempo - Manipula el tiempo
 
-### 🎮 Implementación
-```javascript
-applyUniversalPower(gameState, playerId) {
-  gameState.lastPlayedCard = this;
-  gameState.nextPlayerCanPlayAnything = true;
-  return gameState;
-}
-```
-
-### 📚 Cartas por Mazo
-- **Ángeles**: El Serafín del Juicio
-- **Demonios**: El Archidemonio de la Ira
-- **Dragones**: El Dragón de la Peste
-- **Magos**: El Ilusionista
-
----
-
-## ⏭️ Carta 8 - Poder de Salto
-
-### 🎯 Efecto
-La carta con valor 8 permite saltar el turno del siguiente jugador.
-
-### ⚡ Mecánica
-- **Activación**: Se activa automáticamente al jugar cualquier carta con valor 8
-- **Duración**: Solo afecta al siguiente turno
-- **Efecto**: El jugador que sigue al que jugó la carta 8 es saltado
-
-### 🎮 Implementación
-```javascript
-applySkipPower(gameState, playerId) {
-  const currentIndex = gameState.players.findIndex(p => p.id === playerId);
-  const nextIndex = (currentIndex + 1) % gameState.players.length;
-  const skipIndex = (nextIndex + 1) % gameState.players.length;
-  
-  gameState.skippedPlayer = gameState.players[skipIndex].id;
-  gameState.currentPlayerIndex = skipIndex;
-  return gameState;
-}
-```
-
-### 📚 Cartas por Mazo
-- **Ángeles**: El Emisario Divino
-- **Demonios**: El Demonio de la Pestilencia
-- **Dragones**: El Dragón Etéreo
-- **Magos**: El Mago del Tiempo
-
----
-
-## ✨ Carta 10 - Poder de Purificación
-
-### 🎯 Efecto
-La carta con valor 10 purifica completamente la Torre de los Pecados.
-
-### ⚡ Mecánica
-- **Activación**: Se activa automáticamente al jugar cualquier carta con valor 10
-- **Duración**: Efecto inmediato y permanente
-- **Efecto**: 
-  - Vacía completamente la Torre de los Pecados
-  - Elimina la última carta jugada
-  - Resetea el estado de "poder universal"
-
-### 🎮 Implementación
-```javascript
-applyPurificationPower(gameState, playerId) {
-  gameState.discardPile = [];
-  gameState.lastPlayedCard = null;
-  gameState.nextPlayerCanPlayAnything = false;
-  return gameState;
-}
-```
-
-### 📚 Cartas por Mazo
-- **Ángeles**: El Trono del Creador
-- **Demonios**: El Señor del Abismo
-- **Dragones**: El Dragón de Oro
-- **Magos**: El Archmago de la Destrucción
+### 🃏 La Criatura del 10 (Poder de Purificación)
+- Puede **purificar** la "Torre de los Pecados"
+- El siguiente jugador comienza una nueva ronda
+- **Mazos específicos**:
+  - **Ángeles**: El Trono de la Virtud - Limpia la Torre con poder divino
+  - **Demonios**: Señor del Abismo - Destruye la Torre con una palabra
+  - **Dragones**: El Dragón Dorado - Incinera la Torre con su aliento
+  - **Magos**: El Archimago de la Destrucción - Anula toda la Torre con magia
 
 ---
 

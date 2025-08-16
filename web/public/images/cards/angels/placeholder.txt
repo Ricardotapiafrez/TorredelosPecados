@@ -4,18 +4,18 @@ Esta carpeta debe contener las 13 cartas del mazo de ángeles:
 
 ## Cartas del Mazo
 01. El Querubín de la Esperanza (As)
-02. El Serafín del Juicio (Dos)
-03. El Guardián del Paraíso (Tres)
-04. La Legión Celestial (Cuatro)
-05. La Lira Sagrada (Cinco)
-06. El Arcángel de la Espada (Seis)
-07. La Llama Pura (Siete)
-08. El Emisario Divino (Ocho)
-09. El Serafín de la Justicia (Nueve)
-10. El Trono del Creador (Diez)
-11. El Arcángel de la Batalla (Jota)
-12. La Bendición Eterna (Reina)
-13. El Cielor de la Creación (Rey)
+02. El Serafín de la Fe (Dos)
+03. El Guardián de la Caridad (Tres)
+04. La Cohorte de la Prudencia (Cuatro)
+05. El Portador de la Justicia (Cinco)
+06. El Arcángel de la Fortaleza (Seis)
+07. La Llama de la Templanza (Siete)
+08. El Emisario de la Fe y la Caridad (Ocho)
+09. El Serafín de la Justicia Suprema (Nueve)
+10. El Trono de la Virtud (Diez)
+11. El Arcángel de la Estrategia (Jota)
+12. La Bendición de la Caridad (Reina)
+13. El Creador de la Luz (Rey)
 
 ## Especificaciones
 - Formato: PNG con transparencia
@@ -29,11 +29,17 @@ Esta carpeta debe contener las 13 cartas del mazo de ángeles:
 ## Paleta de Colores
 - Dorado: #FFD700
 - Blanco: #FFFFFF
-- Azul celeste: #87CEEB
+- Azul Celestial: #87CEEB
 - Plateado: #C0C0C0
 
 ## Estilo Visual
-- Criaturas celestiales y divinas
-- Auras de luz y efectos brillantes
-- Elementos sagrados (espadas, escudos, alas)
+- Criaturas angelicales y divinas
+- Efectos de luz y resplandor
+- Elementos celestiales (alas, halos, espadas de luz)
 - Expresiones serenas y protectoras
+- Vestimentas sagradas y armaduras brillantes
+- Fondos con nubes y rayos de luz
+- Auras y efectos mágicos dorados
+
+## Temática
+Cada carta representa una virtud celestial específica, desde la esperanza del querubín hasta la creación divina del rey. Los ángeles son protectores, guerreros de la luz y mensajeros de la justicia divina.

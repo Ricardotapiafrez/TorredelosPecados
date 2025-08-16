@@ -187,7 +187,7 @@ El frontend puede mostrar:
 El sistema genera logs detallados para debugging:
 
 ```
-🎯 Carta El Trono del Creador (valor: 10) purificará la Torre de los Pecados
+🎯 Carta El Trono de la Virtud (valor: 10) purificará la Torre de los Pecados
 🧹 Purificando Torre de los Pecados (5 cartas eliminadas)
 ✅ Torre de los Pecados purificada. Nueva ronda iniciada.
 ```

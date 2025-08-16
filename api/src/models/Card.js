@@ -170,70 +170,70 @@ const BASE_DECK = [
 
 // Mazo de Ángeles
 const ANGELS_DECK = [
-  new Card(1, 'El Querubín de la Esperanza', CARD_TYPES.CRIATURA, 1, null, 'Un ángel pequeño pero lleno de luz, símbolo del nuevo comienzo', '/images/cards/angels/angel_1.png', THEMATIC_DECKS.ANGELS, 1),
-  new Card(2, 'El Serafín del Juicio', CARD_TYPES.CRIATURA, 2, null, 'Un ser de luz que puede purificar el mazo de descarte, reiniciando el orden', '/images/cards/angels/angel_2.png', THEMATIC_DECKS.ANGELS, 2),
-  new Card(3, 'El Guardián del Paraíso', CARD_TYPES.CRIATURA, 3, null, 'Un ángel protector que defiende con su escudo de fe', '/images/cards/angels/angel_3.png', THEMATIC_DECKS.ANGELS, 3),
-  new Card(4, 'La Legión Celestial', CARD_TYPES.CRIATURA, 4, null, 'Un grupo de ángeles que luchan juntos, representando la unidad', '/images/cards/angels/angel_4.png', THEMATIC_DECKS.ANGELS, 4),
-  new Card(5, 'La Lira Sagrada', CARD_TYPES.CRIATURA, 5, null, 'Un ángel que calma los espíritus, su música es su arma', '/images/cards/angels/angel_5.png', THEMATIC_DECKS.ANGELS, 5),
-  new Card(6, 'El Arcángel de la Espada', CARD_TYPES.CRIATURA, 6, null, 'Un guerrero formidable, usa una espada de luz para purgar la oscuridad', '/images/cards/angels/angel_6.png', THEMATIC_DECKS.ANGELS, 6),
-  new Card(7, 'La Llama Pura', CARD_TYPES.CRIATURA, 7, null, 'Un ángel de fuego, cuyo resplandor ilumina el camino', '/images/cards/angels/angel_7.png', THEMATIC_DECKS.ANGELS, 7),
-  new Card(8, 'El Emisario Divino', CARD_TYPES.CRIATURA, 8, null, 'Un mensajero que puede saltarse los turnos, transmitiendo mensajes solo a los que elige', '/images/cards/angels/angel_8.png', THEMATIC_DECKS.ANGELS, 8),
-  new Card(9, 'El Serafín de la Justicia', CARD_TYPES.CRIATURA, 9, null, 'Un ángel poderoso que impone el orden con su balanza', '/images/cards/angels/angel_9.png', THEMATIC_DECKS.ANGELS, 9),
-  new Card(10, 'El Trono del Creador', CARD_TYPES.CRIATURA, 10, null, 'Un ángel tan poderoso que puede limpiar la Torre de los Pecados de una vez', '/images/cards/angels/angel_10.png', THEMATIC_DECKS.ANGELS, 10),
-  new Card(11, 'El Arcángel de la Batalla', CARD_TYPES.CRIATURA, 11, null, 'Un líder de legiones, experto en estrategia', '/images/cards/angels/angel_11.png', THEMATIC_DECKS.ANGELS, 11),
-  new Card(12, 'La Bendición Eterna', CARD_TYPES.CRIATURA, 12, null, 'Un ángel con el poder de curar y bendecir, un pilar de fuerza', '/images/cards/angels/angel_12.png', THEMATIC_DECKS.ANGELS, 12),
-  new Card(13, 'El Cielor de la Creación', CARD_TYPES.CRIATURA, 13, null, 'El ser más poderoso de la jerarquía, el que todo lo creó', '/images/cards/angels/angel_13.png', THEMATIC_DECKS.ANGELS, 13)
+  new Card(1, 'El Querubín de la Esperanza', CARD_TYPES.CRIATURA, 1, null, 'El primer destello de luz, guía en los comienzos inciertos. Siempre abre camino hacia la fe y la confianza.', '/images/cards/angels/angel_1.png', THEMATIC_DECKS.ANGELS, 1),
+  new Card(2, 'El Serafín de la Fe', CARD_TYPES.CRIATURA, 2, null, 'Su pureza refuerza el corazón de los justos. Al desplegarse, refuerza a cualquier criatura aliada en juego.', '/images/cards/angels/angel_2.png', THEMATIC_DECKS.ANGELS, 2),
+  new Card(3, 'El Guardián de la Caridad', CARD_TYPES.CRIATURA, 3, null, 'Un ángel que protege a los más débiles, dispuesto a sacrificarse para sostener a otro aliado.', '/images/cards/angels/angel_3.png', THEMATIC_DECKS.ANGELS, 3),
+  new Card(4, 'La Cohorte de la Prudencia', CARD_TYPES.CRIATURA, 4, null, 'Una legión sabia que planea cada movimiento, capaz de anticipar los ataques enemigos.', '/images/cards/angels/angel_4.png', THEMATIC_DECKS.ANGELS, 4),
+  new Card(5, 'El Portador de la Justicia', CARD_TYPES.CRIATURA, 5, null, 'Porta la balanza divina, equilibrando las fuerzas en juego. Castiga el exceso y premia la rectitud.', '/images/cards/angels/angel_5.png', THEMATIC_DECKS.ANGELS, 5),
+  new Card(6, 'El Arcángel de la Fortaleza', CARD_TYPES.CRIATURA, 6, null, 'Su armadura resplandece con una fuerza inquebrantable. Resiste incluso los golpes de los más oscuros.', '/images/cards/angels/angel_6.png', THEMATIC_DECKS.ANGELS, 6),
+  new Card(7, 'La Llama de la Templanza', CARD_TYPES.CRIATURA, 7, null, 'Un ángel sereno que modera los excesos. Neutraliza habilidades extremas y restaura el equilibrio.', '/images/cards/angels/angel_7.png', THEMATIC_DECKS.ANGELS, 7),
+  new Card(8, 'El Emisario de la Fe y la Caridad', CARD_TYPES.CRIATURA, 8, null, 'Porta mensajes que fortalecen la unión entre aliados, reforzando su vínculo y permitiendo coordinar acciones.', '/images/cards/angels/angel_8.png', THEMATIC_DECKS.ANGELS, 8),
+  new Card(9, 'El Serafín de la Justicia Suprema', CARD_TYPES.CRIATURA, 9, null, 'Su balanza brilla más que cualquier otra, imponiendo un juicio final sobre criaturas corrompidas.', '/images/cards/angels/angel_9.png', THEMATIC_DECKS.ANGELS, 9),
+  new Card(10, 'El Trono de la Virtud', CARD_TYPES.CRIATURA, 10, null, 'La máxima expresión de la perfección celestial, capaz de restaurar todo el orden en el campo.', '/images/cards/angels/angel_10.png', THEMATIC_DECKS.ANGELS, 10),
+  new Card(11, 'El Arcángel de la Estrategia', CARD_TYPES.CRIATURA, 11, null, 'Dirige legiones con sabiduría y valor, inclinando la batalla a favor del bien.', '/images/cards/angels/angel_11.png', THEMATIC_DECKS.ANGELS, 11),
+  new Card(12, 'La Bendición de la Caridad', CARD_TYPES.CRIATURA, 12, null, 'Irradia luz sanadora, protegiendo y levantando a los caídos. Pilar esencial en cualquier ejército celestial.', '/images/cards/angels/angel_12.png', THEMATIC_DECKS.ANGELS, 12),
+  new Card(13, 'El Creador de la Luz', CARD_TYPES.CRIATURA, 13, null, 'La divinidad suprema, origen de todo. Su sola presencia transforma la batalla en victoria.', '/images/cards/angels/angel_13.png', THEMATIC_DECKS.ANGELS, 13)
 ];
 
 // Mazo de Demonios
 const DEMONS_DECK = [
-  new Card(1, 'El Larva de la Avaricia', CARD_TYPES.CRIATURA, 1, null, 'Un demonio pequeño, pero que crece con cada pecado que consume', '/images/cards/demons/demon_1.png', THEMATIC_DECKS.DEMONS, 1),
-  new Card(2, 'El Archidemonio de la Ira', CARD_TYPES.CRIATURA, 2, null, 'Un ser de furia pura, su poder es tan incontrolable que puede jugar sobre cualquier criatura', '/images/cards/demons/demon_2.png', THEMATIC_DECKS.DEMONS, 2),
-  new Card(3, 'El Demonio Menor de la Envidia', CARD_TYPES.CRIATURA, 3, null, 'Un ser que roba el poder de otros', '/images/cards/demons/demon_3.png', THEMATIC_DECKS.DEMONS, 3),
-  new Card(4, 'El Súcubo Seductor', CARD_TYPES.CRIATURA, 4, null, 'Un demonio que atrae a sus víctimas con engaños, manipulando la mente', '/images/cards/demons/demon_4.png', THEMATIC_DECKS.DEMONS, 4),
-  new Card(5, 'El Goliat de la Pereza', CARD_TYPES.CRIATURA, 5, null, 'Un demonio gigante y lento, su fuerza se manifiesta en los momentos más inesperados', '/images/cards/demons/demon_5.png', THEMATIC_DECKS.DEMONS, 5),
-  new Card(6, 'El Demonio de la Gula', CARD_TYPES.CRIATURA, 6, null, 'Un ser insaciable que devora todo a su paso', '/images/cards/demons/demon_6.png', THEMATIC_DECKS.DEMONS, 6),
-  new Card(7, 'El Demonio de la Lujuria', CARD_TYPES.CRIATURA, 7, null, 'Un ser que se alimenta de los deseos oscuros de los mortales', '/images/cards/demons/demon_7.png', THEMATIC_DECKS.DEMONS, 7),
-  new Card(8, 'El Demonio de la Pestilencia', CARD_TYPES.CRIATURA, 8, null, 'Un ser que propaga enfermedades, saltándose a sus víctimas', '/images/cards/demons/demon_8.png', THEMATIC_DECKS.DEMONS, 8),
-  new Card(9, 'El Demonio de la Soberbia', CARD_TYPES.CRIATURA, 9, null, 'Un ser que se cree superior a todos', '/images/cards/demons/demon_9.png', THEMATIC_DECKS.DEMONS, 9),
-  new Card(10, 'El Señor del Abismo', CARD_TYPES.CRIATURA, 10, null, 'Un ser tan poderoso que puede destruir la Torre de los Pecados con una palabra', '/images/cards/demons/demon_10.png', THEMATIC_DECKS.DEMONS, 10),
-  new Card(11, 'El Barón de las Sombras', CARD_TYPES.CRIATURA, 11, null, 'Un maestro de la manipulación, experto en el sigilo', '/images/cards/demons/demon_11.png', THEMATIC_DECKS.DEMONS, 11),
-  new Card(12, 'La Bruja del Caos', CARD_TYPES.CRIATURA, 12, null, 'Un ser que controla el desorden y la destrucción', '/images/cards/demons/demon_12.png', THEMATIC_DECKS.DEMONS, 12),
-  new Card(13, 'El Emperador del Infierno', CARD_TYPES.CRIATURA, 13, null, 'El demonio más poderoso de todos, cuyo poder no tiene límites', '/images/cards/demons/demon_13.png', THEMATIC_DECKS.DEMONS, 13)
+  new Card(1, 'Larva de la Avaricia', CARD_TYPES.CRIATURA, 1, null, 'Un demonio recién nacido que se alimenta del oro y del deseo. Mientras más recursos devora, más crece su poder.', '/images/cards/demons/demon_1.png', THEMATIC_DECKS.DEMONS, 1),
+  new Card(2, 'Demonio de la Ira', CARD_TYPES.CRIATURA, 2, null, 'Encarnación del odio ardiente. Puede atacar a cualquier criatura sin restricción, dejando caos a su paso.', '/images/cards/demons/demon_2.png', THEMATIC_DECKS.DEMONS, 2),
+  new Card(3, 'Espectro de la Envidia', CARD_TYPES.CRIATURA, 3, null, 'Sombra ladina que drena el poder de los demás, debilitándolos mientras se fortalece.', '/images/cards/demons/demon_3.png', THEMATIC_DECKS.DEMONS, 3),
+  new Card(4, 'Súcubo de la Lujuria', CARD_TYPES.CRIATURA, 4, null, 'Un demonio seductor que esclaviza las mentes, manipulando voluntades para desviar la batalla.', '/images/cards/demons/demon_4.png', THEMATIC_DECKS.DEMONS, 4),
+  new Card(5, 'Goliat de la Pereza', CARD_TYPES.CRIATURA, 5, null, 'Gigante lento y pesado. Su poder surge solo en los momentos de estancamiento, cuando nadie lo espera.', '/images/cards/demons/demon_5.png', THEMATIC_DECKS.DEMONS, 5),
+  new Card(6, 'Glotón del Abismo', CARD_TYPES.CRIATURA, 6, null, 'Una bestia descontrolada que devora aliados y enemigos por igual, generando terror en el campo.', '/images/cards/demons/demon_6.png', THEMATIC_DECKS.DEMONS, 6),
+  new Card(7, 'Incubo de la Lujuria', CARD_TYPES.CRIATURA, 7, null, 'Complemento del súcubo: alimenta la corrupción del deseo, fortaleciendo al bando demoníaco.', '/images/cards/demons/demon_7.png', THEMATIC_DECKS.DEMONS, 7),
+  new Card(8, 'Portador de la Pestilencia', CARD_TYPES.CRIATURA, 8, null, 'Demonio que siembra plagas. Infecta criaturas a distancia, saltándose defensas con su veneno corrupto.', '/images/cards/demons/demon_8.png', THEMATIC_DECKS.DEMONS, 8),
+  new Card(9, 'Tirano de la Soberbia', CARD_TYPES.CRIATURA, 9, null, 'Un demonio que se cree superior incluso a sus iguales. Su mera presencia hace que otros demonios se subordinen o se enfrenten.', '/images/cards/demons/demon_9.png', THEMATIC_DECKS.DEMONS, 9),
+  new Card(10, 'Señor del Abismo', CARD_TYPES.CRIATURA, 10, null, 'Un demonio primordial, capaz de congelar y quebrar todo vínculo. Su palabra sola puede destruir la Torre de los Pecados.', '/images/cards/demons/demon_10.png', THEMATIC_DECKS.DEMONS, 10),
+  new Card(11, 'Barón de las Sombras', CARD_TYPES.CRIATURA, 11, null, 'Maestro del sigilo y la manipulación. Controla criaturas desde las sombras, fomentando la traición.', '/images/cards/demons/demon_11.png', THEMATIC_DECKS.DEMONS, 11),
+  new Card(12, 'La Bruja del Caos', CARD_TYPES.CRIATURA, 12, null, 'Controla la corrupción, el engaño y el desorden. Es la tejedora del sufrimiento de los círculos intermedios.', '/images/cards/demons/demon_12.png', THEMATIC_DECKS.DEMONS, 12),
+  new Card(13, 'El Emperador del Infierno', CARD_TYPES.CRIATURA, 13, null, 'El ser supremo del inframundo. Encerrado en hielo eterno, pero aún así el más poderoso de todos. Su poder no tiene límites.', '/images/cards/demons/demon_13.png', THEMATIC_DECKS.DEMONS, 13)
 ];
 
 // Mazo de Dragones
 const DRAGONS_DECK = [
-  new Card(1, 'El Dragón Bebé', CARD_TYPES.CRIATURA, 1, null, 'Una pequeña criatura que apenas ha salido del cascarón, pero ya tiene un aliento poderoso', '/images/cards/dragons/dragon_1.png', THEMATIC_DECKS.DRAGONS, 1),
-  new Card(2, 'El Dragón de la Peste', CARD_TYPES.CRIATURA, 2, null, 'Un dragón que escupe veneno y puede jugar sobre cualquier criatura', '/images/cards/dragons/dragon_2.png', THEMATIC_DECKS.DRAGONS, 2),
-  new Card(3, 'El Dragón de Piedra', CARD_TYPES.CRIATURA, 3, null, 'Una criatura rocosa, casi impenetrable', '/images/cards/dragons/dragon_3.png', THEMATIC_DECKS.DRAGONS, 3),
-  new Card(4, 'El Dragón de los Hielos', CARD_TYPES.CRIATURA, 4, null, 'Una bestia que congela el campo de batalla a su paso', '/images/cards/dragons/dragon_4.png', THEMATIC_DECKS.DRAGONS, 4),
-  new Card(5, 'El Dragón de Bronce', CARD_TYPES.CRIATURA, 5, null, 'Un guerrero noble y honorable que lucha por la justicia', '/images/cards/dragons/dragon_5.png', THEMATIC_DECKS.DRAGONS, 5),
-  new Card(6, 'El Dragón de las Colinas', CARD_TYPES.CRIATURA, 6, null, 'Un ser salvaje y territorial que no duda en proteger su hogar', '/images/cards/dragons/dragon_6.png', THEMATIC_DECKS.DRAGONS, 6),
-  new Card(7, 'El Dragón del Desierto', CARD_TYPES.CRIATURA, 7, null, 'Una criatura que se camufla entre las arenas, esperando para atacar', '/images/cards/dragons/dragon_7.png', THEMATIC_DECKS.DRAGONS, 7),
-  new Card(8, 'El Dragón Etéreo', CARD_TYPES.CRIATURA, 8, null, 'Un dragón fantasma que puede atravesar la realidad, saltándose los turnos', '/images/cards/dragons/dragon_8.png', THEMATIC_DECKS.DRAGONS, 8),
-  new Card(9, 'El Dragón de la Nube', CARD_TYPES.CRIATURA, 9, null, 'Un ser que domina los cielos, lanzando rayos desde las alturas', '/images/cards/dragons/dragon_9.png', THEMATIC_DECKS.DRAGONS, 9),
-  new Card(10, 'El Dragón de Oro', CARD_TYPES.CRIATURA, 10, null, 'Una criatura que incinera la Torre de los Pecados con su aliento de fuego', '/images/cards/dragons/dragon_10.png', THEMATIC_DECKS.DRAGONS, 10),
-  new Card(11, 'El Dragón de Jade', CARD_TYPES.CRIATURA, 11, null, 'Un ser misterioso y ancestral, que domina la sabiduría', '/images/cards/dragons/dragon_11.png', THEMATIC_DECKS.DRAGONS, 11),
-  new Card(12, 'La Dracona Guardiana', CARD_TYPES.CRIATURA, 12, null, 'Una dragona protectora, cuyo poder es igual al de un rey', '/images/cards/dragons/dragon_12.png', THEMATIC_DECKS.DRAGONS, 12),
-  new Card(13, 'El Dragón Primigenio', CARD_TYPES.CRIATURA, 13, null, 'El dragón más antiguo y poderoso de todos, el origen de todos los dragones', '/images/cards/dragons/dragon_13.png', THEMATIC_DECKS.DRAGONS, 13)
+  new Card(1, 'El Dragón Bebé', CARD_TYPES.CRIATURA, 1, null, 'Recién salido del cascarón, débil pero con un aliento que anuncia su destino. Representa los inicios del linaje dracónico.', '/images/cards/dragons/dragon_1.png', THEMATIC_DECKS.DRAGONS, 1),
+  new Card(2, 'El Dragón de la Peste', CARD_TYPES.CRIATURA, 2, null, 'Su aliento envenenado corrompe el aire. Puede imponerse sobre cualquier criatura más débil, mostrando el primer despertar del poder.', '/images/cards/dragons/dragon_2.png', THEMATIC_DECKS.DRAGONS, 2),
+  new Card(3, 'El Dragón de Piedra', CARD_TYPES.CRIATURA, 3, null, 'De escamas pétreas, casi indestructible. Simboliza la solidez y la resistencia del linaje.', '/images/cards/dragons/dragon_3.png', THEMATIC_DECKS.DRAGONS, 3),
+  new Card(4, 'El Dragón de Hielo', CARD_TYPES.CRIATURA, 4, null, 'Congela todo a su paso, ralentizando a aliados y enemigos. Encarnación del control y la espera.', '/images/cards/dragons/dragon_4.png', THEMATIC_DECKS.DRAGONS, 4),
+  new Card(5, 'El Dragón de Bronce', CARD_TYPES.CRIATURA, 5, null, 'Noble guerrero que lucha con honor. Su rugido infunde justicia entre los suyos.', '/images/cards/dragons/dragon_5.png', THEMATIC_DECKS.DRAGONS, 5),
+  new Card(6, 'El Dragón de las Colinas', CARD_TYPES.CRIATURA, 6, null, 'Salvaje y territorial, protege sus dominios con ferocidad. Representa la naturaleza instintiva de los dragones.', '/images/cards/dragons/dragon_6.png', THEMATIC_DECKS.DRAGONS, 6),
+  new Card(7, 'El Dragón del Desierto', CARD_TYPES.CRIATURA, 7, null, 'Astuto y paciente, se oculta bajo las arenas esperando el momento de atacar. Un maestro del engaño y la emboscada.', '/images/cards/dragons/dragon_7.png', THEMATIC_DECKS.DRAGONS, 7),
+  new Card(8, 'El Dragón Etéreo', CARD_TYPES.CRIATURA, 8, null, 'Un espectro que atraviesa dimensiones. Su poder le permite saltarse los límites del tiempo y el espacio.', '/images/cards/dragons/dragon_8.png', THEMATIC_DECKS.DRAGONS, 8),
+  new Card(9, 'El Dragón de la Tormenta', CARD_TYPES.CRIATURA, 9, null, 'Desde las nubes lanza rayos devastadores. Señor de los cielos, su dominio es la tempestad.', '/images/cards/dragons/dragon_9.png', THEMATIC_DECKS.DRAGONS, 9),
+  new Card(10, 'El Dragón Dorado', CARD_TYPES.CRIATURA, 10, null, 'Símbolo de perfección y pureza. Su fuego puede arrasar incluso la Torre de los Pecados, dejando solo cenizas.', '/images/cards/dragons/dragon_10.png', THEMATIC_DECKS.DRAGONS, 10),
+  new Card(11, 'El Dragón de Jade', CARD_TYPES.CRIATURA, 11, null, 'Antiguo y sabio, guardián de secretos arcanos. Su consejo influye en el destino de los dragones menores.', '/images/cards/dragons/dragon_11.png', THEMATIC_DECKS.DRAGONS, 11),
+  new Card(12, 'La Dracona Guardiana', CARD_TYPES.CRIATURA, 12, null, 'Madre protectora de la estirpe, su poder es equiparable al de un rey. Su instinto es mantener vivo el linaje.', '/images/cards/dragons/dragon_12.png', THEMATIC_DECKS.DRAGONS, 12),
+  new Card(13, 'El Dragón Primigenio', CARD_TYPES.CRIATURA, 13, null, 'El primero de todos los dragones. Su aliento creó fuego, hielo, tormentas y tierras. Todos los dragones provienen de él.', '/images/cards/dragons/dragon_13.png', THEMATIC_DECKS.DRAGONS, 13)
 ];
 
 // Mazo de Magos
 const MAGES_DECK = [
-  new Card(1, 'El Aprendiz de Mago', CARD_TYPES.CRIATURA, 1, null, 'Un joven mago que apenas empieza, pero con un gran potencial', '/images/cards/mages/mage_1.png', THEMATIC_DECKS.MAGES, 1),
-  new Card(2, 'El Ilusionista', CARD_TYPES.CRIATURA, 2, null, 'Un mago que puede conjurar cualquier truco, puede jugar sobre cualquier criatura', '/images/cards/mages/mage_2.png', THEMATIC_DECKS.MAGES, 2),
-  new Card(3, 'El Invocador de Golems', CARD_TYPES.CRIATURA, 3, null, 'Un mago que puede crear criaturas de piedra para que luchen por él', '/images/cards/mages/mage_3.png', THEMATIC_DECKS.MAGES, 3),
-  new Card(4, 'El Alquimista del Destino', CARD_TYPES.CRIATURA, 4, null, 'Un mago que manipula los elementos a su antojo', '/images/cards/mages/mage_4.png', THEMATIC_DECKS.MAGES, 4),
-  new Card(5, 'El Nigromante de las Sombras', CARD_TYPES.CRIATURA, 5, null, 'Un mago oscuro que controla a los muertos', '/images/cards/mages/mage_5.png', THEMATIC_DECKS.MAGES, 5),
-  new Card(6, 'El Hechicero de la Tormenta', CARD_TYPES.CRIATURA, 6, null, 'Un mago que conjura poderosas tormentas para debilitar a sus enemigos', '/images/cards/mages/mage_6.png', THEMATIC_DECKS.MAGES, 6),
-  new Card(7, 'El Vidente del Futuro', CARD_TYPES.CRIATURA, 7, null, 'Un mago que puede predecir los movimientos de los demás', '/images/cards/mages/mage_7.png', THEMATIC_DECKS.MAGES, 7),
-  new Card(8, 'El Mago del Tiempo', CARD_TYPES.CRIATURA, 8, null, 'Un mago que puede manipular el tiempo, saltándose los turnos', '/images/cards/mages/mage_8.png', THEMATIC_DECKS.MAGES, 8),
-  new Card(9, 'El Maestro de los Elementos', CARD_TYPES.CRIATURA, 9, null, 'Un mago que domina el fuego, el agua, la tierra y el aire', '/images/cards/mages/mage_9.png', THEMATIC_DECKS.MAGES, 9),
-  new Card(10, 'El Archmago de la Destrucción', CARD_TYPES.CRIATURA, 10, null, 'Un mago que puede conjurar un hechizo tan poderoso que anula toda la Torre de los Pecados', '/images/cards/mages/mage_10.png', THEMATIC_DECKS.MAGES, 10),
-  new Card(11, 'El Mago de las Runas', CARD_TYPES.CRIATURA, 11, null, 'Un mago que invoca el poder de los antiguos símbolos', '/images/cards/mages/mage_11.png', THEMATIC_DECKS.MAGES, 11),
-  new Card(12, 'La Oráculo de las Estrellas', CARD_TYPES.CRIATURA, 12, null, 'Una hechicera que lee el futuro en las estrellas, sus poderes son inmensos', '/images/cards/mages/mage_12.png', THEMATIC_DECKS.MAGES, 12),
-  new Card(13, 'El Mago Supremo', CARD_TYPES.CRIATURA, 13, null, 'El ser más poderoso de todos los magos, cuya magia no tiene límites', '/images/cards/mages/mage_13.png', THEMATIC_DECKS.MAGES, 13)
+  new Card(1, 'El Aprendiz de Mago', CARD_TYPES.CRIATURA, 1, null, 'Inexperto, pero lleno de curiosidad y chispa mágica. Representa el inicio del camino arcano.', '/images/cards/mages/mage_1.png', THEMATIC_DECKS.MAGES, 1),
+  new Card(2, 'El Ilusionista', CARD_TYPES.CRIATURA, 2, null, 'Maestro de los engaños y las ilusiones. Puede confundir a cualquier criatura y ocupar su lugar.', '/images/cards/mages/mage_2.png', THEMATIC_DECKS.MAGES, 2),
+  new Card(3, 'El Invocador de Golems', CARD_TYPES.CRIATURA, 3, null, 'Canaliza su poder en constructos de piedra, creando guardianes para luchar en su nombre.', '/images/cards/mages/mage_3.png', THEMATIC_DECKS.MAGES, 3),
+  new Card(4, 'El Alquimista del Destino', CARD_TYPES.CRIATURA, 4, null, 'Manipula los elementos y transforma la materia. Crea pociones y transmutaciones que alteran el flujo de la partida.', '/images/cards/mages/mage_4.png', THEMATIC_DECKS.MAGES, 4),
+  new Card(5, 'El Nigromante de las Sombras', CARD_TYPES.CRIATURA, 5, null, 'Controla a los muertos, invocando ejércitos oscuros desde el inframundo.', '/images/cards/mages/mage_5.png', THEMATIC_DECKS.MAGES, 5),
+  new Card(6, 'El Hechicero de la Tormenta', CARD_TYPES.CRIATURA, 6, null, 'Domina rayos, truenos y huracanes. Su magia golpea múltiples objetivos, debilitándolos.', '/images/cards/mages/mage_6.png', THEMATIC_DECKS.MAGES, 6),
+  new Card(7, 'El Vidente del Futuro', CARD_TYPES.CRIATURA, 7, null, 'Profeta arcano que ve lo que está por venir. Puede anticipar y contrarrestar jugadas enemigas.', '/images/cards/mages/mage_7.png', THEMATIC_DECKS.MAGES, 7),
+  new Card(8, 'El Mago del Tiempo', CARD_TYPES.CRIATURA, 8, null, 'Dueño de las arenas temporales. Puede acelerar o detener turnos, jugando fuera de las reglas normales.', '/images/cards/mages/mage_8.png', THEMATIC_DECKS.MAGES, 8),
+  new Card(9, 'El Maestro de los Elementos', CARD_TYPES.CRIATURA, 9, null, 'Control absoluto del fuego, agua, tierra y aire. Equilibra los poderes arcanos con armonía devastadora.', '/images/cards/mages/mage_9.png', THEMATIC_DECKS.MAGES, 9),
+  new Card(10, 'El Archimago de la Destrucción', CARD_TYPES.CRIATURA, 10, null, 'Su poder es cataclísmico. Un solo hechizo suyo puede desintegrar la Torre de los Pecados entera.', '/images/cards/mages/mage_10.png', THEMATIC_DECKS.MAGES, 10),
+  new Card(11, 'El Mago de las Runas', CARD_TYPES.CRIATURA, 11, null, 'Descifra símbolos ancestrales que multiplican la fuerza de los conjuros. Canaliza la magia de eras pasadas.', '/images/cards/mages/mage_11.png', THEMATIC_DECKS.MAGES, 11),
+  new Card(12, 'La Oráculo de las Estrellas', CARD_TYPES.CRIATURA, 12, null, 'Conecta con el cosmos y las constelaciones. Su sabiduría la convierte en guía de todos los magos.', '/images/cards/mages/mage_12.png', THEMATIC_DECKS.MAGES, 12),
+  new Card(13, 'El Mago Supremo', CARD_TYPES.CRIATURA, 13, null, 'El origen y cúspide de la magia. Sus conjuros no conocen límites, y su palabra es ley en el mundo arcano.', '/images/cards/mages/mage_13.png', THEMATIC_DECKS.MAGES, 13)
 ];
 
 // Función para obtener un mazo temático

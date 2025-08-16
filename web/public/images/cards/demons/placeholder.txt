@@ -3,17 +3,17 @@
 Esta carpeta debe contener las 13 cartas del mazo de demonios:
 
 ## Cartas del Mazo
-01. El Larva de la Avaricia (As)
-02. El Archidemonio de la Ira (Dos)
-03. El Demonio Menor de la Envidia (Tres)
-04. El Súcubo Seductor (Cuatro)
-05. El Goliat de la Pereza (Cinco)
-06. El Demonio de la Gula (Seis)
-07. El Demonio de la Lujuria (Siete)
-08. El Demonio de la Pestilencia (Ocho)
-09. El Demonio de la Soberbia (Nueve)
-10. El Señor del Abismo (Diez)
-11. El Barón de las Sombras (Jota)
+01. Larva de la Avaricia (As)
+02. Demonio de la Ira (Dos)
+03. Espectro de la Envidia (Tres)
+04. Súcubo de la Lujuria (Cuatro)
+05. Goliat de la Pereza (Cinco)
+06. Glotón del Abismo (Seis)
+07. Incubo de la Lujuria (Siete)
+08. Portador de la Pestilencia (Ocho)
+09. Tirano de la Soberbia (Nueve)
+10. Señor del Abismo (Diez)
+11. Barón de las Sombras (Jota)
 12. La Bruja del Caos (Reina)
 13. El Emperador del Infierno (Rey)
 
@@ -37,3 +37,9 @@ Esta carpeta debe contener las 13 cartas del mazo de demonios:
 - Efectos de fuego y sombras
 - Elementos infernales (cuernos, alas de murciélago, garras)
 - Expresiones amenazantes y corruptas
+- Vestimentas oscuras y armaduras demoníacas
+- Fondos con llamas y abismos
+- Auras y efectos mágicos rojizos
+
+## Temática
+Cada carta representa un pecado capital o un círculo del infierno, desde la avaricia de la larva hasta la traición del emperador. Los demonios son corruptores, destructores y maestros del caos infernal.

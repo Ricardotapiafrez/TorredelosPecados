@@ -6,13 +6,13 @@ Esta carpeta debe contener las 13 cartas del mazo de dragones:
 01. El Dragón Bebé (As)
 02. El Dragón de la Peste (Dos)
 03. El Dragón de Piedra (Tres)
-04. El Dragón de los Hielos (Cuatro)
+04. El Dragón de Hielo (Cuatro)
 05. El Dragón de Bronce (Cinco)
 06. El Dragón de las Colinas (Seis)
 07. El Dragón del Desierto (Siete)
 08. El Dragón Etéreo (Ocho)
-09. El Dragón de la Nube (Nueve)
-10. El Dragón de Oro (Diez)
+09. El Dragón de la Tormenta (Nueve)
+10. El Dragón Dorado (Diez)
 11. El Dragón de Jade (Jota)
 12. La Dracona Guardiana (Reina)
 13. El Dragón Primigenio (Rey)
@@ -27,13 +27,19 @@ Esta carpeta debe contener las 13 cartas del mazo de dragones:
 - Calidad: Máxima para zoom sin pérdida
 
 ## Paleta de Colores
-- Verde esmeralda: #50C878
+- Verde Esmeralda: #50C878
 - Dorado: #FFD700
-- Rojo: #DC143C
-- Azul: #4169E1
+- Rojo Carmesí: #DC143C
+- Azul Profundo: #000080
 
 ## Estilo Visual
-- Criaturas dragónicas majestuosas
-- Escamas detalladas y alas imponentes
-- Efectos de aliento de fuego/hielo
-- Expresiones de poder y sabiduría ancestral
+- Criaturas dracónicas majestuosas
+- Efectos de fuego, hielo y tormentas
+- Elementos dracónicos (alas, escamas, garras)
+- Expresiones nobles y feroces
+- Escamas brillantes y armaduras naturales
+- Fondos con montañas, cielos y cuevas
+- Auras y efectos mágicos elementales
+
+## Temática
+Cada carta representa una etapa del linaje dracónico, desde el bebé recién nacido hasta el primigenio creador. Los dragones son señores de los elementos, guardianes ancestrales y símbolos de poder primitivo.

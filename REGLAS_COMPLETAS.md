@@ -1,231 +1,509 @@
 # 🃏 Reglamento Completo - Torre de los Pecados
 
-## 📖 Introducción
+<div align="center">
 
-El juego "Torre de los Pecados" es un clásico juego de cartas chileno, ambientado en un universo de fantasía. El objetivo es deshacerse de todas tus criaturas mágicas para no ser el último y, por lo tanto, el pecador que cargará con la culpa de la "Torre de los Pecados".
+![Torre de los Pecados](https://img.shields.io/badge/Version-1.0-blue?style=for-the-badge&logo=game-controller)
+![Jugadores](https://img.shields.io/badge/Jugadores-2--6-green?style=for-the-badge&logo=users)
+![Duración](https://img.shields.io/badge/Duración-15--45%20min-orange?style=for-the-badge&logo=clock)
 
-## 🎯 Objetivo del Juego
+*Un clásico juego de cartas chileno ambientado en un universo de fantasía*
 
-El primer jugador en deshacerse de todas sus criaturas (de la mano, las boca arriba y las boca abajo) gana la partida. El último jugador en quedarse con criaturas es el perdedor, el **"Pecador"**, y debe cargar con la "Torre de los Pecados" hasta la próxima partida.
-
-## 🃏 Preparación del Juego
-
-1. **Baraja**: Se usa una baraja de 52 cartas, donde cada naipe representa una criatura mágica con un valor (del 1 al 13, siendo el 1 el As y el 13 el Rey). No se usan los Jokers.
-
-2. **Reparto**: Se reparten 12 cartas (criaturas) a cada jugador.
-
-3. **Organización de las Criaturas**:
-   - Cada jugador toma **3 criaturas** de su mano y las coloca **boca arriba** frente a él.
-   - Luego, coloca otras **3 criaturas boca abajo** encima de las anteriores.
-   - Las criaturas restantes forman el mazo de robo, o el **"Pozo de Almas"**, y se colocan boca abajo en el centro de la mesa.
-
-## 🎮 Cómo Jugar
-
-### Turno Básico
-1. El jugador que repartió comienza la partida.
-2. El objetivo es descartar criaturas de tu mano en la **"Torre de los Pecados"** (el mazo de descarte).
-3. El primer jugador puede descartar cualquier criatura.
-4. El siguiente jugador debe descartar una criatura de **igual o mayor valor** que la última criatura jugada.
-
-### Reglas de Descarte
-- Si no puedes jugar una criatura de valor igual o superior, debes llevarte **todas las criaturas** de la "Torre de los Pecados" a tu mano.
-- Si un jugador descarta una criatura de un valor **idéntico** a la anterior (ej: un 5 sobre otro 5), el mazo se **"purifica"**. La "Torre de los Pecados" se retira del juego y se coloca a un lado. El mismo jugador que purificó el mazo comienza la nueva ronda.
-- Si se descartan **4 criaturas del mismo valor** (ej: cuatro 7s), el mazo también se purifica.
-- Cada vez que descartas una criatura de tu mano, robas una nueva del **"Pozo de Almas"** para mantener siempre la misma cantidad de cartas en tu mano (generalmente, se juega con 3 criaturas).
-
-## 🔄 Fases del Juego
-
-El juego se desarrolla en **tres fases**:
-
-### 1. Fase de la Mano
-- Juegas con las criaturas que tienes en tu mano
-- Robas del **"Pozo de Almas"** después de cada descarte
-- Mantienes 3 criaturas en tu mano
-
-### 2. Fase de las Criaturas Boca Arriba
-- Una vez que te quedas sin criaturas en la mano
-- Juegas con las **3 criaturas** que tienes boca arriba
-- **No puedes robar** del "Pozo de Almas" en esta fase
-
-### 3. Fase de las Criaturas Boca Abajo
-- Cuando te quedas sin criaturas boca arriba
-- Debes jugar las **3 que están boca abajo**, una por una, **sin verlas**
-- Si la criatura que juegas es válida, la descartas
-- Si no es válida (es de menor valor), debes tomar toda la "Torre de los Pecados" y **regresar a la Fase de la Mano**
-
-## ⚡ Reglas Especiales
-
-### Criaturas con Poderes Especiales
-
-#### 🃏 La Criatura del 2 (Poder Universal)
-- Se puede jugar sobre **cualquier criatura**
-- El siguiente jugador puede jugar **lo que quiera**
-- **Mazos específicos**:
-  - **Ángeles**: El Serafín del Juicio - Purifica el mazo de descarte
-  - **Demonios**: El Archidemonio de la Ira - Furia incontrolable
-  - **Dragones**: El Dragón de la Peste - Escupe veneno
-  - **Magos**: El Ilusionista - Conjura cualquier truco
-
-#### 🃏 La Criatura del 8 (Poder de Salto)
-- **Salta al siguiente jugador**, como en el juego del UNO
-- El jugador siguiente al saltado pierde su turno
-- **Mazos específicos**:
-  - **Ángeles**: El Emisario Divino - Transmite mensajes divinos
-  - **Demonios**: El Demonio de la Pestilencia - Propaga enfermedades
-  - **Dragones**: El Dragón Etéreo - Atraviesa la realidad
-  - **Magos**: El Mago del Tiempo - Manipula el tiempo
-
-#### 🃏 La Criatura del 10 (Poder de Purificación)
-- Puede **purificar** la "Torre de los Pecados"
-- El siguiente jugador comienza una nueva ronda
-- **Mazos específicos**:
-  - **Ángeles**: El Trono del Creador - Limpia la Torre con poder divino
-  - **Demonios**: El Señor del Abismo - Destruye la Torre con una palabra
-  - **Dragones**: El Dragón de Oro - Incinera la Torre con su aliento
-  - **Magos**: El Archmago de la Destrucción - Anula toda la Torre con magia
-
-## 🏆 Victoria y Derrota
-
-- **Ganador**: El primer jugador en deshacerse de todas sus criaturas (de la mano, las boca arriba y las boca abajo)
-- **Perdedor**: El último jugador en quedarse con criaturas es el **"Pecador"**
-- **Castigo**: El perdedor debe cargar con la "Torre de los Pecados" hasta la próxima partida
-
-## 🎨 Mazos Temáticos
-
-Cada mazo representa un tema de fantasía con 13 criaturas únicas, cada una con poderes especiales y personalidades distintivas:
-
-### 👼 Mazo de Ángeles
-- **As (1)**: El Querubín de la Esperanza - Un ángel pequeño pero lleno de luz, símbolo del nuevo comienzo
-- **Dos (2)**: El Serafín del Juicio - Un ser de luz que puede purificar el mazo de descarte, reiniciando el orden
-- **Tres (3)**: El Guardián del Paraíso - Un ángel protector que defiende con su escudo de fe
-- **Cuatro (4)**: La Legión Celestial - Un grupo de ángeles que luchan juntos, representando la unidad
-- **Cinco (5)**: La Lira Sagrada - Un ángel que calma los espíritus, su música es su arma
-- **Seis (6)**: El Arcángel de la Espada - Un guerrero formidable, usa una espada de luz para purgar la oscuridad
-- **Siete (7)**: La Llama Pura - Un ángel de fuego, cuyo resplandor ilumina el camino
-- **Ocho (8)**: El Emisario Divino - Un mensajero que puede saltarse los turnos, transmitiendo mensajes solo a los que elige
-- **Nueve (9)**: El Serafín de la Justicia - Un ángel poderoso que impone el orden con su balanza
-- **Diez (10)**: El Trono del Creador - Un ángel tan poderoso que puede limpiar la Torre de los Pecados de una vez
-- **Jota (11)**: El Arcángel de la Batalla - Un líder de legiones, experto en estrategia
-- **Reina (12)**: La Bendición Eterna - Un ángel con el poder de curar y bendecir, un pilar de fuerza
-- **Rey (13)**: El Cielor de la Creación - El ser más poderoso de la jerarquía, el que todo lo creó
-
-### 😈 Mazo de Demonios
-- **As (1)**: El Larva de la Avaricia - Un demonio pequeño, pero que crece con cada pecado que consume
-- **Dos (2)**: El Archidemonio de la Ira - Un ser de furia pura, su poder es tan incontrolable que puede jugar sobre cualquier criatura
-- **Tres (3)**: El Demonio Menor de la Envidia - Un ser que roba el poder de otros
-- **Cuatro (4)**: El Súcubo Seductor - Un demonio que atrae a sus víctimas con engaños, manipulando la mente
-- **Cinco (5)**: El Goliat de la Pereza - Un demonio gigante y lento, su fuerza se manifiesta en los momentos más inesperados
-- **Seis (6)**: El Demonio de la Gula - Un ser insaciable que devora todo a su paso
-- **Siete (7)**: El Demonio de la Lujuria - Un ser que se alimenta de los deseos oscuros de los mortales
-- **Ocho (8)**: El Demonio de la Pestilencia - Un ser que propaga enfermedades, saltándose a sus víctimas
-- **Nueve (9)**: El Demonio de la Soberbia - Un ser que se cree superior a todos
-- **Diez (10)**: El Señor del Abismo - Un ser tan poderoso que puede destruir la Torre de los Pecados con una palabra
-- **Jota (11)**: El Barón de las Sombras - Un maestro de la manipulación, experto en el sigilo
-- **Reina (12)**: La Bruja del Caos - Un ser que controla el desorden y la destrucción
-- **Rey (13)**: El Emperador del Infierno - El demonio más poderoso de todos, cuyo poder no tiene límites
-
-### 🐉 Mazo de Dragones
-- **As (1)**: El Dragón Bebé - Una pequeña criatura que apenas ha salido del cascarón, pero ya tiene un aliento poderoso
-- **Dos (2)**: El Dragón de la Peste - Un dragón que escupe veneno y puede jugar sobre cualquier criatura
-- **Tres (3)**: El Dragón de Piedra - Una criatura rocosa, casi impenetrable
-- **Cuatro (4)**: El Dragón de los Hielos - Una bestia que congela el campo de batalla a su paso
-- **Cinco (5)**: El Dragón de Bronce - Un guerrero noble y honorable que lucha por la justicia
-- **Seis (6)**: El Dragón de las Colinas - Un ser salvaje y territorial que no duda en proteger su hogar
-- **Siete (7)**: El Dragón del Desierto - Una criatura que se camufla entre las arenas, esperando para atacar
-- **Ocho (8)**: El Dragón Etéreo - Un dragón fantasma que puede atravesar la realidad, saltándose los turnos
-- **Nueve (9)**: El Dragón de la Nube - Un ser que domina los cielos, lanzando rayos desde las alturas
-- **Diez (10)**: El Dragón de Oro - Una criatura que incinera la Torre de los Pecados con su aliento de fuego
-- **Jota (11)**: El Dragón de Jade - Un ser misterioso y ancestral, que domina la sabiduría
-- **Reina (12)**: La Dracona Guardiana - Una dragona protectora, cuyo poder es igual al de un rey
-- **Rey (13)**: El Dragón Primigenio - El dragón más antiguo y poderoso de todos, el origen de todos los dragones
-
-### 🧙‍♂️ Mazo de Magos
-- **As (1)**: El Aprendiz de Mago - Un joven mago que apenas empieza, pero con un gran potencial
-- **Dos (2)**: El Ilusionista - Un mago que puede conjurar cualquier truco, puede jugar sobre cualquier criatura
-- **Tres (3)**: El Invocador de Golems - Un mago que puede crear criaturas de piedra para que luchen por él
-- **Cuatro (4)**: El Alquimista del Destino - Un mago que manipula los elementos a su antojo
-- **Cinco (5)**: El Nigromante de las Sombras - Un mago oscuro que controla a los muertos
-- **Seis (6)**: El Hechicero de la Tormenta - Un mago que conjura poderosas tormentas para debilitar a sus enemigos
-- **Siete (7)**: El Vidente del Futuro - Un mago que puede predecir los movimientos de los demás
-- **Ocho (8)**: El Mago del Tiempo - Un mago que puede manipular el tiempo, saltándose los turnos
-- **Nueve (9)**: El Maestro de los Elementos - Un mago que domina el fuego, el agua, la tierra y el aire
-- **Diez (10)**: El Archmago de la Destrucción - Un mago que puede conjurar un hechizo tan poderoso que anula toda la Torre de los Pecados
-- **Jota (11)**: El Mago de las Runas - Un mago que invoca el poder de los antiguos símbolos
-- **Reina (12)**: La Oráculo de las Estrellas - Una hechicera que lee el futuro en las estrellas, sus poderes son inmensos
-- **Rey (13)**: El Mago Supremo - El ser más poderoso de todos los magos, cuya magia no tiene límites
-
-## 🎭 Temática de los Mazos
-
-### 👼 Mazo de Ángeles - La Luz Divina
-Los ángeles representan la pureza, la justicia y el orden divino. Sus poderes se basan en la fe, la protección y la purificación. Este mazo es ideal para jugadores que prefieren estrategias defensivas y de control.
-
-### 😈 Mazo de Demonios - La Oscuridad del Abismo
-Los demonios encarnan los siete pecados capitales y el caos. Sus poderes son destructivos, manipuladores y basados en la corrupción. Perfecto para jugadores agresivos que buscan dominar el campo de batalla.
-
-### 🐉 Mazo de Dragones - Los Señores del Cielo
-Los dragones representan el poder primitivo y la sabiduría ancestral. Sus habilidades se centran en el dominio elemental y la fuerza bruta. Ideal para jugadores que prefieren ataques directos y poderío.
-
-### 🧙‍♂️ Mazo de Magos - Los Maestros del Arcano
-Los magos personifican el conocimiento arcano y la manipulación de la realidad. Sus poderes son versátiles, basados en hechizos y efectos especiales. Perfecto para jugadores estratégicos que valoran la flexibilidad.
-
-## 🎯 Estrategias
-
-### Consejos para Ganar
-1. **Gestiona tu mano**: Mantén criaturas de diferentes valores
-2. **Purifica estratégicamente**: Usa cartas iguales para limpiar el mazo
-3. **Usa las cartas especiales**: El 2, 8 y 10 pueden cambiar el juego
-4. **Observa a tus oponentes**: Ve qué criaturas tienen boca arriba
-5. **Planifica las fases**: No te quedes sin opciones en las fases finales
-
-### Estrategias por Mazo
-
-#### 👼 Mazo de Ángeles
-- **Enfoque**: Defensa y control
-- **Estrategia**: Usa cartas protectoras y purificadoras
-- **Momento clave**: El Serafín del Juicio (2) para reiniciar el juego
-- **Combo**: Trono del Creador (10) + Arcángel de la Batalla (11)
-
-#### 😈 Mazo de Demonios
-- **Enfoque**: Agresión y caos
-- **Estrategia**: Aplica presión constante con cartas destructivas
-- **Momento clave**: El Archidemonio de la Ira (2) para romper secuencias
-- **Combo**: Señor del Abismo (10) + Emperador del Infierno (13)
-
-#### 🐉 Mazo de Dragones
-- **Enfoque**: Poderío y dominio
-- **Estrategia**: Acumula fuerza y usa ataques directos
-- **Momento clave**: El Dragón de Oro (10) para limpiar el campo
-- **Combo**: Dragón Primigenio (13) + Dragón de Jade (11)
-
-#### 🧙‍♂️ Mazo de Magos
-- **Enfoque**: Versatilidad y control
-- **Estrategia**: Adapta tu juego según la situación
-- **Momento clave**: El Archmago de la Destrucción (10) para resetear
-- **Combo**: Mago Supremo (13) + Oráculo de las Estrellas (12)
-
-### Errores Comunes
-- Jugar todas tus cartas bajas al principio
-- No guardar cartas especiales para momentos clave
-- Olvidar que puedes purificar con cartas iguales
-- No prestar atención a las cartas boca arriba de otros jugadores
-
-## 🎉 Variantes del Juego
-
-### Variante Rápida
-- Se reparten solo 6 cartas por jugador
-- Solo 2 cartas boca arriba y 2 boca abajo
-- Juego más rápido y dinámico
-
-### Variante de Equipos
-- Se juega en equipos de 2
-- Los compañeros pueden ver las cartas del otro
-- Victoria cuando ambos miembros del equipo se quedan sin cartas
-
-### Variante de Puntos
-- Cada carta tiene puntos según su valor
-- El perdedor suma los puntos de todas las cartas restantes
-- Se juegan varias rondas hasta llegar a un puntaje objetivo
+</div>
 
 ---
 
-*¡Que la suerte esté de tu lado y que no seas el último en cargar con la Torre de los Pecados!* 🏰
+## 📖 Introducción
+
+> **🏰 La Torre de los Pecados** es más que un simple juego de cartas. Es una batalla épica entre criaturas mágicas donde la estrategia, la suerte y la temática de fantasía se combinan para crear una experiencia única.
+
+El objetivo es deshacerse de todas tus criaturas mágicas para no ser el último y, por lo tanto, el **"Pecador"** que cargará con la culpa de la "Torre de los Pecados".
+
+### 🎭 Ambientación
+- **Universo**: Fantasía medieval con elementos celestiales e infernales
+- **Temática**: Virtudes vs Pecados, Dragones ancestrales, Magia arcana
+- **Estilo**: Juego de cartas estratégico con elementos narrativos
+
+---
+
+## 🎯 Objetivo del Juego
+
+<div align="center">
+
+### 🏆 **Victoria**
+El primer jugador en deshacerse de **todas sus criaturas** (mano, boca arriba y boca abajo)
+
+### 💀 **Derrota** 
+El último jugador en quedarse con criaturas es el **"Pecador"**
+
+### ⚖️ **Castigo**
+El perdedor debe cargar con la "Torre de los Pecados" hasta la próxima partida
+
+</div>
+
+---
+
+## 🃏 Preparación del Juego
+
+### 📦 Componentes Necesarios
+
+| Componente | Cantidad | Descripción |
+|------------|----------|-------------|
+| 🃏 Baraja | 1 | 52 cartas (sin Jokers) |
+| 👥 Jugadores | 2-6 | Mínimo 2, máximo 6 |
+| 🎲 Dados | Opcional | Para variantes |
+
+### 🎮 Configuración Inicial
+
+<details>
+<summary><strong>📋 Pasos de Preparación</strong></summary>
+
+1. **🃏 Baraja**: Se usa una baraja de 52 cartas, donde cada naipe representa una criatura mágica con un valor (del 1 al 13, siendo el 1 el As y el 13 el Rey)
+
+2. **🎯 Reparto**: Se reparten **12 cartas** (criaturas) a cada jugador
+
+3. **📐 Organización de las Criaturas**:
+   - Cada jugador toma **3 criaturas** de su mano y las coloca **boca arriba** frente a él
+   - Luego, coloca otras **3 criaturas boca abajo** encima de las anteriores
+   - Las criaturas restantes forman el mazo de robo, o el **"Pozo de Almas"**, y se colocan boca abajo en el centro de la mesa
+
+</details>
+
+---
+
+## 🎮 Cómo Jugar
+
+### 🔄 Turno Básico
+
+<div align="center">
+
+**🔄 Flujo del Juego**
+
+```mermaid
+graph LR
+    A[Inicio] --> B[Robar Carta]
+    B --> C[Jugar Carta]
+    C --> D{¿Puede Jugar?}
+    D -->|Sí| E[Descartar]
+    D -->|No| F[Tomar Torre]
+    E --> G[Siguiente Jugador]
+    F --> G
+    G --> B
+```
+
+</div>
+
+#### 📝 Pasos del Turno
+
+1. **🎯 Objetivo**: Descartar criaturas de tu mano en la **"Torre de los Pecados"** (mazo de descarte)
+2. **🚀 Primer Jugador**: Puede descartar cualquier criatura
+3. **⚖️ Jugadores Siguientes**: Deben descartar una criatura de **igual o mayor valor** que la última jugada
+
+### 📜 Reglas de Descarte
+
+> ⚠️ **Regla Principal**: Si no puedes jugar una criatura de valor igual o superior, debes llevarte **todas las criaturas** de la "Torre de los Pecados" a tu mano.
+
+#### 🧹 Purificación del Mazo
+
+| Condición | Efecto |
+|-----------|--------|
+| **Carta idéntica** (ej: 5 sobre 5) | ✅ **Purifica** - Torre se retira del juego |
+| **4 cartas del mismo valor** | ✅ **Purifica** - Torre se retira del juego |
+| **Carta 10** | ✅ **Purifica** - Torre se retira del juego |
+
+#### 🔄 Robo de Cartas
+- Cada vez que descartas una criatura de tu mano, robas una nueva del **"Pozo de Almas"**
+- Mantienes siempre la misma cantidad de cartas en tu mano (generalmente 3)
+
+---
+
+## 🔄 Fases del Juego
+
+El juego se desarrolla en **tres fases** progresivas:
+
+### 📊 Tabla de Fases
+
+| Fase | Cartas Disponibles | Robo | Descripción |
+|------|-------------------|------|-------------|
+| **🖐️ Fase de la Mano** | Mano (3 cartas) | ✅ Sí | Juegas con las criaturas de tu mano |
+| **👁️ Fase Boca Arriba** | Boca arriba (3 cartas) | ❌ No | Juegas con las criaturas visibles |
+| **❓ Fase Boca Abajo** | Boca abajo (3 cartas) | ❌ No | Juegas sin ver las criaturas |
+
+### 📋 Detalles por Fase
+
+<details>
+<summary><strong>🖐️ Fase de la Mano</strong></summary>
+
+- **Cartas**: Las 3 criaturas en tu mano
+- **Robo**: ✅ Después de cada descarte
+- **Estrategia**: Gestiona tu mano para mantener opciones
+
+</details>
+
+<details>
+<summary><strong>👁️ Fase Boca Arriba</strong></summary>
+
+- **Cartas**: Las 3 criaturas boca arriba
+- **Robo**: ❌ No puedes robar del "Pozo de Almas"
+- **Estrategia**: Usa las cartas visibles estratégicamente
+
+</details>
+
+<details>
+<summary><strong>❓ Fase Boca Abajo</strong></summary>
+
+- **Cartas**: Las 3 criaturas boca abajo (sin ver)
+- **Robo**: ❌ No puedes robar
+- **Estrategia**: Juegas a ciegas, si no es válida tomas toda la Torre y regresas a la Fase de la Mano
+
+</details>
+
+---
+
+## ⚡ Reglas Especiales
+
+### 🃏 Criaturas con Poderes Especiales
+
+<div align="center">
+
+**🎯 Cartas Especiales: 2, 8 y 10**
+
+</div>
+
+#### 🃏 La Criatura del 2 (Poder Universal)
+
+> **🌟 Efecto**: Se puede jugar sobre **cualquier criatura**. El siguiente jugador puede jugar **lo que quiera**.
+
+| Mazo | Criatura | Descripción |
+|------|----------|-------------|
+| 👼 **Ángeles** | El Serafín de la Fe | Purifica el mazo de descarte |
+| 😈 **Demonios** | Demonio de la Ira | Furia incontrolable |
+| 🐉 **Dragones** | El Dragón de la Peste | Escupe veneno |
+| 🧙‍♂️ **Magos** | El Ilusionista | Conjura cualquier truco |
+
+#### ⏭️ La Criatura del 8 (Poder de Salto)
+
+> **⏭️ Efecto**: **Salta al siguiente jugador**, como en el juego del UNO. El jugador siguiente al saltado pierde su turno.
+
+| Mazo | Criatura | Descripción |
+|------|----------|-------------|
+| 👼 **Ángeles** | El Emisario de la Fe y la Caridad | Transmite mensajes divinos |
+| 😈 **Demonios** | Portador de la Pestilencia | Propaga enfermedades |
+| 🐉 **Dragones** | El Dragón Etéreo | Atraviesa la realidad |
+| 🧙‍♂️ **Magos** | El Mago del Tiempo | Manipula el tiempo |
+
+#### ✨ La Criatura del 10 (Poder de Purificación)
+
+> **🧹 Efecto**: Puede **purificar** la "Torre de los Pecados". El siguiente jugador comienza una nueva ronda.
+
+| Mazo | Criatura | Descripción |
+|------|----------|-------------|
+| 👼 **Ángeles** | El Trono de la Virtud | Limpia la Torre con poder divino |
+| 😈 **Demonios** | Señor del Abismo | Destruye la Torre con una palabra |
+| 🐉 **Dragones** | El Dragón Dorado | Incinera la Torre con su aliento |
+| 🧙‍♂️ **Magos** | El Archimago de la Destrucción | Anula toda la Torre con magia |
+
+---
+
+## 🎨 Mazos Temáticos
+
+Cada mazo representa un tema de fantasía con **13 criaturas únicas**, cada una con poderes especiales y personalidades distintivas.
+
+### 📊 Resumen de Mazos
+
+| Mazo | Tema | Estilo | Dificultad |
+|------|------|--------|------------|
+| 👼 **Ángeles** | Virtudes Celestiales | Defensivo/Control | ⭐⭐ |
+| 😈 **Demonios** | Pecados Capitales | Agresivo/Caos | ⭐⭐⭐ |
+| 🐉 **Dragones** | Poder Primitivo | Fuerza Bruta | ⭐⭐ |
+| 🧙‍♂️ **Magos** | Magia Arcana | Control/Manipulación | ⭐⭐⭐⭐ |
+
+---
+
+### 👼 Mazo de Ángeles
+
+<div align="center">
+
+**🌟 Virtudes Celestiales - La Luz Divina**
+
+</div>
+
+| Valor | Criatura | Virtud | Descripción |
+|-------|----------|--------|-------------|
+| **As (1)** | El Querubín de la Esperanza | Esperanza | El primer destello de luz, guía en los comienzos inciertos |
+| **Dos (2)** | El Serafín de la Fe | Fe | Su pureza refuerza el corazón de los justos |
+| **Tres (3)** | El Guardián de la Caridad | Caridad | Protege a los más débiles, dispuesto a sacrificarse |
+| **Cuatro (4)** | La Cohorte de la Prudencia | Prudencia | Legión sabia que planea cada movimiento |
+| **Cinco (5)** | El Portador de la Justicia | Justicia | Porta la balanza divina, equilibrando las fuerzas |
+| **Seis (6)** | El Arcángel de la Fortaleza | Fortaleza | Su armadura resplandece con fuerza inquebrantable |
+| **Siete (7)** | La Llama de la Templanza | Templanza | Modera los excesos, neutraliza habilidades extremas |
+| **Ocho (8)** | El Emisario de la Fe y la Caridad | Fe + Caridad | Fortalece la unión entre aliados |
+| **Nueve (9)** | El Serafín de la Justicia Suprema | Justicia elevada | Su balanza brilla más que cualquier otra |
+| **Diez (10)** | El Trono de la Virtud | Todas las virtudes | Máxima expresión de la perfección celestial |
+| **Jota (11)** | El Arcángel de la Estrategia | Prudencia + Fortaleza | Dirige legiones con sabiduría y valor |
+| **Reina (12)** | La Bendición de la Caridad | Caridad + Esperanza | Irradia luz sanadora, protegiendo a los caídos |
+| **Rey (13)** | El Creador de la Luz | Fe + Esperanza + Caridad | La divinidad suprema, origen de todo |
+
+---
+
+### 😈 Mazo de Demonios
+
+<div align="center">
+
+**🔥 Pecados Capitales - La Oscuridad del Abismo**
+
+</div>
+
+| Valor | Criatura | Pecado/Círculo | Descripción |
+|-------|----------|----------------|-------------|
+| **As (1)** | Larva de la Avaricia | Avaricia / 4° círculo | Se alimenta del oro y del deseo |
+| **Dos (2)** | Demonio de la Ira | Ira / 5° círculo | Encarnación del odio ardiente |
+| **Tres (3)** | Espectro de la Envidia | Envidia / 2° círculo | Drena el poder de los demás |
+| **Cuatro (4)** | Súcubo de la Lujuria | Lujuria / 2° círculo | Esclaviza las mentes con engaños |
+| **Cinco (5)** | Goliat de la Pereza | Pereza / 3° círculo | Gigante lento, poder inesperado |
+| **Seis (6)** | Glotón del Abismo | Gula / 3° círculo | Bestia que devora aliados y enemigos |
+| **Siete (7)** | Incubo de la Lujuria | Lujuria / 2° círculo | Complemento del súcubo |
+| **Ocho (8)** | Portador de la Pestilencia | Herejía / 6° círculo | Siembra plagas, infecta criaturas |
+| **Nueve (9)** | Tirano de la Soberbia | Soberbia / 1° círculo | Se cree superior a sus iguales |
+| **Diez (10)** | Señor del Abismo | Traición / 9° círculo | Demonio primordial, quebranta vínculos |
+| **Jota (11)** | Barón de las Sombras | Violencia / 7° círculo | Maestro del sigilo y manipulación |
+| **Reina (12)** | La Bruja del Caos | Malebolge / 8° círculo | Controla corrupción y desorden |
+| **Rey (13)** | El Emperador del Infierno | Lucifer / 9° círculo | Ser supremo del inframundo |
+
+---
+
+### 🐉 Mazo de Dragones
+
+<div align="center">
+
+**🔥 Poder Primitivo - Los Señores del Cielo**
+
+</div>
+
+| Valor | Criatura | Elemento | Descripción |
+|-------|----------|----------|-------------|
+| **As (1)** | El Dragón Bebé | - | Recién salido del cascarón, anuncia su destino |
+| **Dos (2)** | El Dragón de la Peste | Veneno | Su aliento envenenado corrompe el aire |
+| **Tres (3)** | El Dragón de Piedra | Tierra | De escamas pétreas, casi indestructible |
+| **Cuatro (4)** | El Dragón de Hielo | Hielo | Congela todo a su paso, ralentiza |
+| **Cinco (5)** | El Dragón de Bronce | Metal | Noble guerrero que lucha con honor |
+| **Seis (6)** | El Dragón de las Colinas | Tierra | Salvaje y territorial, protege dominios |
+| **Siete (7)** | El Dragón del Desierto | Arena | Astuto y paciente, maestro del engaño |
+| **Ocho (8)** | El Dragón Etéreo | Etéreo | Espectro que atraviesa dimensiones |
+| **Nueve (9)** | El Dragón de la Tormenta | Tormenta | Desde las nubes lanza rayos devastadores |
+| **Diez (10)** | El Dragón Dorado | Fuego | Símbolo de perfección, arrasa la Torre |
+| **Jota (11)** | El Dragón de Jade | Sabiduría | Antiguo y sabio, guardián de secretos |
+| **Reina (12)** | La Dracona Guardiana | Protección | Madre protectora de la estirpe |
+| **Rey (13)** | El Dragón Primigenio | Origen | El primero de todos los dragones |
+
+---
+
+### 🧙‍♂️ Mazo de Magos
+
+<div align="center">
+
+**✨ Magia Arcana - Los Maestros del Arcano**
+
+</div>
+
+| Valor | Criatura | Especialización | Descripción |
+|-------|----------|-----------------|-------------|
+| **As (1)** | El Aprendiz de Mago | Inicio | Inexperto pero lleno de curiosidad |
+| **Dos (2)** | El Ilusionista | Ilusiones | Maestro de engaños y confusión |
+| **Tres (3)** | El Invocador de Golems | Invocación | Crea constructos de piedra |
+| **Cuatro (4)** | El Alquimista del Destino | Alquimia | Manipula elementos y materia |
+| **Cinco (5)** | El Nigromante de las Sombras | Nigromancia | Controla a los muertos |
+| **Seis (6)** | El Hechicero de la Tormenta | Tormentas | Domina rayos, truenos y huracanes |
+| **Siete (7)** | El Vidente del Futuro | Adivinación | Profeta que ve lo que está por venir |
+| **Ocho (8)** | El Mago del Tiempo | Tiempo | Dueño de las arenas temporales |
+| **Nueve (9)** | El Maestro de los Elementos | Elementos | Control absoluto de fuego, agua, tierra y aire |
+| **Diez (10)** | El Archimago de la Destrucción | Destrucción | Poder cataclísmico, desintegra la Torre |
+| **Jota (11)** | El Mago de las Runas | Runas | Descifra símbolos ancestrales |
+| **Reina (12)** | La Oráculo de las Estrellas | Cosmología | Conecta con el cosmos y constelaciones |
+| **Rey (13)** | El Mago Supremo | Supremacía | Origen y cúspide de la magia |
+
+---
+
+## 🎭 Temática de los Mazos
+
+### 👼 Mazo de Ángeles
+
+> **🌟 Reino Celestial**: Las virtudes se manifiestan como seres angelicales que descienden al plano terrenal cuando el equilibrio del mundo se rompe.
+
+#### 📊 Estructura Temática
+
+| Nivel | Cartas | Virtudes | Función |
+|-------|--------|----------|---------|
+| **🌱 Inicio** | 1-3 | Teologales (Esperanza, Fe, Caridad) | Pilares iniciales de la moral |
+| **⚖️ Base** | 4-7 | Cardinales (Prudencia, Justicia, Fortaleza, Templanza) | Disciplina celestial |
+| **🌉 Puentes** | 8-9 | Combinadas y elevadas | Conexión entre virtudes |
+| **✨ Perfección** | 10 | Todas las virtudes | Poder absoluto de reinicio |
+| **👑 Gobierno** | 11-13 | Supremas | Coordinación y origen divino |
+
+#### 🎯 Filosofía de Juego
+Cuando los jugadores invoquen cartas, no estarán solo jugando números: estarán desplegando **virtudes que interactúan en sinfonía**, restaurando orden frente a la oscuridad.
+
+---
+
+### 😈 Mazo de Demonios
+
+> **🔥 Infierno Estructurado**: El Infierno no es un caos sin orden, sino un sistema perverso de pecados y castigos organizado en círculos descendentes.
+
+#### 📊 Estructura Temática
+
+| Nivel | Cartas | Círculo | Función |
+|-------|--------|---------|---------|
+| **👶 Inicial** | 1-3 | 2°-5° | Demonios pequeños con hambre de poder |
+| **💀 Capitales** | 4-7 | 2°-3° | Pecados capitales dominan el campo |
+| **⚔️ Avanzado** | 8-9 | 6°-1° | Pestilencia, Herejía y Soberbia |
+| **💥 Cataclismo** | 10 | 9° | Traición que quiebra cualquier pacto |
+| **👑 Cúspide** | 11-13 | 7°-9° | Manipulación, caos y supremacía |
+
+#### 🎯 Filosofía de Juego
+Los demonios no colaboran por lealtad, sino por **temor y codicia**. Se enfrentan entre sí tanto como contra los ángeles, pero cuando el Emperador del Infierno interviene, todos los círculos se alinean bajo su sombra.
+
+---
+
+### 🐉 Mazo de Dragones
+
+> **🔥 Linaje Dracónico**: El linaje se despliega como una escala de poder y sabiduría, desde el bebé hasta el primigenio.
+
+#### 📊 Estructura Temática
+
+| Nivel | Cartas | Etapa | Función |
+|-------|--------|-------|---------|
+| **🥚 Nacimiento** | 1-3 | Infancia | Pequeños pero cada vez más firmes |
+| **🌍 Elemental** | 4-7 | Dominio terrenal | Hielo, roca, colinas y desierto |
+| **⚡ Sobrenatural** | 8-9 | Ascensión | Etéreo y tormentas gobiernan cielos |
+| **✨ Perfección** | 10 | Pináculo | Equilibrio entre fuerza y honor |
+| **👑 Ancestral** | 11-13 | Cúspide | Sabiduría, protección y origen |
+
+#### 🎯 Filosofía de Juego
+Los dragones interactúan en **jerarquías naturales**: los menores sirven a los mayores, los elementales se enfrentan por territorios, y los ancianos buscan mantener el equilibrio. Cuando el Dragón Primigenio despierta, todos obedecen.
+
+---
+
+### 🧙‍♂️ Mazo de Magos
+
+> **✨ Camino Arcano**: El camino del mago es un ascenso de conocimiento y poder, desde el aprendiz hasta el supremo.
+
+#### 📊 Estructura Temática
+
+| Nivel | Cartas | Etapa | Función |
+|-------|--------|-------|---------|
+| **🎓 Inicios** | 1-3 | Descubrimiento | Aprendiz, ilusiones e invocaciones |
+| **🔬 Especialización** | 4-7 | Dominio | Alquimia, muerte, tormentas y futuro |
+| **⚡ Avanzado** | 8-9 | Maestría | Tiempo y elementos |
+| **💥 Destrucción** | 10 | Poder puro | Magia capaz de borrar civilizaciones |
+| **👑 Gobierno** | 11-13 | Supremacía | Runas, cosmos y ley arcana |
+
+#### 🎯 Filosofía de Juego
+La interacción entre magos es **jerárquica y cíclica**: los jóvenes aprenden de los medianos, los medianos luchan por especialización, y los grandes magos gobiernan el balance. El Archimago de la Destrucción es temido incluso por los ancianos.
+
+---
+
+## 🎯 Estrategias
+
+### 💡 Consejos para Ganar
+
+<div align="center">
+
+**🏆 Estrategias Principales**
+
+</div>
+
+| Estrategia | Descripción | Importancia |
+|------------|-------------|-------------|
+| **🖐️ Gestión de Mano** | Mantén criaturas de diferentes valores | ⭐⭐⭐⭐⭐ |
+| **🧹 Purificación Estratégica** | Usa cartas iguales para limpiar el mazo | ⭐⭐⭐⭐ |
+| **⚡ Cartas Especiales** | El 2, 8 y 10 pueden cambiar el juego | ⭐⭐⭐⭐⭐ |
+| **👁️ Observación** | Ve qué criaturas tienen boca arriba | ⭐⭐⭐ |
+| **📋 Planificación** | No te quedes sin opciones en las fases finales | ⭐⭐⭐⭐ |
+
+### ❌ Errores Comunes
+
+> ⚠️ **Evita estos errores para mejorar tu juego**
+
+- **🎯 Jugar todas las cartas bajas al principio**
+- **💎 No guardar cartas especiales para momentos clave**
+- **🧹 Olvidar que puedes purificar con cartas iguales**
+- **👁️ No prestar atención a las cartas boca arriba de otros jugadores**
+
+---
+
+## 🎉 Variantes del Juego
+
+### 📊 Comparación de Variantes
+
+| Variante | Cartas por Jugador | Boca Arriba | Boca Abajo | Duración | Complejidad |
+|----------|-------------------|-------------|------------|----------|-------------|
+| **🎮 Estándar** | 12 | 3 | 3 | 30-45 min | ⭐⭐⭐ |
+| **⚡ Rápida** | 6 | 2 | 2 | 15-25 min | ⭐⭐ |
+| **👥 Equipos** | 12 | 3 | 3 | 45-60 min | ⭐⭐⭐⭐ |
+| **📊 Puntos** | 12 | 3 | 3 | 60+ min | ⭐⭐⭐⭐ |
+
+### 🎮 Detalles de Variantes
+
+<details>
+<summary><strong>⚡ Variante Rápida</strong></summary>
+
+- **Cartas**: Solo 6 cartas por jugador
+- **Organización**: 2 cartas boca arriba y 2 boca abajo
+- **Duración**: 15-25 minutos
+- **Ideal para**: Partidas rápidas o introducción al juego
+
+</details>
+
+<details>
+<summary><strong>👥 Variante de Equipos</strong></summary>
+
+- **Equipos**: Se juega en equipos de 2 jugadores
+- **Comunicación**: Los compañeros pueden ver las cartas del otro
+- **Victoria**: Cuando ambos miembros del equipo se quedan sin cartas
+- **Estrategia**: Coordinación y comunicación entre compañeros
+
+</details>
+
+<details>
+<summary><strong>📊 Variante de Puntos</strong></summary>
+
+- **Puntuación**: Cada carta tiene puntos según su valor
+- **Cálculo**: El perdedor suma los puntos de todas las cartas restantes
+- **Objetivo**: Se juegan varias rondas hasta llegar a un puntaje objetivo
+- **Estrategia**: Gestión de riesgo y acumulación de puntos
+
+</details>
+
+---
+
+## 📚 Recursos Adicionales
+
+### 🔗 Enlaces Útiles
+
+- **🎮 [Guía de Inicio Rápido](README.md)** - Para nuevos jugadores
+- **📖 [Documentación Técnica](api/docs/)** - Para desarrolladores
+- **🎨 [Guía de Imágenes](web/public/HIGH_RESOLUTION_GUIDE.md)** - Para artistas
+- **🧪 [Pruebas del Juego](api/tests/)** - Para testing
+
+### 📞 Soporte
+
+Si tienes preguntas o necesitas ayuda:
+
+- **🐛 Reportar Bugs**: Crear un issue en el repositorio
+- **💡 Sugerencias**: Abrir una discusión
+- **🤝 Contribuir**: Revisar las guías de contribución
+
+---
+
+<div align="center">
+
+## 🏰 ¡Que la suerte esté de tu lado!
+
+**Que no seas el último en cargar con la Torre de los Pecados**
+
+---
+
+*📅 Última actualización: 16 de Agosto, 2024*  
+*🎮 Versión del juego: 1.0*  
+*📝 Mantenido por el equipo de Torre de los Pecados*
+
+</div>

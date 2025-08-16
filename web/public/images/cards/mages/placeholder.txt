@@ -12,7 +12,7 @@ Esta carpeta debe contener las 13 cartas del mazo de magos:
 07. El Vidente del Futuro (Siete)
 08. El Mago del Tiempo (Ocho)
 09. El Maestro de los Elementos (Nueve)
-10. El Archmago de la Destrucción (Diez)
+10. El Archimago de la Destrucción (Diez)
 11. El Mago de las Runas (Jota)
 12. La Oráculo de las Estrellas (Reina)
 13. El Mago Supremo (Rey)
@@ -27,13 +27,19 @@ Esta carpeta debe contener las 13 cartas del mazo de magos:
 - Calidad: Máxima para zoom sin pérdida
 
 ## Paleta de Colores
-- Azul: #4169E1
-- Púrpura: #800080
-- Plateado: #C0C0C0
-- Dorado: #FFD700
+- Púrpura Mágico: #8A2BE2
+- Azul Arcano: #4169E1
+- Dorado Místico: #FFD700
+- Plateado Etéreo: #C0C0C0
 
 ## Estilo Visual
-- Hechiceros y magos arcanos
-- Efectos mágicos y runas brillantes
-- Vestimentas y accesorios mágicos
-- Expresiones de sabiduría y poder arcano
+- Criaturas mágicas y hechiceros
+- Efectos de magia y conjuros
+- Elementos arcanos (varitas, grimorios, cristales)
+- Expresiones sabias y misteriosas
+- Vestimentas mágicas y túnicas
+- Fondos con estrellas y portales
+- Auras y efectos mágicos multicolores
+
+## Temática
+Cada carta representa un nivel de maestría arcana, desde el aprendiz hasta el mago supremo. Los magos son maestros de la realidad, manipuladores del tiempo y guardianes del conocimiento ancestral.

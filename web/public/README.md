@@ -25,29 +25,29 @@ public/
 
 #### Mazo de Ángeles (angels)
 - `angels_01_querubin_esperanza.png`
-- `angels_02_serafin_juicio.png`
-- `angels_03_guardian_paraiso.png`
-- `angels_04_legion_celestial.png`
-- `angels_05_lira_sagrada.png`
-- `angels_06_arcangel_espada.png`
-- `angels_07_llama_pura.png`
-- `angels_08_emisario_divino.png`
-- `angels_09_serafin_justicia.png`
-- `angels_10_trono_creador.png`
-- `angels_11_arcangel_batalla.png`
-- `angels_12_bendicion_eterna.png`
-- `angels_13_cielor_creacion.png`
+- `angels_02_serafin_fe.png`
+- `angels_03_guardian_caridad.png`
+- `angels_04_cohorte_prudencia.png`
+- `angels_05_portador_justicia.png`
+- `angels_06_arcangel_fortaleza.png`
+- `angels_07_llama_templanza.png`
+- `angels_08_emisario_fe_caridad.png`
+- `angels_09_serafin_justicia_suprema.png`
+- `angels_10_trono_virtud.png`
+- `angels_11_arcangel_estrategia.png`
+- `angels_12_bendicion_caridad.png`
+- `angels_13_creador_luz.png`
 
 #### Mazo de Demonios (demons)
 - `demons_01_larva_avaricia.png`
-- `demons_02_archidemonio_ira.png`
-- `demons_03_demonio_menor_envidia.png`
-- `demons_04_sucubo_seductor.png`
+- `demons_02_demonio_ira.png`
+- `demons_03_espectro_envidia.png`
+- `demons_04_sucubo_lujuria.png`
 - `demons_05_goliat_pereza.png`
-- `demons_06_demonio_gula.png`
-- `demons_07_demonio_lujuria.png`
-- `demons_08_demonio_pestilencia.png`
-- `demons_09_demonio_soberbia.png`
+- `demons_06_gloton_abismo.png`
+- `demons_07_incubo_lujuria.png`
+- `demons_08_portador_pestilencia.png`
+- `demons_09_tirano_soberbia.png`
 - `demons_10_senor_abismo.png`
 - `demons_11_baron_sombras.png`
 - `demons_12_bruja_caos.png`
@@ -57,13 +57,13 @@ public/
 - `dragons_01_dragon_bebe.png`
 - `dragons_02_dragon_peste.png`
 - `dragons_03_dragon_piedra.png`
-- `dragons_04_dragon_hielos.png`
+- `dragons_04_dragon_hielo.png`
 - `dragons_05_dragon_bronce.png`
 - `dragons_06_dragon_colinas.png`
 - `dragons_07_dragon_desierto.png`
 - `dragons_08_dragon_etereo.png`
-- `dragons_09_dragon_nube.png`
-- `dragons_10_dragon_oro.png`
+- `dragons_09_dragon_tormenta.png`
+- `dragons_10_dragon_dorado.png`
 - `dragons_11_dragon_jade.png`
 - `dragons_12_dracona_guardiana.png`
 - `dragons_13_dragon_primigenio.png`
@@ -78,7 +78,7 @@ public/
 - `mages_07_vidente_futuro.png`
 - `mages_08_mago_tiempo.png`
 - `mages_09_maestro_elementos.png`
-- `mages_10_archmago_destruccion.png`
+- `mages_10_archimago_destruccion.png`
 - `mages_11_mago_runas.png`
 - `mages_12_oraculo_estrellas.png`
 - `mages_13_mago_supremo.png`
