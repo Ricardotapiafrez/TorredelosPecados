@@ -1,0 +1,39 @@
+# 👼 Mazo de Ángeles
+
+Esta carpeta debe contener las 13 cartas del mazo de ángeles:
+
+## Cartas del Mazo
+01. El Querubín de la Esperanza (As)
+02. El Serafín del Juicio (Dos)
+03. El Guardián del Paraíso (Tres)
+04. La Legión Celestial (Cuatro)
+05. La Lira Sagrada (Cinco)
+06. El Arcángel de la Espada (Seis)
+07. La Llama Pura (Siete)
+08. El Emisario Divino (Ocho)
+09. El Serafín de la Justicia (Nueve)
+10. El Trono del Creador (Diez)
+11. El Arcángel de la Batalla (Jota)
+12. La Bendición Eterna (Reina)
+13. El Cielor de la Creación (Rey)
+
+## Especificaciones
+- Formato: PNG con transparencia
+- Resolución: 4000x2400 píxeles (ratio 5:3)
+- Tamaño máximo: 2MB por imagen
+- Fondo: Transparente
+- DPI: 300 DPI mínimo
+- Color Space: sRGB
+- Calidad: Máxima para zoom sin pérdida
+
+## Paleta de Colores
+- Dorado: #FFD700
+- Blanco: #FFFFFF
+- Azul celeste: #87CEEB
+- Plateado: #C0C0C0
+
+## Estilo Visual
+- Criaturas celestiales y divinas
+- Auras de luz y efectos brillantes
+- Elementos sagrados (espadas, escudos, alas)
+- Expresiones serenas y protectoras

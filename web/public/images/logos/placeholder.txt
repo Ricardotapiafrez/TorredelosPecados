@@ -1,0 +1,27 @@
+# 📁 Carpeta de Logos
+
+Esta carpeta debe contener los siguientes archivos:
+
+## Logos Principales
+- logo_principal.png - Logo principal de la empresa
+- logo_white.png - Logo en versión blanca (para fondos oscuros)
+- logo_black.png - Logo en versión negra (para fondos claros)
+- logo_square.png - Logo en formato cuadrado
+
+## Iconos Web
+- favicon.ico - Favicon del sitio web
+- icon_192.png - Icono para PWA (192x192)
+- icon_512.png - Icono para PWA (512x512)
+
+## Especificaciones
+- Formato: PNG con transparencia
+- Resolución mínima: 512x512 píxeles
+- Tamaño máximo: 500KB por imagen
+- Fondo: Transparente
+
+## Sugerencia de Diseño
+El logo debe representar la temática del juego:
+- Elementos de fantasía (torre, cartas, criaturas)
+- Paleta de colores: dorado, rojo, negro
+- Estilo: Medieval/fantástico
+- Tipografía: Serif o fantasy

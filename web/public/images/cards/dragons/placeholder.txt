@@ -1,0 +1,39 @@
+# 🐉 Mazo de Dragones
+
+Esta carpeta debe contener las 13 cartas del mazo de dragones:
+
+## Cartas del Mazo
+01. El Dragón Bebé (As)
+02. El Dragón de la Peste (Dos)
+03. El Dragón de Piedra (Tres)
+04. El Dragón de los Hielos (Cuatro)
+05. El Dragón de Bronce (Cinco)
+06. El Dragón de las Colinas (Seis)
+07. El Dragón del Desierto (Siete)
+08. El Dragón Etéreo (Ocho)
+09. El Dragón de la Nube (Nueve)
+10. El Dragón de Oro (Diez)
+11. El Dragón de Jade (Jota)
+12. La Dracona Guardiana (Reina)
+13. El Dragón Primigenio (Rey)
+
+## Especificaciones
+- Formato: PNG con transparencia
+- Resolución: 4000x2400 píxeles (ratio 5:3)
+- Tamaño máximo: 2MB por imagen
+- Fondo: Transparente
+- DPI: 300 DPI mínimo
+- Color Space: sRGB
+- Calidad: Máxima para zoom sin pérdida
+
+## Paleta de Colores
+- Verde esmeralda: #50C878
+- Dorado: #FFD700
+- Rojo: #DC143C
+- Azul: #4169E1
+
+## Estilo Visual
+- Criaturas dragónicas majestuosas
+- Escamas detalladas y alas imponentes
+- Efectos de aliento de fuego/hielo
+- Expresiones de poder y sabiduría ancestral

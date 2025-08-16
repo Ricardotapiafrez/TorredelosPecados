@@ -1,0 +1,39 @@
+# 😈 Mazo de Demonios
+
+Esta carpeta debe contener las 13 cartas del mazo de demonios:
+
+## Cartas del Mazo
+01. El Larva de la Avaricia (As)
+02. El Archidemonio de la Ira (Dos)
+03. El Demonio Menor de la Envidia (Tres)
+04. El Súcubo Seductor (Cuatro)
+05. El Goliat de la Pereza (Cinco)
+06. El Demonio de la Gula (Seis)
+07. El Demonio de la Lujuria (Siete)
+08. El Demonio de la Pestilencia (Ocho)
+09. El Demonio de la Soberbia (Nueve)
+10. El Señor del Abismo (Diez)
+11. El Barón de las Sombras (Jota)
+12. La Bruja del Caos (Reina)
+13. El Emperador del Infierno (Rey)
+
+## Especificaciones
+- Formato: PNG con transparencia
+- Resolución: 4000x2400 píxeles (ratio 5:3)
+- Tamaño máximo: 2MB por imagen
+- Fondo: Transparente
+- DPI: 300 DPI mínimo
+- Color Space: sRGB
+- Calidad: Máxima para zoom sin pérdida
+
+## Paleta de Colores
+- Rojo: #DC143C
+- Negro: #000000
+- Púrpura: #800080
+- Naranja: #FF4500
+
+## Estilo Visual
+- Criaturas demoníacas y malévolas
+- Efectos de fuego y sombras
+- Elementos infernales (cuernos, alas de murciélago, garras)
+- Expresiones amenazantes y corruptas

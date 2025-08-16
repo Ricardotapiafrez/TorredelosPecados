@@ -1,0 +1,103 @@
+# 🃏 Reverso de las Cartas
+
+Esta carpeta debe contener las imágenes del reverso de las cartas del juego.
+
+## Archivos Requeridos
+
+### Reverso Principal
+- `card_back_default.png` - Reverso estándar para todas las cartas
+- `card_back_angels.png` - Reverso específico para mazo de ángeles
+- `card_back_demons.png` - Reverso específico para mazo de demonios
+- `card_back_dragons.png` - Reverso específico para mazo de dragones
+- `card_back_mages.png` - Reverso específico para mazo de magos
+
+### Variantes
+- `card_back_gold.png` - Reverso dorado (edición especial)
+- `card_back_silver.png` - Reverso plateado (edición limitada)
+- `card_back_dark.png` - Reverso oscuro (modo nocturno)
+
+## Especificaciones
+- Formato: PNG con transparencia
+- Resolución: 4000x2400 píxeles (ratio 5:3)
+- Tamaño máximo: 2MB por imagen
+- Fondo: Transparente
+- DPI: 300 DPI mínimo
+- Color Space: sRGB
+- Calidad: Máxima para zoom sin pérdida
+
+## Diseño Sugerido
+
+### Elementos del Reverso
+- **Logo central**: "Torre de los Pecados"
+- **Bordes ornamentales**: Estilo medieval/fantástico
+- **Patrón de fondo**: Textura sutil relacionada con el mazo
+- **Elementos temáticos**: 
+  - Ángeles: Alas, halos, luz divina
+  - Demonios: Fuego, sombras, elementos infernales
+  - Dragones: Escamas, fuego, elementos primitivos
+  - Magos: Runas, símbolos mágicos, elementos arcanos
+
+### Paleta de Colores por Mazo
+- **Ángeles**: Dorado (#FFD700), Blanco (#FFFFFF), Azul celeste (#87CEEB)
+- **Demonios**: Rojo (#DC143C), Negro (#000000), Púrpura (#800080)
+- **Dragones**: Verde esmeralda (#50C878), Dorado (#FFD700), Rojo (#DC143C)
+- **Magos**: Azul (#4169E1), Púrpura (#800080), Plateado (#C0C0C0)
+
+### Estilo Visual
+- **Bordes**: Ornamentales y detallados
+- **Centro**: Logo prominente del juego
+- **Fondo**: Patrón sutil que no interfiera con el texto
+- **Textura**: Profundidad y dimensión
+- **Efectos**: Sombras y brillos sutiles
+
+## Uso en el Código
+
+### Componente GameCard
+```tsx
+// Mostrar reverso de carta
+<GameCard
+  card={card}
+  showBack={true}
+  backImage="/images/cards/backs/card_back_angels.png"
+/>
+```
+
+### CSS
+```css
+.card-back {
+  background-image: url('/images/cards/backs/card_back_default.png');
+  background-size: cover;
+  background-position: center;
+}
+```
+
+## Consideraciones Técnicas
+
+### 1. **Consistencia Visual**
+- Mantener el mismo estilo en todos los reversos
+- Variar solo los elementos temáticos
+- Asegurar legibilidad del logo
+
+### 2. **Optimización**
+- Usar compresión sin pérdida
+- Mantener transparencia donde sea necesario
+- Optimizar para carga web
+
+### 3. **Accesibilidad**
+- Contraste adecuado para el texto
+- Elementos distinguibles en diferentes tamaños
+- Compatible con modo oscuro
+
+## Variantes Especiales
+
+### Ediciones Limitadas
+- **Dorada**: Para eventos especiales
+- **Plateada**: Para logros del jugador
+- **Oscura**: Para modo nocturno
+- **Holográfica**: Para cartas legendarias
+
+### Personalización
+- **Monograma del jugador**
+- **Fecha de obtención**
+- **Nivel de rareza**
+- **Firma del artista**

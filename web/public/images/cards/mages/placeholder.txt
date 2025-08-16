@@ -1,0 +1,39 @@
+# 🧙‍♂️ Mazo de Magos
+
+Esta carpeta debe contener las 13 cartas del mazo de magos:
+
+## Cartas del Mazo
+01. El Aprendiz de Mago (As)
+02. El Ilusionista (Dos)
+03. El Invocador de Golems (Tres)
+04. El Alquimista del Destino (Cuatro)
+05. El Nigromante de las Sombras (Cinco)
+06. El Hechicero de la Tormenta (Seis)
+07. El Vidente del Futuro (Siete)
+08. El Mago del Tiempo (Ocho)
+09. El Maestro de los Elementos (Nueve)
+10. El Archmago de la Destrucción (Diez)
+11. El Mago de las Runas (Jota)
+12. La Oráculo de las Estrellas (Reina)
+13. El Mago Supremo (Rey)
+
+## Especificaciones
+- Formato: PNG con transparencia
+- Resolución: 4000x2400 píxeles (ratio 5:3)
+- Tamaño máximo: 2MB por imagen
+- Fondo: Transparente
+- DPI: 300 DPI mínimo
+- Color Space: sRGB
+- Calidad: Máxima para zoom sin pérdida
+
+## Paleta de Colores
+- Azul: #4169E1
+- Púrpura: #800080
+- Plateado: #C0C0C0
+- Dorado: #FFD700
+
+## Estilo Visual
+- Hechiceros y magos arcanos
+- Efectos mágicos y runas brillantes
+- Vestimentas y accesorios mágicos
+- Expresiones de sabiduría y poder arcano
