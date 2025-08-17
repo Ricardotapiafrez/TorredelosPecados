@@ -128,7 +128,7 @@ export default function GamePage() {
 
   const renderStep1 = () => (
     <div className="space-y-6">
-      <h3 className="text-2xl font-bold text-white mb-6">Selecciona el tipo de juego</h3>
+      <h3 className="text-2xl font-bold text-red-100 mb-6 drop-shadow-md">Selecciona el tipo de juego</h3>
       <div className="grid md:grid-cols-2 gap-6">
         {gameTypes.map((type) => (
           <button
@@ -136,13 +136,13 @@ export default function GamePage() {
             onClick={() => handleConfigChange('gameType', type.id)}
             className={`p-6 rounded-lg border-2 transition-all duration-300 ${
               config.gameType === type.id
-                ? 'border-purple-500 bg-purple-600 bg-opacity-20'
-                : 'border-gray-600 bg-gray-800 bg-opacity-50 hover:border-purple-400'
+                ? 'border-red-500 bg-gradient-to-br from-red-900/40 to-red-800/20 shadow-xl shadow-red-900/30'
+                : 'border-gray-600/50 bg-gradient-to-br from-gray-800/60 to-gray-700/40 hover:border-red-400/70 hover:shadow-lg hover:shadow-red-900/20'
             }`}
           >
-            <div className="text-4xl mb-4">{type.icon}</div>
-            <h4 className="text-xl font-bold text-white mb-2">{type.name}</h4>
-            <p className="text-gray-300">{type.description}</p>
+            <div className="text-4xl mb-4 drop-shadow-lg">{type.icon}</div>
+            <h4 className="text-xl font-bold text-red-100 mb-2 drop-shadow-md">{type.name}</h4>
+            <p className="text-gray-300 font-medium">{type.description}</p>
           </button>
         ))}
       </div>
@@ -151,7 +151,7 @@ export default function GamePage() {
 
   const renderStep2 = () => (
     <div className="space-y-6">
-      <h3 className="text-2xl font-bold text-white mb-6">Elige tu mazo</h3>
+      <h3 className="text-2xl font-bold text-red-100 mb-6 drop-shadow-md">Elige tu mazo</h3>
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
         {decks.map((deck) => (
           <DeckCard
@@ -170,17 +170,17 @@ export default function GamePage() {
 
   const renderStep3 = () => (
     <div className="space-y-6">
-      <h3 className="text-2xl font-bold text-white mb-6">Ingresa tu nombre de usuario</h3>
+      <h3 className="text-2xl font-bold text-red-100 mb-6 drop-shadow-md">Ingresa tu nombre de usuario</h3>
       <div className="max-w-md mx-auto">
         <input
           type="text"
           value={config.username}
           onChange={(e) => handleConfigChange('username', e.target.value)}
           placeholder="Tu nombre de usuario"
-          className="w-full p-4 bg-gray-800 border-2 border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-purple-500 focus:outline-none transition-colors"
+          className="w-full p-4 bg-gradient-to-br from-gray-800/60 to-gray-700/40 border-2 border-gray-600/50 rounded-lg text-red-100 placeholder-gray-400 focus:border-red-500 focus:outline-none transition-all duration-300 shadow-lg shadow-black/30 backdrop-blur-sm"
           maxLength={20}
         />
-        <p className="text-sm text-gray-400 mt-2">
+        <p className="text-sm text-gray-400 mt-2 font-medium">
           Máximo 20 caracteres
         </p>
       </div>
@@ -265,34 +265,34 @@ export default function GamePage() {
 
   const renderSummary = () => (
     <div className="space-y-6">
-      <h3 className="text-2xl font-bold text-white mb-6">Resumen de configuración</h3>
-      <div className="bg-gray-800 bg-opacity-50 p-6 rounded-lg max-w-md mx-auto">
+      <h3 className="text-2xl font-bold text-red-100 mb-6 drop-shadow-md">Resumen de configuración</h3>
+      <div className="bg-gradient-to-br from-gray-800/60 to-gray-700/40 p-6 rounded-lg max-w-md mx-auto border border-gray-600/50 backdrop-blur-sm shadow-lg shadow-black/30">
         <div className="space-y-4">
           <div className="flex justify-between">
-            <span className="text-gray-300">Tipo de juego:</span>
-            <span className="text-white font-semibold">
+            <span className="text-gray-300 font-medium">Tipo de juego:</span>
+            <span className="text-red-100 font-semibold drop-shadow-md">
               {gameTypes.find(t => t.id === config.gameType)?.name}
             </span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-300">Mazo:</span>
-            <span className="text-white font-semibold">
+            <span className="text-gray-300 font-medium">Mazo:</span>
+            <span className="text-red-100 font-semibold drop-shadow-md">
               {decks.find(d => d.id === config.deck)?.name}
             </span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-300">Usuario:</span>
-            <span className="text-white font-semibold">{config.username}</span>
+            <span className="text-gray-300 font-medium">Usuario:</span>
+            <span className="text-red-100 font-semibold drop-shadow-md">{config.username}</span>
           </div>
           {config.gameType === 'bot' ? (
             <>
               <div className="flex justify-between">
-                <span className="text-gray-300">Número de bots:</span>
-                <span className="text-white font-semibold">{config.botCount}</span>
+                <span className="text-gray-300 font-medium">Número de bots:</span>
+                <span className="text-red-100 font-semibold drop-shadow-md">{config.botCount}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-300">Dificultad:</span>
-                <span className="text-white font-semibold">
+                <span className="text-gray-300 font-medium">Dificultad:</span>
+                <span className="text-red-100 font-semibold drop-shadow-md">
                   {config.botDifficulty === 'beginner' && 'Principiante'}
                   {config.botDifficulty === 'intermediate' && 'Intermedio'}
                   {config.botDifficulty === 'advanced' && 'Avanzado'}
@@ -300,14 +300,14 @@ export default function GamePage() {
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-300">Total jugadores:</span>
-                <span className="text-white font-semibold">{config.maxPlayers}</span>
+                <span className="text-gray-300 font-medium">Total jugadores:</span>
+                <span className="text-red-100 font-semibold drop-shadow-md">{config.maxPlayers}</span>
               </div>
             </>
           ) : (
             <div className="flex justify-between">
-              <span className="text-gray-300">Sala:</span>
-              <span className="text-white font-semibold">{config.room}</span>
+              <span className="text-gray-300 font-medium">Sala:</span>
+              <span className="text-red-100 font-semibold drop-shadow-md">{config.room}</span>
             </div>
           )}
         </div>
@@ -316,7 +316,7 @@ export default function GamePage() {
       <button
         onClick={handleStartGame}
         disabled={isLoading}
-        className="w-full max-w-md mx-auto bg-gradient-to-r from-red-600 to-purple-600 hover:from-red-700 hover:to-purple-700 disabled:opacity-50 text-white font-bold py-4 px-8 rounded-lg text-lg transition-all duration-300"
+        className="w-full max-w-md mx-auto bg-gradient-to-r from-red-800 via-red-700 to-red-800 hover:from-red-700 hover:via-red-600 hover:to-red-700 disabled:opacity-50 text-red-100 font-bold py-4 px-8 rounded-lg text-lg transition-all duration-300 shadow-xl shadow-red-900/50 border border-red-600/50 hover:shadow-2xl hover:shadow-red-800/70 hover:border-red-500/70"
       >
         {isLoading ? 'Iniciando juego...' : '¡Iniciar Juego!'}
       </button>
@@ -333,20 +333,28 @@ export default function GamePage() {
   ]
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
+    <main className="min-h-screen bg-gradient-to-br from-black via-gray-900 via-red-900/20 to-black relative overflow-hidden">
+      {/* Atmospheric Background Elements */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(120,0,0,0.1)_0%,_transparent_70%)] pointer-events-none"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,_rgba(120,0,0,0.15)_0%,_transparent_50%)] pointer-events-none"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,_rgba(75,0,130,0.1)_0%,_transparent_50%)] pointer-events-none"></div>
+      
+      {/* Fog Effect */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-800/5 to-gray-900/10 pointer-events-none"></div>
+      
       {/* Header */}
       <header className="relative z-10">
         <nav className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">T</span>
+            <Link href="/" className="flex items-center space-x-2 group">
+              <div className="w-10 h-10 bg-gradient-to-br from-red-800 to-red-900 rounded-lg flex items-center justify-center shadow-lg shadow-red-900/50 border border-red-700/50 group-hover:shadow-red-800/70 transition-all duration-300">
+                <span className="text-red-100 font-bold text-xl drop-shadow-lg">T</span>
               </div>
-              <h1 className="text-2xl font-bold text-white">Torre de los Pecados</h1>
+              <h1 className="text-2xl font-bold text-red-100 drop-shadow-lg">Torre de los Pecados</h1>
             </Link>
             <Link 
               href="/"
-              className="text-gray-300 hover:text-white transition-colors"
+              className="text-gray-400 hover:text-red-200 transition-colors font-medium"
             >
               ← Volver al inicio
             </Link>
@@ -355,7 +363,7 @@ export default function GamePage() {
       </header>
 
       {/* Main Content */}
-      <div className="container mx-auto px-6 py-8">
+      <div className="container mx-auto px-6 py-8 relative z-10">
         <div className="max-w-4xl mx-auto">
           {/* Progress Bar */}
           <div className="mb-8">
@@ -364,29 +372,29 @@ export default function GamePage() {
                 <div key={index} className="flex items-center">
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
                     index + 1 <= step
-                      ? 'bg-purple-600 text-white'
-                      : 'bg-gray-600 text-gray-300'
+                      ? 'bg-gradient-to-br from-red-800 to-red-900 text-red-100 shadow-lg shadow-red-900/50 border border-red-700/50'
+                      : 'bg-gray-700/50 text-gray-400 border border-gray-600/50'
                   }`}>
                     {index + 1}
                   </div>
                   {index < steps.length - 1 && (
                     <div className={`w-16 h-1 mx-2 ${
-                      index + 1 < step ? 'bg-purple-600' : 'bg-gray-600'
+                      index + 1 < step ? 'bg-gradient-to-r from-red-600 to-red-700' : 'bg-gray-700/50'
                     }`}></div>
                   )}
                 </div>
               ))}
             </div>
-            <h2 className="text-3xl font-bold text-white text-center mb-2">
+            <h2 className="text-3xl font-bold text-red-100 text-center mb-2 drop-shadow-lg">
               {steps[step - 1].title}
             </h2>
-            <p className="text-gray-400 text-center">
+            <p className="text-gray-400 text-center font-medium">
               Paso {step} de {steps.length}
             </p>
           </div>
 
           {/* Step Content */}
-          <div className="bg-gray-800 bg-opacity-30 p-8 rounded-lg border border-gray-700">
+          <div className="bg-gradient-to-br from-gray-900/80 to-gray-800/60 p-8 rounded-lg border border-gray-700/50 backdrop-blur-sm shadow-xl shadow-black/50">
             {steps[step - 1].component()}
           </div>
 
@@ -395,7 +403,7 @@ export default function GamePage() {
             <button
               onClick={() => setStep(Math.max(1, step - 1))}
               disabled={step === 1}
-              className="bg-gray-600 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-lg transition-colors"
+              className="bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-600 hover:to-gray-700 disabled:opacity-50 disabled:cursor-not-allowed text-gray-200 font-bold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg shadow-gray-900/50 border border-gray-600/50"
             >
               Anterior
             </button>
@@ -404,7 +412,7 @@ export default function GamePage() {
               <button
                 onClick={() => setStep(step + 1)}
                 disabled={!canProceed()}
-                className="bg-purple-600 hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-lg transition-colors"
+                className="bg-gradient-to-r from-red-800 via-red-700 to-red-800 hover:from-red-700 hover:via-red-600 hover:to-red-700 disabled:opacity-50 disabled:cursor-not-allowed text-red-100 font-bold py-3 px-6 rounded-lg transition-all duration-300 shadow-xl shadow-red-900/50 border border-red-600/50 hover:shadow-2xl hover:shadow-red-800/70"
               >
                 Siguiente
               </button>

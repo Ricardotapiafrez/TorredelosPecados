@@ -146,14 +146,14 @@ export default function GamePlayPage() {
 
   const getRandomInitialCard = () => {
     const cards = [
-      { id: 1, name: 'Dragón de Fuego', value: 8, type: 'criatura', image: '/images/cards/dragons/dragon_1.png', description: 'Una poderosa criatura que escupe fuego' },
+      { id: 1, name: 'Dragón de Fuego', value: 8, type: 'criatura', image: '/images/cards/dragons/dragon_8.png', description: 'Una poderosa criatura que escupe fuego' },
       { id: 2, name: 'Goblin Ladrón', value: 2, type: 'criatura', image: '/images/cards/dragons/dragon_2.png', description: 'Un pequeño goblin que roba cartas' },
-      { id: 3, name: 'Mago Oscuro', value: 6, type: 'criatura', image: '/images/cards/dragons/dragon_3.png', description: 'Un mago que domina las artes oscuras' },
+      { id: 3, name: 'Mago Oscuro', value: 6, type: 'criatura', image: '/images/cards/dragons/dragon_6.png', description: 'Un mago que domina las artes oscuras' },
       { id: 4, name: 'Bola de Fuego', value: 4, type: 'hechizo', image: '/images/cards/dragons/dragon_4.png', description: 'Elimina una criatura del oponente' },
       { id: 5, name: 'Escudo Mágico', value: 5, type: 'trampa', image: '/images/cards/dragons/dragon_5.png', description: 'Protege contra el próximo ataque' },
-      { id: 6, name: 'Gigante de Piedra', value: 7, type: 'criatura', image: '/images/cards/dragons/dragon_6.png', description: 'Un gigante inmune a hechizos' },
-      { id: 7, name: 'Hada Curandera', value: 3, type: 'criatura', image: '/images/cards/dragons/dragon_7.png', description: 'Cura una criatura herida' },
-      { id: 8, name: 'Rayo', value: 9, type: 'hechizo', image: '/images/cards/dragons/dragon_8.png', description: 'Un poderoso hechizo destructivo' }
+      { id: 6, name: 'Gigante de Piedra', value: 7, type: 'criatura', image: '/images/cards/dragons/dragon_7.png', description: 'Un gigante inmune a hechizos' },
+      { id: 7, name: 'Hada Curandera', value: 3, type: 'criatura', image: '/images/cards/dragons/dragon_3.png', description: 'Cura una criatura herida' },
+      { id: 8, name: 'Rayo', value: 9, type: 'hechizo', image: '/images/cards/dragons/dragon_9.png', description: 'Un poderoso hechizo destructivo' }
     ]
     return cards[Math.floor(Math.random() * cards.length)]
   }
@@ -229,8 +229,50 @@ export default function GamePlayPage() {
       name: card.name,
       value: value,
       description: card.description,
-      isSpecial: value === 2 || value === 8 || value === 10
+      isSpecial: value === 2 || value === 8 || value === 10,
+      imagePath: getCardImagePath(deckType, value)
     }
+  }
+
+  const getCardImagePath = (deckType: string, value: number) => {
+    // Mapear nombres de mazos a carpetas de imágenes y nombres de archivo
+    const deckImageMap = {
+      angels: { folder: 'angels', prefix: 'angel' },
+      demons: { folder: 'demons', prefix: 'demon' }, 
+      dragons: { folder: 'dragons', prefix: 'dragon' },
+      mages: { folder: 'mages', prefix: 'mage' },
+      dark_elves: { folder: 'dark_elves', prefix: 'dark_elf' },
+      dwarves: { folder: 'dwarves', prefix: 'dwarf' },
+      elves: { folder: 'elves', prefix: 'elf' },
+      orcs: { folder: 'orcs', prefix: 'orc' }
+    }
+    
+    const deckInfo = deckImageMap[deckType as keyof typeof deckImageMap]
+    if (!deckInfo) return null
+    
+    // Verificar si la imagen existe (todos los mazos ahora tienen imágenes)
+    const availableDecks = ['angels', 'demons', 'dragons', 'mages', 'dark_elves', 'dwarves', 'elves', 'orcs']
+    if (availableDecks.includes(deckType)) {
+      return `/images/cards/${deckInfo.folder}/${deckInfo.prefix}_${value}.png`
+    }
+    
+    return null
+  }
+
+  const getCardBackImagePath = (deckType: string) => {
+    const backImageMap = {
+      angels: 'card_back_angels.png',
+      demons: 'card_back_demons.png',
+      dragons: 'card_back_dragons.png',
+      mages: 'card_back_mages.png',
+      dark_elves: 'card_back_dark_elves.png',
+      dwarves: 'card_back_dwarves.png',
+      elves: 'card_back_elves.png',
+      orcs: 'card_back_orcs.png'
+    }
+    
+    const backImage = backImageMap[deckType as keyof typeof backImageMap] || 'card_back_default.png'
+    return `/images/cards/backs/${backImage}`
   }
 
   const getDeckColor = (deckType: string) => {
@@ -281,12 +323,20 @@ export default function GamePlayPage() {
 
   if (isLoading) {
     return (
-      <main className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
-        <div className="flex items-center justify-center min-h-screen">
+      <main className="min-h-screen bg-gradient-to-br from-black via-gray-900 via-red-900/20 to-black relative overflow-hidden">
+        {/* Atmospheric Background Elements */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(120,0,0,0.1)_0%,_transparent_70%)] pointer-events-none"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,_rgba(120,0,0,0.15)_0%,_transparent_50%)] pointer-events-none"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,_rgba(75,0,130,0.1)_0%,_transparent_50%)] pointer-events-none"></div>
+        
+        {/* Fog Effect */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-800/5 to-gray-900/10 pointer-events-none"></div>
+        
+        <div className="flex items-center justify-center min-h-screen relative z-10">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-500 mx-auto mb-8"></div>
-            <h2 className="text-2xl font-bold text-white mb-4">Iniciando partida...</h2>
-            <p className="text-gray-300">Preparando el tablero de juego</p>
+            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-red-500 mx-auto mb-8 shadow-lg shadow-red-900/50"></div>
+            <h2 className="text-2xl font-bold text-red-100 mb-4 drop-shadow-lg">Iniciando partida...</h2>
+            <p className="text-gray-300 font-medium">Preparando el tablero de juego</p>
           </div>
         </div>
       </main>
@@ -295,14 +345,22 @@ export default function GamePlayPage() {
 
   if (error) {
     return (
-      <main className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
-        <div className="flex items-center justify-center min-h-screen">
+      <main className="min-h-screen bg-gradient-to-br from-black via-gray-900 via-red-900/20 to-black relative overflow-hidden">
+        {/* Atmospheric Background Elements */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(120,0,0,0.1)_0%,_transparent_70%)] pointer-events-none"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,_rgba(120,0,0,0.15)_0%,_transparent_50%)] pointer-events-none"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,_rgba(75,0,130,0.1)_0%,_transparent_50%)] pointer-events-none"></div>
+        
+        {/* Fog Effect */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-800/5 to-gray-900/10 pointer-events-none"></div>
+        
+        <div className="flex items-center justify-center min-h-screen relative z-10">
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-red-500 mb-4">Error</h2>
-            <p className="text-gray-300 mb-8">{error}</p>
+            <h2 className="text-2xl font-bold text-red-400 mb-4 drop-shadow-lg">Error</h2>
+            <p className="text-gray-300 mb-8 font-medium">{error}</p>
             <Link 
               href="/game"
-              className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg transition-colors"
+              className="bg-gradient-to-r from-red-800 via-red-700 to-red-800 hover:from-red-700 hover:via-red-600 hover:to-red-700 text-red-100 font-bold py-3 px-6 rounded-lg transition-all duration-300 shadow-xl shadow-red-900/50 border border-red-600/50 hover:shadow-2xl hover:shadow-red-800/70"
             >
               Volver a configurar
             </Link>
@@ -317,25 +375,33 @@ export default function GamePlayPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
+    <main className="min-h-screen bg-gradient-to-br from-black via-gray-900 via-red-900/20 to-black relative overflow-hidden">
+      {/* Atmospheric Background Elements */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(120,0,0,0.1)_0%,_transparent_70%)] pointer-events-none"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,_rgba(120,0,0,0.15)_0%,_transparent_50%)] pointer-events-none"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,_rgba(75,0,130,0.1)_0%,_transparent_50%)] pointer-events-none"></div>
+      
+      {/* Fog Effect */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-800/5 to-gray-900/10 pointer-events-none"></div>
+      
       {/* Header */}
       <header className="relative z-10">
         <nav className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <Link href="/" className="flex items-center space-x-2">
-                <div className="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-xl">T</span>
+              <Link href="/" className="flex items-center space-x-2 group">
+                <div className="w-10 h-10 bg-gradient-to-br from-red-800 to-red-900 rounded-lg flex items-center justify-center shadow-lg shadow-red-900/50 border border-red-700/50 group-hover:shadow-red-800/70 transition-all duration-300">
+                  <span className="text-red-100 font-bold text-xl drop-shadow-lg">T</span>
                 </div>
-                <h1 className="text-2xl font-bold text-white">Torre de los Pecados</h1>
+                <h1 className="text-2xl font-bold text-red-100 drop-shadow-lg">Torre de los Pecados</h1>
               </Link>
-              <div className="text-gray-300">
+              <div className="text-gray-400 font-medium">
                 | {gameState.gameState === 'waiting' ? 'Esperando...' : 'Jugando'}
               </div>
             </div>
             <Link 
               href="/game"
-              className="text-gray-300 hover:text-white transition-colors"
+              className="text-gray-400 hover:text-red-200 transition-colors font-medium"
             >
               ← Salir del juego
             </Link>
@@ -343,45 +409,45 @@ export default function GamePlayPage() {
         </nav>
       </header>
 
-      {/* Game Board */}
-      <div className="container mx-auto px-6 py-8">
-                 {gameState.gameState === 'waiting' ? (
-           <div className="text-center">
-             <h2 className="text-3xl font-bold text-white mb-8">Esperando inicio del juego...</h2>
-             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mb-8">
-               {gameState.players.map((player) => (
-                 <div key={player.id} className="bg-gray-800 bg-opacity-50 p-6 rounded-lg border border-gray-700">
-                   <div className="flex items-center justify-center mb-4">
-                     <div className={`w-16 h-16 rounded-full bg-gradient-to-r ${getDeckColor(player.deckType)} flex items-center justify-center text-2xl`}>
-                       {getDeckIcon(player.deckType)}
-                     </div>
-                   </div>
-                   <h3 className="text-xl font-bold text-white mb-2">{player.name}</h3>
-                   <p className="text-gray-300 mb-2">Mazo: {player.deckType}</p>
-                   <div className="flex items-center justify-center">
-                     {player.isReady ? (
-                       <span className="text-green-400">✓ Listo</span>
-                     ) : (
-                       <span className="text-yellow-400">⏳ Esperando...</span>
-                     )}
-                   </div>
-                 </div>
-               ))}
-             </div>
+            {/* Game Board */}
+      <div className="container mx-auto px-6 py-8 relative z-10">
+        {gameState.gameState === 'waiting' ? (
+          <div className="text-center">
+            <h2 className="text-4xl font-bold text-red-100 mb-8 drop-shadow-lg">Esperando inicio del juego...</h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mb-8">
+              {gameState.players.map((player) => (
+                <div key={player.id} className="bg-gradient-to-br from-gray-900/80 to-gray-800/60 p-6 rounded-lg border border-gray-700/50 backdrop-blur-sm shadow-xl shadow-black/50 hover:shadow-2xl hover:shadow-red-900/20 transition-all duration-300">
+                  <div className="flex items-center justify-center mb-4">
+                    <div className={`w-16 h-16 rounded-full bg-gradient-to-r ${getDeckColor(player.deckType)} flex items-center justify-center text-2xl shadow-lg shadow-black/50 border border-gray-600/30`}>
+                      {getDeckIcon(player.deckType)}
+                    </div>
+                  </div>
+                  <h3 className="text-xl font-bold text-red-100 mb-2 drop-shadow-md">{player.name}</h3>
+                  <p className="text-gray-400 mb-2 font-medium">Mazo: {player.deckType}</p>
+                  <div className="flex items-center justify-center">
+                    {player.isReady ? (
+                      <span className="text-green-300 font-semibold drop-shadow-md">✓ Listo</span>
+                    ) : (
+                      <span className="text-yellow-300 font-semibold drop-shadow-md">⏳ Esperando...</span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
              
              {/* Botón de inicio manual */}
              <div className="max-w-md mx-auto">
-               <div className="bg-gray-700 bg-opacity-50 p-4 rounded-lg mb-4">
-                 <p className="text-gray-300 text-sm mb-2">
+               <div className="bg-gradient-to-br from-gray-800/60 to-gray-900/40 p-4 rounded-lg mb-4 border border-gray-700/50 backdrop-blur-sm shadow-lg shadow-black/30">
+                 <p className="text-gray-300 text-sm mb-2 font-medium">
                    {autoStartCountdown > 0 ? (
-                     <span>El juego iniciará automáticamente en <span className="font-bold text-yellow-400">{autoStartCountdown}</span> segundos...</span>
+                     <span>El juego iniciará automáticamente en <span className="font-bold text-red-300 drop-shadow-md">{autoStartCountdown}</span> segundos...</span>
                    ) : (
                      <span>Iniciando juego...</span>
                    )}
                  </p>
-                 <div className="w-full bg-gray-600 rounded-full h-2">
+                 <div className="w-full bg-gray-800 rounded-full h-2 border border-gray-700/50">
                    <div 
-                     className="bg-gradient-to-r from-purple-500 to-red-500 h-2 rounded-full transition-all duration-1000"
+                     className="bg-gradient-to-r from-red-600 via-purple-600 to-red-700 h-2 rounded-full transition-all duration-1000 shadow-lg shadow-red-900/50"
                      style={{ width: `${((3 - autoStartCountdown) / 3) * 100}%` }}
                    ></div>
                  </div>
@@ -389,39 +455,39 @@ export default function GamePlayPage() {
                
                <button
                  onClick={startGame}
-                 className="bg-gradient-to-r from-purple-600 to-red-600 hover:from-purple-700 hover:to-red-700 text-white font-bold py-4 px-8 rounded-lg text-lg transition-all duration-300 shadow-lg"
+                 className="bg-gradient-to-r from-red-800 via-red-700 to-red-800 hover:from-red-700 hover:via-red-600 hover:to-red-700 text-red-100 font-bold py-4 px-8 rounded-lg text-lg transition-all duration-300 shadow-xl shadow-red-900/50 border border-red-600/50 hover:shadow-2xl hover:shadow-red-800/70 hover:border-red-500/70"
                >
                  🎮 Iniciar Juego Ahora
                </button>
-               <p className="text-gray-400 text-sm mt-4">
+               <p className="text-gray-400 text-sm mt-4 font-medium">
                  O puedes hacer clic aquí para comenzar inmediatamente.
                </p>
              </div>
            </div>
-        ) : (
-          <div className="space-y-8">
-                         {/* Rivals Section */}
+                 ) : (
+           <div className="space-y-8">
+             {/* Rivals Section */}
              <div className="grid md:grid-cols-3 gap-6">
                {gameState.players.filter(p => p.isBot).map((player, index) => (
-                 <div key={player.id} className="bg-gray-800 bg-opacity-50 p-6 rounded-lg border border-gray-700 hover:border-purple-500 transition-colors">
+                 <div key={player.id} className="bg-gradient-to-br from-gray-900/80 to-gray-800/60 p-6 rounded-lg border border-gray-700/50 backdrop-blur-sm shadow-xl shadow-black/50 hover:shadow-2xl hover:shadow-red-900/20 hover:border-red-700/50 transition-all duration-300">
                    <div className="flex items-center justify-between mb-4">
                      <div className="flex items-center space-x-3">
-                       <div className={`w-12 h-12 rounded-full bg-gradient-to-r ${getDeckColor(player.deckType)} flex items-center justify-center text-xl shadow-lg`}>
+                       <div className={`w-12 h-12 rounded-full bg-gradient-to-r ${getDeckColor(player.deckType)} flex items-center justify-center text-xl shadow-lg shadow-black/50 border border-gray-600/30`}>
                          {getDeckIcon(player.deckType)}
                        </div>
                        <div>
-                         <h3 className="text-lg font-bold text-white">{player.name}</h3>
-                         <p className="text-sm text-gray-300 capitalize">{player.deckType.replace('_', ' ')}</p>
+                         <h3 className="text-lg font-bold text-red-100 drop-shadow-md">{player.name}</h3>
+                         <p className="text-sm text-gray-400 capitalize font-medium">{player.deckType.replace('_', ' ')}</p>
                        </div>
                      </div>
                      <div className="text-right">
-                       <div className="text-sm text-gray-400 mb-1">
-                         <span className="font-semibold">Fase:</span> {player.currentPhase === 'hand' ? '✋ Mano' : player.currentPhase === 'faceUp' ? '📋 Boca Arriba' : '🃏 Boca Abajo'}
+                       <div className="text-sm text-gray-400 mb-1 font-medium">
+                         <span className="font-semibold text-red-200">Fase:</span> {player.currentPhase === 'hand' ? '✋ Mano' : player.currentPhase === 'faceUp' ? '📋 Boca Arriba' : '🃏 Boca Abajo'}
                        </div>
                        <div className="text-xs text-gray-500">
-                         <span className="text-blue-400">Mano: {player.hand}</span> | 
-                         <span className="text-green-400"> Arriba: {player.faceUpCreatures}</span> | 
-                         <span className="text-red-400"> Abajo: {player.faceDownCreatures}</span>
+                         <span className="text-blue-300">Mano: {player.hand}</span> | 
+                         <span className="text-green-300"> Arriba: {player.faceUpCreatures}</span> | 
+                         <span className="text-red-300"> Abajo: {player.faceDownCreatures}</span>
                        </div>
                      </div>
                    </div>
@@ -433,7 +499,9 @@ export default function GamePlayPage() {
                        <div className="text-xs text-blue-400 mb-1">✋ Mano ({player.hand})</div>
                        <div className="flex space-x-1">
                          {Array.from({ length: player.hand }, (_, i) => (
-                           <div key={i} className="w-8 h-12 bg-blue-600 rounded border-2 border-blue-400 shadow-md"></div>
+                           <div key={i} className="w-8 h-12 bg-blue-600 rounded border-2 border-blue-400 shadow-md flex items-center justify-center">
+                             <span className="text-xs text-white">🃏</span>
+                           </div>
                          ))}
                        </div>
                      </div>
@@ -443,7 +511,9 @@ export default function GamePlayPage() {
                        <div className="text-xs text-green-400 mb-1">📋 Boca Arriba ({player.faceUpCreatures})</div>
                        <div className="flex space-x-1">
                          {Array.from({ length: player.faceUpCreatures }, (_, i) => (
-                           <div key={i} className="w-8 h-12 bg-green-600 rounded border-2 border-green-400 shadow-md"></div>
+                           <div key={i} className="w-8 h-12 bg-green-600 rounded border-2 border-green-400 shadow-md flex items-center justify-center">
+                             <span className="text-xs text-white">📋</span>
+                           </div>
                          ))}
                        </div>
                      </div>
@@ -452,9 +522,20 @@ export default function GamePlayPage() {
                      <div>
                        <div className="text-xs text-red-400 mb-1">🃏 Boca Abajo ({player.faceDownCreatures})</div>
                        <div className="flex space-x-1">
-                         {Array.from({ length: player.faceDownCreatures }, (_, i) => (
-                           <div key={i} className="w-8 h-12 bg-red-600 rounded border-2 border-red-400 shadow-md"></div>
-                         ))}
+                         {Array.from({ length: player.faceDownCreatures }, (_, i) => {
+                           const cardBackPath = getCardBackImagePath(player.deckType)
+                           return (
+                             <div key={i} className="w-8 h-12 relative rounded border-2 border-red-400 shadow-md overflow-hidden">
+                               <Image
+                                 src={cardBackPath}
+                                 alt="Carta boca abajo"
+                                 fill
+                                 className="object-cover"
+                                 sizes="32px"
+                               />
+                             </div>
+                           )
+                         })}
                        </div>
                      </div>
                    </div>
@@ -463,93 +544,101 @@ export default function GamePlayPage() {
              </div>
 
                          {/* Tower of Sins - Initial Card */}
-             <div className="bg-gray-800 bg-opacity-50 p-8 rounded-lg border border-gray-700 text-center">
-               <h3 className="text-2xl font-bold text-white mb-6">🏰 Torre de los Pecados</h3>
+             <div className="bg-gradient-to-br from-gray-900/80 to-gray-800/60 p-8 rounded-lg border border-gray-700/50 backdrop-blur-sm shadow-xl shadow-black/50 text-center">
+               <h3 className="text-3xl font-bold text-red-100 mb-6 drop-shadow-lg">🏰 Torre de los Pecados</h3>
                
                {gameState.towerOfSins.lastCard ? (
                  <div className="max-w-lg mx-auto">
-                   <div className="bg-gradient-to-r from-red-600 to-purple-600 p-6 rounded-lg mb-6">
-                     <h4 className="text-xl font-bold text-white mb-4">🎴 Carta Inicial</h4>
-                     <div className="bg-white rounded-lg p-6 shadow-lg">
-                       <div className="text-4xl mb-3">🃏</div>
-                       <div className="font-bold text-gray-800 text-lg mb-2">{gameState.towerOfSins.lastCard.name}</div>
-                       <div className="text-sm text-gray-600 mb-1">Valor: <span className="font-semibold">{gameState.towerOfSins.lastCard.value}</span></div>
-                       <div className="text-sm text-gray-600 mb-3">Tipo: <span className="font-semibold capitalize">{gameState.towerOfSins.lastCard.type}</span></div>
+                   <div className="bg-gradient-to-br from-red-900/80 via-red-800/60 to-purple-900/40 p-6 rounded-lg mb-6 border border-red-700/50 shadow-xl shadow-red-900/30">
+                     <h4 className="text-xl font-bold text-red-100 mb-4 drop-shadow-md">🎴 Carta Inicial</h4>
+                     <div className="bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg p-6 shadow-xl shadow-black/30 border border-gray-300/50">
+                       <div className="flex items-center justify-center mb-4">
+                         <div className="w-24 h-32 relative">
+                           <Image
+                             src={gameState.towerOfSins.lastCard.image || '/images/cards/backs/card_back_default.png'}
+                             alt={gameState.towerOfSins.lastCard.name}
+                             fill
+                             className="object-cover rounded shadow-lg"
+                             sizes="96px"
+                           />
+                         </div>
+                       </div>
+                       <div className="font-bold text-gray-800 text-lg mb-2 drop-shadow-sm">{gameState.towerOfSins.lastCard.name}</div>
+                       <div className="text-sm text-gray-600 mb-1">Valor: <span className="font-semibold text-red-700">{gameState.towerOfSins.lastCard.value}</span></div>
+                       <div className="text-sm text-gray-600 mb-3">Tipo: <span className="font-semibold capitalize text-purple-700">{gameState.towerOfSins.lastCard.type}</span></div>
                        <div className="text-xs text-gray-500 italic">{gameState.towerOfSins.lastCard.description}</div>
                      </div>
                    </div>
-                   <div className="bg-gray-700 bg-opacity-50 p-4 rounded-lg">
-                     <p className="text-gray-300 text-sm">
-                       <span className="font-semibold text-yellow-400">📋 Regla del juego:</span><br/>
-                       Los jugadores deben jugar cartas de valor <span className="font-bold text-green-400">igual o mayor</span> a esta carta.
+                   <div className="bg-gradient-to-br from-gray-800/60 to-gray-900/40 p-4 rounded-lg border border-gray-700/50 backdrop-blur-sm shadow-lg shadow-black/30">
+                     <p className="text-gray-300 text-sm font-medium">
+                       <span className="font-semibold text-red-300 drop-shadow-md">📋 Regla del juego:</span><br/>
+                       Los jugadores deben jugar cartas de valor <span className="font-bold text-green-300 drop-shadow-md">igual o mayor</span> a esta carta.
                      </p>
                    </div>
                  </div>
                ) : (
                  <div className="text-gray-400">
-                   <div className="text-6xl mb-4">🏰</div>
-                   <p className="text-lg mb-2">No hay cartas en la torre aún.</p>
-                   <p>El primer jugador puede jugar cualquier carta.</p>
+                   <div className="text-6xl mb-4 drop-shadow-lg">🏰</div>
+                   <p className="text-lg mb-2 font-medium">No hay cartas en la torre aún.</p>
+                   <p className="font-medium">El primer jugador puede jugar cualquier carta.</p>
                  </div>
                )}
              </div>
 
                          {/* Current Player Info */}
-             <div className="bg-gray-800 bg-opacity-50 p-6 rounded-lg border border-gray-700">
+             <div className="bg-gradient-to-br from-gray-900/80 to-gray-800/60 p-6 rounded-lg border border-gray-700/50 backdrop-blur-sm shadow-xl shadow-black/50">
                <div className="flex items-center justify-between mb-6">
-                 <h3 className="text-xl font-bold text-white">🎮 Tu Turno</h3>
+                 <h3 className="text-xl font-bold text-red-100 drop-shadow-md">🎮 Tu Turno</h3>
                  <div className="flex items-center space-x-3">
-                   <div className={`w-10 h-10 rounded-full bg-gradient-to-r ${getDeckColor(gameState.players.find(p => !p.isBot)?.deckType || '')} flex items-center justify-center text-lg`}>
+                   <div className={`w-10 h-10 rounded-full bg-gradient-to-r ${getDeckColor(gameState.players.find(p => !p.isBot)?.deckType || '')} flex items-center justify-center text-lg shadow-lg shadow-black/50 border border-gray-600/30`}>
                      {getDeckIcon(gameState.players.find(p => !p.isBot)?.deckType || '')}
                    </div>
                    <div className="text-right">
-                     <div className="text-sm text-gray-300">{gameState.players.find(p => !p.isBot)?.name}</div>
-                     <div className="text-xs text-gray-400 capitalize">{gameState.players.find(p => !p.isBot)?.deckType?.replace('_', ' ')}</div>
+                     <div className="text-sm text-red-100 font-medium">{gameState.players.find(p => !p.isBot)?.name}</div>
+                     <div className="text-xs text-gray-400 capitalize font-medium">{gameState.players.find(p => !p.isBot)?.deckType?.replace('_', ' ')}</div>
                    </div>
                  </div>
                </div>
                
                <div className="grid md:grid-cols-2 gap-6">
                  <div>
-                   <h4 className="text-lg font-bold text-white mb-4">📊 Tu Estado</h4>
-                   <div className="space-y-3 text-gray-300">
+                   <h4 className="text-lg font-bold text-red-100 mb-4 drop-shadow-md">📊 Tu Estado</h4>
+                   <div className="space-y-3 text-gray-300 font-medium">
                      <div className="flex justify-between items-center">
                        <span>Fase actual:</span>
-                       <span className="font-semibold text-purple-400">
+                       <span className="font-semibold text-red-300 drop-shadow-md">
                          {gameState.players.find(p => !p.isBot)?.currentPhase === 'hand' ? '✋ Mano' : 
                           gameState.players.find(p => !p.isBot)?.currentPhase === 'faceUp' ? '📋 Boca Arriba' : '🃏 Boca Abajo'}
                        </span>
                      </div>
                      <div className="flex justify-between items-center">
                        <span>Cartas en mano:</span>
-                       <span className="font-semibold text-blue-400">{gameState.players.find(p => !p.isBot)?.hand}</span>
+                       <span className="font-semibold text-blue-300 drop-shadow-md">{gameState.players.find(p => !p.isBot)?.hand}</span>
                      </div>
                      <div className="flex justify-between items-center">
                        <span>Criaturas boca arriba:</span>
-                       <span className="font-semibold text-green-400">{gameState.players.find(p => !p.isBot)?.faceUpCreatures}</span>
+                       <span className="font-semibold text-green-300 drop-shadow-md">{gameState.players.find(p => !p.isBot)?.faceUpCreatures}</span>
                      </div>
                      <div className="flex justify-between items-center">
                        <span>Criaturas boca abajo:</span>
-                       <span className="font-semibold text-red-400">{gameState.players.find(p => !p.isBot)?.faceDownCreatures}</span>
+                       <span className="font-semibold text-red-300 drop-shadow-md">{gameState.players.find(p => !p.isBot)?.faceDownCreatures}</span>
                      </div>
                      <div className="flex justify-between items-center">
                        <span>Pozo de almas:</span>
-                       <span className="font-semibold text-yellow-400">{gameState.players.find(p => !p.isBot)?.soulWell}</span>
+                       <span className="font-semibold text-yellow-300 drop-shadow-md">{gameState.players.find(p => !p.isBot)?.soulWell}</span>
                      </div>
                    </div>
                  </div>
                  
                  <div>
-                   <h4 className="text-lg font-bold text-white mb-4">⚡ Acciones Disponibles</h4>
+                   <h4 className="text-lg font-bold text-red-100 mb-4 drop-shadow-md">⚡ Acciones Disponibles</h4>
                    <div className="space-y-3">
-                     <button className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 shadow-lg">
-                       🎴 Jugar Carta
-                     </button>
-                     <button className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 shadow-lg">
+                     <button className="w-full bg-gradient-to-r from-red-800 via-red-700 to-red-800 hover:from-red-700 hover:via-red-600 hover:to-red-700 text-red-100 font-bold py-3 px-4 rounded-lg transition-all duration-300 shadow-xl shadow-red-900/50 border border-red-600/50 hover:shadow-2xl hover:shadow-red-800/70 hover:border-red-500/70">
                        🏰 Tomar Torre
                      </button>
-                     <div className="text-xs text-gray-400 text-center mt-4">
+                     <div className="text-xs text-gray-400 text-center mt-4 font-medium">
                        <p>💡 Consejo: Juega cartas de valor igual o mayor a la carta de la torre</p>
+                       <p>🎴 Selecciona una carta específica para jugarla</p>
                      </div>
                    </div>
                  </div>
@@ -557,21 +646,21 @@ export default function GamePlayPage() {
              </div>
 
              {/* Player Cards - All Phases */}
-             <div className="bg-gray-800 bg-opacity-50 p-6 rounded-lg border border-gray-700">
-               <h3 className="text-xl font-bold text-white mb-6">🃏 Tus Cartas</h3>
+             <div className="bg-gradient-to-br from-gray-900/80 to-gray-800/60 p-6 rounded-lg border border-gray-700/50 backdrop-blur-sm shadow-xl shadow-black/50">
+               <h3 className="text-xl font-bold text-red-100 mb-6 drop-shadow-lg">🃏 Tus Cartas</h3>
                
                <div className="grid md:grid-cols-3 gap-6">
                  {/* Fase 1: Mano */}
                  <div className={`p-4 rounded-lg border transition-all duration-300 ${
                    gameState.players.find(p => !p.isBot)?.currentPhase === 'hand' 
-                     ? 'bg-blue-900 bg-opacity-50 border-blue-400 shadow-lg shadow-blue-500/25' 
-                     : 'bg-blue-900 bg-opacity-30 border-blue-500'
+                     ? 'bg-gradient-to-br from-blue-900/60 to-blue-800/40 border-blue-400/70 shadow-xl shadow-blue-900/30' 
+                     : 'bg-gradient-to-br from-blue-900/40 to-blue-800/20 border-blue-500/50'
                  }`}>
                    <div className="flex items-center justify-between mb-4">
-                     <h4 className="text-lg font-bold text-blue-300">✋ Fase 1: Mano</h4>
+                     <h4 className="text-lg font-bold text-blue-200 drop-shadow-md">✋ Fase 1: Mano</h4>
                      <span className={`text-sm font-semibold px-2 py-1 rounded ${
                        gameState.players.find(p => !p.isBot)?.currentPhase === 'hand' 
-                         ? 'bg-blue-500 text-white animate-pulse' 
+                         ? 'bg-blue-600 text-white animate-pulse shadow-lg shadow-blue-900/50' 
                          : 'text-blue-400'
                      }`}>
                        {gameState.players.find(p => !p.isBot)?.currentPhase === 'hand' ? '🎯 ACTIVA' : ''}
@@ -585,8 +674,22 @@ export default function GamePlayPage() {
                        return (
                          <div key={i} className="bg-white rounded-lg p-3 shadow-md hover:shadow-lg transition-shadow cursor-pointer">
                            <div className="flex items-center justify-between">
-                             <div className="text-2xl">{card.isSpecial ? '⭐' : '🃏'}</div>
-                             <div className="text-right">
+                             {card.imagePath ? (
+                               <div className="w-12 h-16 relative">
+                                 <Image
+                                   src={card.imagePath}
+                                   alt={card.name}
+                                   fill
+                                   className="object-cover rounded"
+                                   sizes="48px"
+                                 />
+                               </div>
+                             ) : (
+                               <div className="w-12 h-16 bg-gradient-to-br from-gray-300 to-gray-500 rounded flex items-center justify-center">
+                                 <span className="text-2xl">{card.isSpecial ? '⭐' : '🃏'}</span>
+                               </div>
+                             )}
+                             <div className="text-right flex-1 ml-3">
                                <div className="font-bold text-gray-800 text-sm">{card.name}</div>
                                <div className="text-xs text-gray-600">Valor: {card.value}</div>
                              </div>
@@ -611,7 +714,7 @@ export default function GamePlayPage() {
                      )}
                    </div>
                    
-                   <div className="mt-4 text-xs text-blue-300">
+                   <div className="mt-4 text-xs text-blue-200 font-medium">
                      <p>💡 Robas una carta después de jugar</p>
                      <p>🎯 Fase activa: {gameState.players.find(p => !p.isBot)?.currentPhase === 'hand' ? 'SÍ' : 'NO'}</p>
                    </div>
@@ -620,14 +723,14 @@ export default function GamePlayPage() {
                  {/* Fase 2: Boca Arriba */}
                  <div className={`p-4 rounded-lg border transition-all duration-300 ${
                    gameState.players.find(p => !p.isBot)?.currentPhase === 'faceUp' 
-                     ? 'bg-green-900 bg-opacity-50 border-green-400 shadow-lg shadow-green-500/25' 
-                     : 'bg-green-900 bg-opacity-30 border-green-500'
+                     ? 'bg-gradient-to-br from-green-900/60 to-green-800/40 border-green-400/70 shadow-xl shadow-green-900/30' 
+                     : 'bg-gradient-to-br from-green-900/40 to-green-800/20 border-green-500/50'
                  }`}>
                    <div className="flex items-center justify-between mb-4">
-                     <h4 className="text-lg font-bold text-green-300">📋 Fase 2: Boca Arriba</h4>
+                     <h4 className="text-lg font-bold text-green-200 drop-shadow-md">📋 Fase 2: Boca Arriba</h4>
                      <span className={`text-sm font-semibold px-2 py-1 rounded ${
                        gameState.players.find(p => !p.isBot)?.currentPhase === 'faceUp' 
-                         ? 'bg-green-500 text-white animate-pulse' 
+                         ? 'bg-green-600 text-white animate-pulse shadow-lg shadow-green-900/50' 
                          : 'text-green-400'
                      }`}>
                        {gameState.players.find(p => !p.isBot)?.currentPhase === 'faceUp' ? '🎯 ACTIVA' : ''}
@@ -641,8 +744,22 @@ export default function GamePlayPage() {
                        return (
                          <div key={i} className="bg-white rounded-lg p-3 shadow-md hover:shadow-lg transition-shadow cursor-pointer">
                            <div className="flex items-center justify-between">
-                             <div className="text-2xl">{card.isSpecial ? '⭐' : '📋'}</div>
-                             <div className="text-right">
+                             {card.imagePath ? (
+                               <div className="w-12 h-16 relative">
+                                 <Image
+                                   src={card.imagePath}
+                                   alt={card.name}
+                                   fill
+                                   className="object-cover rounded"
+                                   sizes="48px"
+                                 />
+                               </div>
+                             ) : (
+                               <div className="w-12 h-16 bg-gradient-to-br from-gray-300 to-gray-500 rounded flex items-center justify-center">
+                                 <span className="text-2xl">{card.isSpecial ? '⭐' : '📋'}</span>
+                               </div>
+                             )}
+                             <div className="text-right flex-1 ml-3">
                                <div className="font-bold text-gray-800 text-sm">{card.name}</div>
                                <div className="text-xs text-gray-600">Valor: {card.value}</div>
                              </div>
@@ -667,7 +784,7 @@ export default function GamePlayPage() {
                      )}
                    </div>
                    
-                   <div className="mt-4 text-xs text-green-300">
+                   <div className="mt-4 text-xs text-green-200 font-medium">
                      <p>⚠️ No puedes robar del Pozo de Almas</p>
                      <p>🎯 Fase activa: {gameState.players.find(p => !p.isBot)?.currentPhase === 'faceUp' ? 'SÍ' : 'NO'}</p>
                    </div>
@@ -676,14 +793,14 @@ export default function GamePlayPage() {
                  {/* Fase 3: Boca Abajo */}
                  <div className={`p-4 rounded-lg border transition-all duration-300 ${
                    gameState.players.find(p => !p.isBot)?.currentPhase === 'faceDown' 
-                     ? 'bg-red-900 bg-opacity-50 border-red-400 shadow-lg shadow-red-500/25' 
-                     : 'bg-red-900 bg-opacity-30 border-red-500'
+                     ? 'bg-gradient-to-br from-red-900/60 to-red-800/40 border-red-400/70 shadow-xl shadow-red-900/30' 
+                     : 'bg-gradient-to-br from-red-900/40 to-red-800/20 border-red-500/50'
                  }`}>
                    <div className="flex items-center justify-between mb-4">
-                     <h4 className="text-lg font-bold text-red-300">🃏 Fase 3: Boca Abajo</h4>
+                     <h4 className="text-lg font-bold text-red-200 drop-shadow-md">🃏 Fase 3: Boca Abajo</h4>
                      <span className={`text-sm font-semibold px-2 py-1 rounded ${
                        gameState.players.find(p => !p.isBot)?.currentPhase === 'faceDown' 
-                         ? 'bg-red-500 text-white animate-pulse' 
+                         ? 'bg-red-600 text-white animate-pulse shadow-lg shadow-red-900/50' 
                          : 'text-red-400'
                      }`}>
                        {gameState.players.find(p => !p.isBot)?.currentPhase === 'faceDown' ? '🎯 ACTIVA' : ''}
@@ -691,22 +808,33 @@ export default function GamePlayPage() {
                    </div>
                    
                    <div className="space-y-3">
-                     {Array.from({ length: gameState.players.find(p => !p.isBot)?.faceDownCreatures || 0 }, (_, i) => (
-                       <div key={i} className="bg-gray-800 rounded-lg p-3 shadow-md hover:shadow-lg transition-shadow cursor-pointer border-2 border-gray-600">
-                         <div className="flex items-center justify-between">
-                           <div className="text-2xl">❓</div>
-                           <div className="text-right">
-                             <div className="font-bold text-gray-300 text-sm">Criatura {i + 1}</div>
-                             <div className="text-xs text-gray-400">Oculta</div>
+                     {Array.from({ length: gameState.players.find(p => !p.isBot)?.faceDownCreatures || 0 }, (_, i) => {
+                       const cardBackPath = getCardBackImagePath(gameState.players.find(p => !p.isBot)?.deckType || 'dark_elves')
+                       return (
+                         <div key={i} className="bg-gray-800 rounded-lg p-3 shadow-md hover:shadow-lg transition-shadow cursor-pointer border-2 border-gray-600">
+                           <div className="flex items-center justify-between">
+                             <div className="w-12 h-16 relative">
+                               <Image
+                                 src={cardBackPath}
+                                 alt="Carta boca abajo"
+                                 fill
+                                 className="object-cover rounded"
+                                 sizes="48px"
+                               />
+                             </div>
+                             <div className="text-right flex-1 ml-3">
+                               <div className="font-bold text-gray-300 text-sm">Criatura {i + 1}</div>
+                               <div className="text-xs text-gray-400">Oculta</div>
+                             </div>
+                           </div>
+                           <div className="mt-2">
+                             <button className="w-full bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-1 px-2 rounded transition-colors">
+                               JUGAR A CIEGAS
+                             </button>
                            </div>
                          </div>
-                         <div className="mt-2">
-                           <button className="w-full bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-1 px-2 rounded transition-colors">
-                             JUGAR A CIEGAS
-                           </button>
-                         </div>
-                       </div>
-                     ))}
+                       )
+                     })}
                      
                      {gameState.players.find(p => !p.isBot)?.faceDownCreatures === 0 && (
                        <div className="text-center text-gray-400 py-4">
@@ -716,7 +844,7 @@ export default function GamePlayPage() {
                      )}
                    </div>
                    
-                   <div className="mt-4 text-xs text-red-300">
+                   <div className="mt-4 text-xs text-red-200 font-medium">
                      <p>🎲 Si no es válida, tomas toda la Torre</p>
                      <p>🎯 Fase activa: {gameState.players.find(p => !p.isBot)?.currentPhase === 'faceDown' ? 'SÍ' : 'NO'}</p>
                    </div>
