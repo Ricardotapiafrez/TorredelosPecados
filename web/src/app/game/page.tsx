@@ -1,423 +1,401 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { io, Socket } from 'socket.io-client'
-import { ArrowLeft, Users, Clock, Crown, AlertCircle, Cpu } from 'lucide-react'
+import { useState } from 'react'
 import Link from 'next/link'
-import PlayerArea from '@/components/PlayerArea'
-import GameCard from '@/components/GameCard'
-
-interface GameState {
-  roomId: string;
-  gameState: 'waiting' | 'playing' | 'finished';
-  currentPlayerId: string | null;
-  players: Player[];
-  deckSize: number;
-  discardPile: any[];
-  lastPlayedCard: any | null;
-  nextPlayerCanPlayAnything: boolean;
-  skippedPlayer: string | null;
-  winner: Player | null;
-  sinner: Player | null;
-  turnTime: number;
-  deckType: string;
-}
-
-interface Player {
-  id: string;
-  name: string;
-  hand: any[];
-  faceUpCreatures: any[];
-  faceDownCreatures: any[];
-  soulWell: any[];
-  currentPhase: 'hand' | 'faceUp' | 'faceDown';
-  health: number;
-  hasShield: boolean;
-  isReady: boolean;
-  isAlive: boolean;
-  score: number;
-  isSinner: boolean;
-  handSize: number;
-  soulWellSize: number;
-}
+import Image from 'next/image'
+import DeckCard from '@/components/DeckCard'
+import RoomSelector from '@/components/RoomSelector'
+import BotConfiguration from '@/components/BotConfiguration'
+import { GameConfig } from '@/types/game'
+import { decks, gameTypes, availableRooms } from '@/data/gameData'
 
 export default function GamePage() {
-  const [socket, setSocket] = useState<Socket | null>(null);
-  const [gameState, setGameState] = useState<GameState | null>(null);
-  const [currentPlayerId, setCurrentPlayerId] = useState<string | null>(null);
-  const [playerName, setPlayerName] = useState('');
-  const [roomId, setRoomId] = useState('');
-  const [isCreatingRoom, setIsCreatingRoom] = useState(false);
-  const [isJoiningRoom, setIsJoiningRoom] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [timeLeft, setTimeLeft] = useState(30);
-  const [selectedCard, setSelectedCard] = useState<number | null>(null);
-  const [gameMode, setGameMode] = useState<'human' | 'bot'>('human');
-  const [botCount, setBotCount] = useState(1);
+  const [config, setConfig] = useState<GameConfig>({
+    gameType: 'human',
+    deck: '',
+    room: '',
+    username: '',
+    botCount: 1,
+    botDifficulty: 'intermediate',
+    maxPlayers: 4
+  })
 
-  // Initialize socket connection
-  useEffect(() => {
-    const newSocket = io('http://localhost:5001');
-    setSocket(newSocket);
+  const [step, setStep] = useState(1)
+  const [isLoading, setIsLoading] = useState(false)
 
-    return () => {
-      newSocket.close();
-    };
-  }, []);
-
-  // Socket event listeners
-  useEffect(() => {
-    if (!socket) return;
-
-    socket.on('gameStateUpdate', (data: GameState) => {
-      setGameState(data);
-      setError(null);
-    });
-
-    socket.on('roomCreated', (data: { roomId: string; playerId: string; gameState: GameState }) => {
-      setRoomId(data.roomId);
-      setCurrentPlayerId(data.playerId);
-      setGameState(data.gameState);
-      setError(null);
-    });
-
-    socket.on('roomJoined', (data: { roomId: string; playerId: string; gameState: GameState }) => {
-      setRoomId(data.roomId);
-      setCurrentPlayerId(data.playerId);
-      setGameState(data.gameState);
-      setError(null);
-    });
-
-    socket.on('gameStarted', (data: GameState) => {
-      setGameState(data);
-      setError(null);
-    });
-
-    socket.on('playerJoined', (data: { player: any }) => {
-      // Actualizar el estado del juego cuando otro jugador se une
-      if (gameState) {
-        setGameState({ ...gameState });
+  const handleConfigChange = (field: keyof GameConfig, value: string) => {
+    setConfig(prev => {
+      const newConfig = { ...prev }
+      
+      // Manejar campos numéricos
+      if (field === 'botCount' || field === 'maxPlayers') {
+        newConfig[field] = parseInt(value) || 1
+      } else {
+        newConfig[field] = value
       }
-    });
-
-    socket.on('timeUpdate', (data: { timeLeft: number }) => {
-      setTimeLeft(data.timeLeft);
-    });
-
-    socket.on('error', (data: { message: string }) => {
-      setError(data.message);
-    });
-
-    return () => {
-      socket.off('gameStateUpdate');
-      socket.off('roomCreated');
-      socket.off('roomJoined');
-      socket.off('gameStarted');
-      socket.off('playerJoined');
-      socket.off('timeUpdate');
-      socket.off('error');
-    };
-  }, [socket]);
-  const handleCardClick = (cardIndex: number) => {
-    if (!gameState || gameState.gameState !== 'playing') return;
-    const currentPlayer = gameState?.players?.find((p) => p.id === currentPlayerId);
-    if (!currentPlayer || !currentPlayer.hand || currentPlayer.hand.length <= cardIndex) return;
-    const card = currentPlayer.hand[cardIndex];
-    if (card.type === 'hechizo' || card.type === 'trampa') {
-      setSelectedCard(cardIndex);
-    } else {
-      handleDiscard(cardIndex);
-    }
-  };
-
-  const handleTargetSelect = (targetPlayerId: string) => {
-    if (selectedCard !== null) {
-      playCard(selectedCard, targetPlayerId);
-    }
-  };
-
-  const handleDiscard = (cardIndex: number) => {
-    if (!socket || !gameState || gameState.gameState !== 'playing') return;
-    socket.emit('discardCard', { cardIndex });
-    setSelectedCard(null);
-  };
-
-  const playCard = (cardIndex: number, targetPlayerId?: string) => {
-    if (!socket || !gameState || gameState.gameState !== 'playing') return;
-    socket.emit('playCard', { cardIndex, targetPlayerId });
-    setSelectedCard(null);
-  };
-
-  const setReady = (ready: boolean) => {
-    if (!socket) return;
-    socket.emit('setPlayerReady', { ready });
-  };
-
-  const startGame = () => {
-    if (!socket) return;
-    socket.emit('startGame');
-  };
-
-  const currentPlayer = gameState?.players?.find((p) => p.id === currentPlayerId);
-  const isMyTurn = gameState?.currentPlayerId === currentPlayerId;
-
-  // Loading or error state
-  if (error) {
-    return (
-      <div className="min-h-screen p-4 flex items-center justify-center">
-        <div className="card p-6 text-center">
-          <AlertCircle className="w-12 h-12 text-red-400 mx-auto mb-4" />
-          <h2 className="text-xl font-bold mb-2">Error</h2>
-          <p className="text-secondary-300 mb-4">{error}</p>
-          <Link href="/" className="btn-primary">
-            Volver al Menú
-          </Link>
-        </div>
-      </div>
-    );
+      
+      // Ajustar botCount si maxPlayers cambia
+      if (field === 'maxPlayers') {
+        const maxBots = newConfig.maxPlayers - 1
+        if (newConfig.botCount > maxBots) {
+          newConfig.botCount = maxBots
+        }
+      }
+      
+      return newConfig
+    })
   }
 
-  if (!gameState) {
-    return (
-      <div className="min-h-screen p-4 flex items-center justify-center">
-        <div className="card p-8 max-w-md w-full">
-          <h2 className="text-2xl font-bold mb-6 text-center">Unirse al Juego</h2>
-          
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium mb-2">Tu Nombre</label>
-              <input
-                type="text"
-                value={playerName}
-                onChange={(e) => setPlayerName(e.target.value)}
-                placeholder="Ingresa tu nombre"
-                className="w-full p-3 bg-secondary-700 border border-secondary-600 rounded-lg focus:outline-none focus:border-primary-400"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-2">ID de Sala (opcional)</label>
-              <input
-                type="text"
-                value={roomId}
-                onChange={(e) => setRoomId(e.target.value)}
-                placeholder="Deja vacío para crear una nueva sala"
-                className="w-full p-3 bg-secondary-700 border border-secondary-600 rounded-lg focus:outline-none focus:border-primary-400"
-              />
-            </div>
-
-            {!roomId.trim() && (
-              <>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Modo de Juego</label>
-                  <div className="grid grid-cols-2 gap-2">
-                    <button
-                      onClick={() => setGameMode('human')}
-                      className={`p-3 rounded-lg border transition-colors ${
-                        gameMode === 'human'
-                          ? 'bg-primary-600 border-primary-400 text-white'
-                          : 'bg-secondary-700 border-secondary-600 text-secondary-300 hover:bg-secondary-600'
-                      }`}
-                    >
-                      <div className="flex items-center justify-center space-x-2">
-                        <Users className="w-4 h-4" />
-                        <span>Multijugador</span>
-                      </div>
-                    </button>
-                    <button
-                      onClick={() => setGameMode('bot')}
-                      className={`p-3 rounded-lg border transition-colors ${
-                        gameMode === 'bot'
-                          ? 'bg-primary-600 border-primary-400 text-white'
-                          : 'bg-secondary-700 border-secondary-600 text-secondary-300 hover:bg-secondary-600'
-                      }`}
-                    >
-                      <div className="flex items-center justify-center space-x-2">
-                        <Cpu className="w-4 h-4" />
-                        <span>vs Bots</span>
-                      </div>
-                    </button>
-                  </div>
-                </div>
-
-                {gameMode === 'bot' && (
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Número de Bots</label>
-                    <div className="flex space-x-2">
-                      {[1, 2, 3].map((count) => (
-                        <button
-                          key={count}
-                          onClick={() => setBotCount(count)}
-                          className={`flex-1 p-3 rounded-lg border transition-colors ${
-                            botCount === count
-                              ? 'bg-accent-600 border-accent-400 text-white'
-                              : 'bg-secondary-700 border-secondary-600 text-secondary-300 hover:bg-secondary-600'
-                          }`}
-                        >
-                          {count} Bot{count > 1 ? 'es' : ''}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </>
-            )}
-
-            <div className="flex space-x-4">
-              <button
-                onClick={() => {
-                  if (!playerName.trim()) {
-                    setError('Por favor ingresa tu nombre');
-                    return;
-                  }
-                  if (roomId.trim()) {
-                    // Unirse a sala existente
-                    socket?.emit('joinRoom', { roomId: roomId.trim(), playerName: playerName.trim() });
-                  } else {
-                    // Crear nueva sala
-                    const roomData: any = { 
-                      playerName: playerName.trim(),
-                      gameMode: gameMode
-                    };
-                    
-                    if (gameMode === 'bot') {
-                      roomData.botCount = botCount;
-                    }
-                    
-                    socket?.emit('createRoom', roomData);
-                  }
-                }}
-                disabled={!socket || !playerName.trim()}
-                className="flex-1 btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {roomId.trim() ? 'Unirse a Sala' : 'Crear Sala'}
-              </button>
-            </div>
-
-            {error && (
-              <div className="text-red-400 text-sm text-center">
-                {error}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    );
+  const canProceed = () => {
+    switch (step) {
+      case 1:
+        return config.gameType !== ''
+      case 2:
+        return config.deck !== ''
+      case 3:
+        return config.username.trim() !== ''
+      case 4:
+        if (config.gameType === 'bot') {
+          return config.botCount && config.botCount >= 1 && config.botCount <= (config.maxPlayers || 4) - 1
+        }
+        return config.room.trim() !== ''
+      case 5:
+        if (config.gameType === 'human') {
+          return config.room.trim() !== ''
+        }
+        return true
+      default:
+        return false
+    }
   }
 
-  // Game Screen
-  return (
-    <div className="min-h-screen p-4">
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center space-x-4">
-          <Link href="/" className="btn-secondary">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Salir
-          </Link>
-          <div className="text-sm text-secondary-300">Sala: {roomId}</div>
-        </div>
-        <div className="flex items-center space-x-4">
-          {gameState?.gameState === 'playing' && (
-            <div className="flex items-center space-x-2 text-sm">
-              <Clock className="w-4 h-4" />
-              <span>{timeLeft}s</span>
-            </div>
-          )}
-          <div className="flex items-center space-x-2 text-sm">
-            <Users className="w-4 h-4" />
-            <span>{gameState?.players?.length || 0}/4</span>
-          </div>
-        </div>
-      </div>
+  const handleStartGame = async () => {
+    setIsLoading(true)
+    
+    // Preparar configuración para el backend
+    const gameConfig = {
+      playerName: config.username,
+      deckType: config.deck,
+      gameMode: config.gameType,
+      maxPlayers: config.maxPlayers,
+      ...(config.gameType === 'bot' && {
+        botCount: config.botCount,
+        botDifficulty: config.botDifficulty
+      }),
+      ...(config.gameType === 'human' && {
+        roomName: config.room
+      })
+    }
+    
+    console.log('Iniciando juego con configuración:', gameConfig)
+    
+    // Aquí se conectaría con el backend para iniciar el juego
+    // Ejemplo de llamada a la API:
+    // const response = await fetch('/api/game/create', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify(gameConfig)
+    // })
+    
+    // Simular carga
+    setTimeout(() => {
+      setIsLoading(false)
+      // Redirigir al juego real
+      // router.push('/game/play')
+    }, 2000)
+  }
 
-      <div className="game-board">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-          {gameState?.players
-            ?.filter((player) => player.id !== currentPlayerId)
-            .map((player, index) => (
-              <PlayerArea key={player.id} player={player} isMyTurn={player.id === gameState.currentPlayerId} />
-            ))}
-        </div>
+  const handleRoomCreate = (roomName: string) => {
+    const newRoomName = roomName || `Sala de ${config.username}`
+    handleConfigChange('room', newRoomName)
+  }
 
-        {currentPlayer && (
-          <PlayerArea
-            player={currentPlayer}
-            isCurrentPlayer={true}
-            isMyTurn={isMyTurn}
-            onCardClick={handleCardClick}
-            showHand={true}
-          />
-        )}
-
-        <AnimatePresence>
-          {selectedCard !== null && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
-            >
-              <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.9, opacity: 0 }}
-                className="card p-6 max-w-md w-full mx-4"
-              >
-                <h3 className="text-xl font-bold mb-4">Selecciona un objetivo</h3>
-                <div className="space-y-2">
-                  {gameState?.players
-                    ?.filter((player) => player.id !== currentPlayerId)
-                    .map((player) => (
-                      <button
-                        key={player.id}
-                        onClick={() => handleTargetSelect(player.id)}
-                        className="w-full p-3 text-left bg-secondary-700 hover:bg-secondary-600 rounded-lg transition-colors"
-                      >
-                        {player.name}
-                      </button>
-                    ))}
-                </div>
-                <button onClick={() => setSelectedCard(null)} className="btn-secondary w-full mt-4">
-                  Cancelar
-                </button>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {gameState?.gameState === 'waiting' && (
-          <div className="mt-6 flex justify-center space-x-4">
-            <button onClick={() => setReady(!currentPlayer?.isReady)} className={`btn-${currentPlayer?.isReady ? 'accent' : 'primary'}`}>
-              {currentPlayer?.isReady ? 'Listo ✓' : 'Marcar como Listo'}
-            </button>
-            {gameState?.players?.every((p) => p.isReady) && gameState?.players?.length >= 2 && (
-              <button onClick={startGame} className="btn-accent">
-                Iniciar Juego
-              </button>
-            )}
-          </div>
-        )}
-
-        {gameState?.gameState === 'finished' && gameState.winner && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+  const renderStep1 = () => (
+    <div className="space-y-6">
+      <h3 className="text-2xl font-bold text-white mb-6">Selecciona el tipo de juego</h3>
+      <div className="grid md:grid-cols-2 gap-6">
+        {gameTypes.map((type) => (
+          <button
+            key={type.id}
+            onClick={() => handleConfigChange('gameType', type.id)}
+            className={`p-6 rounded-lg border-2 transition-all duration-300 ${
+              config.gameType === type.id
+                ? 'border-purple-500 bg-purple-600 bg-opacity-20'
+                : 'border-gray-600 bg-gray-800 bg-opacity-50 hover:border-purple-400'
+            }`}
           >
-            <div className="card p-8 text-center max-w-md">
-              <Crown className="w-16 h-16 text-yellow-400 mx-auto mb-4" />
-              <h2 className="text-2xl font-bold mb-2">¡Juego Terminado!</h2>
-              <p className="text-lg mb-4">
-                Ganador: <span className="text-primary-400 font-bold">{gameState.winner.name}</span>
-              </p>
-              <Link href="/" className="btn-primary">
-                Volver al Menú
-              </Link>
-            </div>
-          </motion.div>
-        )}
+            <div className="text-4xl mb-4">{type.icon}</div>
+            <h4 className="text-xl font-bold text-white mb-2">{type.name}</h4>
+            <p className="text-gray-300">{type.description}</p>
+          </button>
+        ))}
       </div>
     </div>
-  );
+  )
+
+  const renderStep2 = () => (
+    <div className="space-y-6">
+      <h3 className="text-2xl font-bold text-white mb-6">Elige tu mazo</h3>
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {decks.map((deck) => (
+          <DeckCard
+            key={deck.id}
+            id={deck.id}
+            name={deck.name}
+            color={deck.color}
+            icon={deck.icon}
+            isSelected={config.deck === deck.id}
+            onClick={() => handleConfigChange('deck', deck.id)}
+          />
+        ))}
+      </div>
+    </div>
+  )
+
+  const renderStep3 = () => (
+    <div className="space-y-6">
+      <h3 className="text-2xl font-bold text-white mb-6">Ingresa tu nombre de usuario</h3>
+      <div className="max-w-md mx-auto">
+        <input
+          type="text"
+          value={config.username}
+          onChange={(e) => handleConfigChange('username', e.target.value)}
+          placeholder="Tu nombre de usuario"
+          className="w-full p-4 bg-gray-800 border-2 border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-purple-500 focus:outline-none transition-colors"
+          maxLength={20}
+        />
+        <p className="text-sm text-gray-400 mt-2">
+          Máximo 20 caracteres
+        </p>
+      </div>
+    </div>
+  )
+
+  const renderStep4 = () => {
+    if (config.gameType === 'bot') {
+      return (
+        <div className="space-y-6">
+          <h3 className="text-2xl font-bold text-white mb-6">Configuración de bots</h3>
+          <div className="max-w-4xl mx-auto">
+            <BotConfiguration
+              botCount={config.botCount || 1}
+              botDifficulty={config.botDifficulty || 'intermediate'}
+              maxPlayers={config.maxPlayers || 4}
+              onBotCountChange={(count) => handleConfigChange('botCount', count.toString())}
+              onBotDifficultyChange={(difficulty) => handleConfigChange('botDifficulty', difficulty)}
+              onMaxPlayersChange={(max) => handleConfigChange('maxPlayers', max.toString())}
+            />
+          </div>
+        </div>
+      )
+    }
+
+    const filteredRooms = availableRooms.filter(room => room.gameType === config.gameType)
+    
+    return (
+      <div className="space-y-6">
+        <h3 className="text-2xl font-bold text-white mb-6">Selecciona o crea una sala</h3>
+        <div className="max-w-2xl mx-auto space-y-4">
+          <input
+            type="text"
+            value={config.room}
+            onChange={(e) => handleConfigChange('room', e.target.value)}
+            placeholder="Nombre de la sala (opcional)"
+            className="w-full p-4 bg-gray-800 border-2 border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-purple-500 focus:outline-none transition-colors"
+            maxLength={30}
+          />
+          
+          <RoomSelector
+            rooms={filteredRooms}
+            selectedRoom={config.room}
+            onRoomSelect={(roomName) => handleConfigChange('room', roomName)}
+            onRoomCreate={handleRoomCreate}
+          />
+        </div>
+      </div>
+    )
+  }
+
+  const renderStep5 = () => {
+    if (config.gameType === 'human') {
+      const filteredRooms = availableRooms.filter(room => room.gameType === config.gameType)
+      
+      return (
+        <div className="space-y-6">
+          <h3 className="text-2xl font-bold text-white mb-6">Selecciona o crea una sala</h3>
+          <div className="max-w-2xl mx-auto space-y-4">
+            <input
+              type="text"
+              value={config.room}
+              onChange={(e) => handleConfigChange('room', e.target.value)}
+              placeholder="Nombre de la sala (opcional)"
+              className="w-full p-4 bg-gray-800 border-2 border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-purple-500 focus:outline-none transition-colors"
+              maxLength={30}
+            />
+            
+            <RoomSelector
+              rooms={filteredRooms}
+              selectedRoom={config.room}
+              onRoomSelect={(roomName) => handleConfigChange('room', roomName)}
+              onRoomCreate={handleRoomCreate}
+            />
+          </div>
+        </div>
+      )
+    }
+
+    return null
+  }
+
+  const renderSummary = () => (
+    <div className="space-y-6">
+      <h3 className="text-2xl font-bold text-white mb-6">Resumen de configuración</h3>
+      <div className="bg-gray-800 bg-opacity-50 p-6 rounded-lg max-w-md mx-auto">
+        <div className="space-y-4">
+          <div className="flex justify-between">
+            <span className="text-gray-300">Tipo de juego:</span>
+            <span className="text-white font-semibold">
+              {gameTypes.find(t => t.id === config.gameType)?.name}
+            </span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-300">Mazo:</span>
+            <span className="text-white font-semibold">
+              {decks.find(d => d.id === config.deck)?.name}
+            </span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-300">Usuario:</span>
+            <span className="text-white font-semibold">{config.username}</span>
+          </div>
+          {config.gameType === 'bot' ? (
+            <>
+              <div className="flex justify-between">
+                <span className="text-gray-300">Número de bots:</span>
+                <span className="text-white font-semibold">{config.botCount}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-300">Dificultad:</span>
+                <span className="text-white font-semibold">
+                  {config.botDifficulty === 'beginner' && 'Principiante'}
+                  {config.botDifficulty === 'intermediate' && 'Intermedio'}
+                  {config.botDifficulty === 'advanced' && 'Avanzado'}
+                  {config.botDifficulty === 'expert' && 'Experto'}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-300">Total jugadores:</span>
+                <span className="text-white font-semibold">{config.maxPlayers}</span>
+              </div>
+            </>
+          ) : (
+            <div className="flex justify-between">
+              <span className="text-gray-300">Sala:</span>
+              <span className="text-white font-semibold">{config.room}</span>
+            </div>
+          )}
+        </div>
+      </div>
+      
+      <button
+        onClick={handleStartGame}
+        disabled={isLoading}
+        className="w-full max-w-md mx-auto bg-gradient-to-r from-red-600 to-purple-600 hover:from-red-700 hover:to-purple-700 disabled:opacity-50 text-white font-bold py-4 px-8 rounded-lg text-lg transition-all duration-300"
+      >
+        {isLoading ? 'Iniciando juego...' : '¡Iniciar Juego!'}
+      </button>
+    </div>
+  )
+
+  const steps = [
+    { title: 'Tipo de Juego', component: renderStep1 },
+    { title: 'Mazo', component: renderStep2 },
+    { title: 'Usuario', component: renderStep3 },
+    { title: config.gameType === 'bot' ? 'Configuración de Bots' : 'Sala', component: renderStep4 },
+    ...(config.gameType === 'human' ? [{ title: 'Sala', component: renderStep5 }] : []),
+    { title: 'Resumen', component: renderSummary }
+  ]
+
+  return (
+    <main className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
+      {/* Header */}
+      <header className="relative z-10">
+        <nav className="container mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <Link href="/" className="flex items-center space-x-2">
+              <div className="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-xl">T</span>
+              </div>
+              <h1 className="text-2xl font-bold text-white">Torre de los Pecados</h1>
+            </Link>
+            <Link 
+              href="/"
+              className="text-gray-300 hover:text-white transition-colors"
+            >
+              ← Volver al inicio
+            </Link>
+          </div>
+        </nav>
+      </header>
+
+      {/* Main Content */}
+      <div className="container mx-auto px-6 py-8">
+        <div className="max-w-4xl mx-auto">
+          {/* Progress Bar */}
+          <div className="mb-8">
+            <div className="flex justify-between items-center mb-4">
+              {steps.map((stepItem, index) => (
+                <div key={index} className="flex items-center">
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
+                    index + 1 <= step
+                      ? 'bg-purple-600 text-white'
+                      : 'bg-gray-600 text-gray-300'
+                  }`}>
+                    {index + 1}
+                  </div>
+                  {index < steps.length - 1 && (
+                    <div className={`w-16 h-1 mx-2 ${
+                      index + 1 < step ? 'bg-purple-600' : 'bg-gray-600'
+                    }`}></div>
+                  )}
+                </div>
+              ))}
+            </div>
+            <h2 className="text-3xl font-bold text-white text-center mb-2">
+              {steps[step - 1].title}
+            </h2>
+            <p className="text-gray-400 text-center">
+              Paso {step} de {steps.length}
+            </p>
+          </div>
+
+          {/* Step Content */}
+          <div className="bg-gray-800 bg-opacity-30 p-8 rounded-lg border border-gray-700">
+            {steps[step - 1].component()}
+          </div>
+
+          {/* Navigation */}
+          <div className="flex justify-between mt-8">
+            <button
+              onClick={() => setStep(Math.max(1, step - 1))}
+              disabled={step === 1}
+              className="bg-gray-600 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-lg transition-colors"
+            >
+              Anterior
+            </button>
+            
+            {step < steps.length ? (
+              <button
+                onClick={() => setStep(step + 1)}
+                disabled={!canProceed()}
+                className="bg-purple-600 hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-lg transition-colors"
+              >
+                Siguiente
+              </button>
+            ) : null}
+          </div>
+        </div>
+      </div>
+    </main>
+  )
 }

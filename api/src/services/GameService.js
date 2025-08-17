@@ -165,8 +165,8 @@ class GameService {
 
   // Agregar bots al juego
   addBotsToGame(game, botCount) {
-    const botNames = ['Bot Alpha', 'Bot Beta', 'Bot Gamma', 'Bot Delta'];
-    const availableDecks = ['angels', 'demons', 'dragons', 'mages'];
+    const botNames = ['Bot Alpha', 'Bot Beta', 'Bot Gamma', 'Bot Delta', 'Bot Epsilon', 'Bot Zeta'];
+    const availableDecks = ['angels', 'demons', 'dragons', 'mages', 'dwarves', 'elves', 'dark_elves', 'orcs'];
     
     for (let i = 0; i < botCount; i++) {
       const botId = uuidv4();

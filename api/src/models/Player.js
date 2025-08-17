@@ -345,7 +345,7 @@ class Player {
 
   // Cambiar mazo seleccionado
   setSelectedDeck(deckType) {
-    const validDecks = ['angels', 'demons', 'dragons', 'mages'];
+    const validDecks = ['angels', 'demons', 'dragons', 'mages', 'dwarves', 'elves', 'dark_elves', 'orcs'];
     if (validDecks.includes(deckType)) {
       this.selectedDeck = deckType;
       console.log(`🎴 ${this.name} cambió su mazo a: ${deckType}`);
@@ -362,7 +362,11 @@ class Player {
       angels: { name: 'Mazo de Ángeles', icon: '👼', description: 'La Luz Divina - Pureza, justicia y orden divino' },
       demons: { name: 'Mazo de Demonios', icon: '😈', description: 'La Oscuridad del Abismo - Los siete pecados capitales' },
       dragons: { name: 'Mazo de Dragones', icon: '🐉', description: 'Los Señores del Cielo - Poder primitivo y sabiduría ancestral' },
-      mages: { name: 'Mazo de Magos', icon: '🧙‍♂️', description: 'Los Maestros del Arcano - Conocimiento arcano y manipulación de la realidad' }
+      mages: { name: 'Mazo de Magos', icon: '🧙‍♂️', description: 'Los Maestros del Arcano - Conocimiento arcano y manipulación de la realidad' },
+      dwarves: { name: 'Mazo de Enanos', icon: '⚒️', description: 'Forja, Runas, Máquinas de Guerra, Fortaleza - Civilización forjadora' },
+      elves: { name: 'Mazo de Elfos del Bosque', icon: '🌿', description: 'Ciclo Natural, Armonía, Crecimiento - Reino de la Naturaleza' },
+      dark_elves: { name: 'Mazo de Elfos Oscuros', icon: '🖤', description: 'Sombras, Sacrificio, Venenos, Magia Prohibida - Imperio de la Corrupción' },
+      orcs: { name: 'Mazo de Orcos', icon: '🪖', description: 'Fuerza Bruta, Hordas, Tambores de Guerra, Berserkers - El Poder de la Masa' }
     };
     
     return deckInfo[this.selectedDeck] || deckInfo.angels;
