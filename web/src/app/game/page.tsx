@@ -97,11 +97,27 @@ export default function GamePage() {
     //   body: JSON.stringify(gameConfig)
     // })
     
-    // Simular carga
+    // Simular carga y redirigir al tablero de juego
     setTimeout(() => {
       setIsLoading(false)
-      // Redirigir al juego real
-      // router.push('/game/play')
+      
+      // Construir URL con parámetros de configuración
+      const params = new URLSearchParams({
+        playerName: config.username,
+        deckType: config.deck,
+        gameMode: config.gameType,
+        maxPlayers: config.maxPlayers.toString(),
+        ...(config.gameType === 'bot' && {
+          botCount: config.botCount.toString(),
+          botDifficulty: config.botDifficulty
+        }),
+        ...(config.gameType === 'human' && {
+          roomName: config.room
+        })
+      })
+      
+      // Redirigir al tablero de juego
+      window.location.href = `/game/play?${params.toString()}`
     }, 2000)
   }
 
